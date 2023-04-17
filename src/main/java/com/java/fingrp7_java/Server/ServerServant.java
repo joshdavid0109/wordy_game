@@ -8,7 +8,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public LoginResult login(String username, String password) {
-        return null;
+
+
+        return LoginResult.SUCCESS;
     }
 
     @Override
