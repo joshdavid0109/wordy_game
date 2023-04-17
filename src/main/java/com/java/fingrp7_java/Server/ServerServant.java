@@ -1,8 +1,8 @@
 package com.java.fingrp7_java.Server;
 
 
-import WordyGameServer.LoginResult;
-import WordyGameServer.WordyGameServerPOA;
+import com.java.fingrp7_java.Server.WordyGameServer.LoginResult;
+import com.java.fingrp7_java.Server.WordyGameServer.WordyGameServerPOA;
 
 public class ServerServant extends WordyGameServerPOA {
 

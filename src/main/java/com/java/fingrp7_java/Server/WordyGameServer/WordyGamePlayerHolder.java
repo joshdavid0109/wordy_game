@@ -1,4 +1,4 @@
-package WordyGameServer;
+package com.java.fingrp7_java.Server.WordyGameServer;
 
 /**
 * WordyGameServer/WordyGamePlayerHolder.java .
