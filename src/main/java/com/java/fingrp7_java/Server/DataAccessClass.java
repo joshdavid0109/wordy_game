@@ -1,5 +1,6 @@
 package com.java.fingrp7_java.Server;
 
+
 import javax.xml.crypto.Data;
 import java.sql.*;
 
@@ -18,7 +19,6 @@ public class DataAccessClass {
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/comprog", "root", "");
     }
 
-
     public static int checkCredentials(String username, String password) {
         String query = "SELECT * FROM USERS where username=? AND password=?";
         PreparedStatement preparedStatement = null;
@@ -29,8 +29,6 @@ public class DataAccessClass {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
         return 0 ;
     }
 }

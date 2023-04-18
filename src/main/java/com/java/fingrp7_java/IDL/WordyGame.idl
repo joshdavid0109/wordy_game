@@ -1,8 +1,10 @@
-module WordyGameServer {
+module WordyGame {
 
   typedef sequence<string> StringSeq;
 
-  enum LoginResult {SUCCESS, INVALID_CREDENTIALS, ACCOUNT_ALREADY_LOGGED_IN};
+  enum LoginResult {SUCCESS, INVALID_CREDENTIALS, ACCOUNT_ALREADY_LOGGED_IN, SERVER_UNAVAILABLE};
+  enum RegistrationResult {USERNAME_TAKEN, INVALID_CREDENTIALS};
+  enum WordValidation{WORD_LESS_THAN_FIVE_LETTERS, INVALID_WORD};
 
   struct WordyGamePlayer {
     string username;
@@ -10,14 +12,22 @@ module WordyGameServer {
   };
 
   interface WordyGameServer {
-    LoginResult login(in string username, in string password);
+    LoginResult login(in string username, in string password); // Connect
+    RegistrationResult signUp(); // 1
     void logout(in string username);
-    void playGame(in string username);
+    StringSeq playGame(in string username);
+    boolean checkWord(in string word);
+
+
     StringSeq getLongestWords();
     StringSeq getTopPlayers();
   };
 
   exception NoPlayersAvailable {
+    string reason;
+  };
+
+  exception InvalidWord {
     string reason;
   };
 };
