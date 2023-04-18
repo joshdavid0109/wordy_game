@@ -9,7 +9,8 @@ module com.java.fingrp7_java {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
-    requires rt;
+    requires java.xml.crypto;
+    requires java.sql;
 
     opens com.java.fingrp7_java to javafx.fxml;
     exports com.java.fingrp7_java;
