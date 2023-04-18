@@ -1,11 +1,11 @@
 package com.java.fingrp7_java.Server;
 
-import com.java.fingrp7_java.Server.WordyGameServer.WordyGameServer;
-import com.java.fingrp7_java.Server.WordyGameServer.WordyGameServerHelper;
 // `import org.omg.CORBA.ORB;` is importing the `ORB` class from the `org.omg.CORBA` package. The `ORB` class is used to
 // initialize and configure the CORBA (Common Object Request Broker Architecture) runtime environment. It provides methods
 // for creating object references, registering and activating object implementations, and managing communication between
 // distributed objects.
+import com.java.fingrp7_java.Server.WordyGame.WordyGameServer;
+import com.java.fingrp7_java.Server.WordyGame.WordyGameServerHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NameComponent;
@@ -49,7 +49,6 @@ public class Server {
             // bind the Object reference in Naming
             String stub = "Hello";
 
-            stub.compareTo("Hi");
             NameComponent[] path = namingContextExt.to_name(stub);
             namingContextExt.rebind(path, href);
             System.out.println("HelloServer is now operating..");

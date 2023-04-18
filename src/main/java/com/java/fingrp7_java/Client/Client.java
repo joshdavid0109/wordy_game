@@ -1,7 +1,6 @@
 package com.java.fingrp7_java.Client;
 
-import com.java.fingrp7_java.Server.ServerServant;
-import com.java.fingrp7_java.Server.WordyGameServer.*;
+import com.java.fingrp7_java.Server.WordyGame.*;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -31,15 +30,15 @@ public class Client {
             String stub = "Hello";
             wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
+            wordyGameServer.
+                    login("testuser", "testuser");
 
-            System.out.println(wordyGameServer.getTopPlayers());
-            System.out.println(wordyGameServer.getLongestWords());
             System.out.println(wordyGameServer.login("testuser", "testuser"));
 //            System.out.println(helloImpl.);
 
             orb.run();
-        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName |
-                 CannotProceed | NotFound e) {
+        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
+                 NoPlayersAvailable e) {
             throw new RuntimeException(e);
         }
     }

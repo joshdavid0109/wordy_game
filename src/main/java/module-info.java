@@ -11,6 +11,7 @@ module com.java.fingrp7_java {
     requires com.almasb.fxgl.all;
     requires java.xml.crypto;
     requires java.sql;
+    requires rt;
 
     opens com.java.fingrp7_java to javafx.fxml;
     exports com.java.fingrp7_java;
