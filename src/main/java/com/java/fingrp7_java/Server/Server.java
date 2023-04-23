@@ -4,8 +4,8 @@ package com.java.fingrp7_java.Server;
 // initialize and configure the CORBA (Common Object Request Broker Architecture) runtime environment. It provides methods
 // for creating object references, registering and activating object implementations, and managing communication between
 // distributed objects.
-import com.java.fingrp7_java.Server.WordyGame.WordyGameServer;
-import com.java.fingrp7_java.Server.WordyGame.WordyGameServerHelper;
+import com.java.fingrp7_java.Server.WordyGameServer.WordyGameServer;
+import com.java.fingrp7_java.Server.WordyGameServer.WordyGameServerHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NameComponent;

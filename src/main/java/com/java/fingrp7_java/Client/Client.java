@@ -1,6 +1,5 @@
 package com.java.fingrp7_java.Client;
 
-import com.java.fingrp7_java.Server.WordyGame.*;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;

@@ -4,17 +4,17 @@ module WordyGame {
 
   enum CredentialsResult {SUCCESS, INVALID_CREDENTIALS, ACCOUNT_ALREADY_LOGGED_IN, USERNAME_TAKEN, SERVER_UNAVAILABLE};
   enum WordValidation{WORD_LESS_THAN_FIVE_LETTERS, INVALID_WORD};
+  enum LobbyStatus{JOINED_A_GAME, NEW_GAME};
 
   struct WordyGamePlayer {
-    string username;
+    long id;
     long wins;
   };
 
   interface WordyGameServer {
     CredentialsResult login(in string username, in string password); // Connect
-    CredentialsResult signUp(); // 1
     void logout(in string username);
-    StringSeq playGame(in string username);
+    LobbyStatus playGame(in WordyGamePlayer username);
     boolean checkWord(in string word);
 
     StringSeq getLongestWords();
@@ -29,8 +29,7 @@ module WordyGame {
     string reason;
   };
 
-
-  exception loginFailed{
+  exception LoginFailed{
     string reason;
   };
 };
