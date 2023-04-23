@@ -3,7 +3,7 @@ module WordyGame {
   typedef sequence<string> StringSeq;
 
   enum CredentialsResult {SUCCESS, INVALID_CREDENTIALS, ACCOUNT_ALREADY_LOGGED_IN, USERNAME_TAKEN, SERVER_UNAVAILABLE};
-  enum WordValidation{WORD_LESS_THAN_FIVE_LETTERS, INVALID_WORD};
+  enum WordValidation{WORD_LESS_THAN_FIVE_LETTERS, INVALID_WORD, VALID_WORD};
   enum LobbyStatus{JOINED_A_GAME, NEW_GAME};
 
   struct WordyGamePlayer {
@@ -15,7 +15,7 @@ module WordyGame {
     CredentialsResult login(in string username, in string password); // Connect
     void logout(in string username);
     LobbyStatus playGame(in WordyGamePlayer username);
-    boolean checkWord(in string word);
+    WordValidation checkWord(in string word);
 
     StringSeq getLongestWords();
     StringSeq getTopPlayers();

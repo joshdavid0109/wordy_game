@@ -1,17 +1,20 @@
 package com.java.fingrp7_java.Server;
 
 
-import WordyGame.WordyGameServerPOA;
+import WordyGame.*;
 import org.omg.PortableServer.Servant;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class ServerServant extends WordyGameServerPOA {
+    static ArrayList<Game> games = new ArrayList<>();
     @Override
-    public WordyGame.CredentialsResult login(String username, String password) {
-            if (username.equals("testuser") && password.equals("testuser"))
-                return WordyGame.CredentialsResult.SUCCESS;
-
-
-        return WordyGame.CredentialsResult.INVALID_CREDENTIALS;
+    public CredentialsResult login(String username, String password) {
+        return null;
     }
 
     @Override
@@ -20,15 +23,51 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
-    public String[] playGame(String username) throws WordyGame.NoPlayersAvailable {
+    public LobbyStatus playGame(WordyGamePlayer player) {
+        if (games.size() == 0) {
+            games.add(new Game(player));
+            return LobbyStatus.NEW_GAME;
+        } else {
 
-
-        throw new WordyGame.NoPlayersAvailable("Walang tao");
+            for (Game game :
+                    games) {
+                if (game.getStatus().equals("Waiting")) {
+                    game.getClients().add(player);
+                    return LobbyStatus.JOINED_A_GAME;
+                } else if (games.get(games.size()-1) == game) {
+                    games.add(new Game(player));
+                    return LobbyStatus.NEW_GAME;
+                }
+            } }
+        games.add(new Game(player));
+        return LobbyStatus.NEW_GAME;
+//        throw new RuntimeException();
     }
 
     @Override
-    public boolean checkWord(String word) {
-        return false;
+    public WordValidation checkWord(String word) {
+        FileReader file = null;
+        try {
+            file = new FileReader("com/java/fingrp7_java/words.txt");
+
+            BufferedReader bufferedReader = new BufferedReader(file);
+            String string;
+            if (word.length() < 5) {
+                return WordValidation.WORD_LESS_THAN_FIVE_LETTERS;
+            }
+
+            while ((string = bufferedReader.readLine())!= null) {
+                if (word.equals(string)) {
+                    return WordValidation.VALID_WORD;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return WordValidation.INVALID_WORD;
     }
 
     @Override
@@ -40,6 +79,4 @@ public class ServerServant extends WordyGameServerPOA {
     public String[] getTopPlayers() {
         return new String[0];
     }
-
-
 }

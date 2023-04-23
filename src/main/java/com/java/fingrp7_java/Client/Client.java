@@ -1,5 +1,9 @@
 package com.java.fingrp7_java.Client;
 
+import WordyGame.NoPlayersAvailable;
+import WordyGame.WordyGamePlayer;
+import WordyGame.WordyGameServer;
+import WordyGame.WordyGameServerHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -36,8 +40,7 @@ public class Client {
 //            System.out.println(helloImpl.);
 
             orb.run();
-        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
-                 NoPlayersAvailable e) {
+        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound e) {
             throw new RuntimeException(e);
         }
     }
