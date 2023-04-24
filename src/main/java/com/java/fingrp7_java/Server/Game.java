@@ -1,5 +1,6 @@
 package com.java.fingrp7_java.Server;
 
+import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGamePlayer;
 
 import java.util.ArrayList;
@@ -49,9 +50,18 @@ public class Game {
 
     class tenSecondTimer extends TimerTask {
         public void run() {
-            System.out.println("Game starting...");
 
-            status = "Match Started";
+            if (players.size() > 0 ) {
+                System.out.println("Game starting...");
+                status = "Match Started";
+            } else {
+                try {
+                    status = "";
+                    throw new NoPlayersAvailable("No other players have joined the game");
+                } catch (NoPlayersAvailable e) {
+                    throw new RuntimeException(e);
+                }
+            }
             timer.cancel();
         }
     }
