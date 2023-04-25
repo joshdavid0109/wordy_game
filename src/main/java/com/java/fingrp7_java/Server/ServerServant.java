@@ -2,16 +2,16 @@ package com.java.fingrp7_java.Server;
 
 
 import WordyGame.*;
-import org.omg.PortableServer.Servant;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<Game> games = new ArrayList<>();
+
     @Override
     public CredentialsResult login(String username, String password) {
         return null;
