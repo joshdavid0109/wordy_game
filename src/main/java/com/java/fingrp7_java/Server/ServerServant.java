@@ -24,7 +24,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public LobbyStatus playGame(WordyGamePlayer player) {
-        if (games.size() == 0) {
+/*        if (games.size() == 0) {
             games.add(new Game(player));
             return LobbyStatus.NEW_GAME;
         } else {
@@ -41,7 +41,8 @@ public class ServerServant extends WordyGameServerPOA {
             } }
         games.add(new Game(player));
         return LobbyStatus.NEW_GAME;
-//        throw new RuntimeException();
+//        throw new RuntimeException();*/
+        return LobbyStatus.NEW_GAME;
     }
 
     @Override
