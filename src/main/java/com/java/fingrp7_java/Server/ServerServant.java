@@ -21,6 +21,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public CredentialsResult login(String username, String password) {
+        DataAccessClass.checkCredentials(username, password);
         return null;
     }
 
@@ -126,10 +127,10 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public WordValidation checkWord(String word) {
         FileReader file = null;
-        try {
+        /*try {
             file = new FileReader("com/java/fingrp7_java/words.txt");
-
             BufferedReader bufferedReader = new BufferedReader(file);
+
             String string;
             if (word.length() < 5) {
                 return WordValidation.WORD_LESS_THAN_FIVE_LETTERS;
@@ -142,9 +143,7 @@ public class ServerServant extends WordyGameServerPOA {
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        }*/
 
         return WordValidation.INVALID_WORD;
     }

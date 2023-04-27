@@ -23,12 +23,23 @@ public class DataAccessClass {
         String query = "SELECT * FROM USERS where username=? AND password=?";
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+
             ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                //query returned smthn
+                return 2;
+            } else
+            {
+                //no match sa db
+                return 0;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return 0 ;
     }
 }
