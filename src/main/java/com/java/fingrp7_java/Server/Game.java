@@ -16,6 +16,7 @@ public class Game {
     private WordyGamePlayer host; // host id
     private Timer timer = new Timer();
     private WordyGamePlayer winner;
+    private int roundNumber = 0;
 
 
     public Game(WordyGamePlayer host) {
@@ -66,10 +67,15 @@ public class Game {
         }
     }
 
+    public void checkWord(){
+
+    }
+
     class roundCounter extends TimerTask     {
         public void run() {
 
         }
     }
+
 }
 

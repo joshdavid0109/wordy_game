@@ -12,12 +12,13 @@ public class LetterGenerator {
 //    private List<Character> letters = new ArrayList<>();
     private static final Random random = new Random();
     private static final List<String> dictionary = getAllWords();
-    private static List<String> possibleWords = null;
+    private static List<String> possibleWords;
+    private static List<String> lowerCase;
 
     private static List<String> getAllWords() {
         List<String> allWords = null;
         try {
-            allWords = Files.readAllLines(new File("com/java/fingrp7_java/words.txt").toPath(),
+            allWords = Files.readAllLines(new File("src/main/java/com/java/fingrp7_java/words.txt").toPath(),
                     Charset.defaultCharset());
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,15 +54,26 @@ public class LetterGenerator {
         return sb.toString();
     }
 
-    static void findOptions(String string, List<String> lowerCase) {
+    /**
+     * The function finds possible words from a list of lowercase strings that match the frequency of characters in a given
+     * string.
+     *
+     * @param string The input string that we want to find possible words for.
+     * @return The method `findOptions` returns a `List` of `String` objects, which are the possible words that can be
+     * formed from the input `string` using the letters in the `List` of `String` objects `lowerCase`.
+     */
+    public static List<String> findOptions(String string) {
+        possibleWords = new ArrayList<>();
         int[] frequency = toFrequency(string);
+        //System.out.println("POSSIBLE WORDS");
         for (String l : lowerCase) {
             int[] freqIn = toFrequency(l);
             if (matches(frequency, freqIn)) {
-                System.out.println(l); // comment this out, pangtest lang to
+                //System.out.println(l); // comment this out, pangtest lang to
                 possibleWords.add(l);
             }
         }
+        return possibleWords;
     }
 
     private static int[] toFrequency(String string) {
@@ -85,9 +97,23 @@ public class LetterGenerator {
         return true;
     }
 
+    public static List<String> getWords(String letters){
+        lowerCase = dictionary
+                .stream()
+                .map(s -> s.toLowerCase())
+                .filter(s -> s.chars().allMatch(Character::isLetter))
+                .collect(Collectors.toList());
+
+        System.out.println("XXX");
+        System.out.println(findOptions(letters));
+
+        return findOptions(letters);
+
+    }
+
     // test only
     public static void main(String[] args) {
-        String random = getRandomLetters();
+        /*String random = getRandomLetters();
 
         System.out.println("GENERATED LETTERS: " + random + "");
 
@@ -99,6 +125,10 @@ public class LetterGenerator {
 
         System.out.println("Read " + lowercased.size() + " words.");
 
-        findOptions(random, lowercased);
+        findOptions(random);*/
+
+        String a = getRandomLetters();
+        System.out.println(a);
+        System.out.println(getWords(a));
     }
 }
