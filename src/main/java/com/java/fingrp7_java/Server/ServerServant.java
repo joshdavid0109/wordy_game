@@ -8,9 +8,16 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<Game> games = new ArrayList<>();
+    static Game game;
+    private Timer timer = new Timer();
 
     @Override
     public CredentialsResult login(String username, String password) {
@@ -23,26 +30,97 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
-    public LobbyStatus playGame(WordyGamePlayer player) {
-/*        if (games.size() == 0) {
-            games.add(new Game(player));
-            return LobbyStatus.NEW_GAME;
-        } else {
+    public WordyGame.Game playGame(WordyGamePlayer player) {
+        game = new Game();
 
-            for (Game game :
-                    games) {
-                if (game.getStatus().equals("Waiting")) {
-                    game.getClients().add(player);
-                    return LobbyStatus.JOINED_A_GAME;
-                } else if (games.get(games.size()-1) == game) {
-                    games.add(new Game(player));
-                    return LobbyStatus.NEW_GAME;
+        while (player.getGame() == null || player.getGame().status.equalsIgnoreCase("waiting")) {
+            if (games.size() == 0) {
+
+                System.out.println("asd");
+                games.add(new Game(player));
+                ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                scheduler.schedule(()-> {
+                    System.out.println("test scheduler");
+                }, 10, TimeUnit.SECONDS);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        if (games.get(0).players.size() >1) {
+                            System.out.println("Match Starting");
+                            games.get(0).status = "Match Started";
+                            games.get(0).gameID =String.valueOf(games.size());
+                            game = games.get(0);
+                            player.setGame(game);
+                        } else {
+                            games.get(games.size() - 1).status = "";
+                            games.remove(game);
+                            try {
+                                throw new NoPlayersAvailable();
+                            } catch (NoPlayersAvailable e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }, 10 * 1000);
+            } else {
+                for (Game g :
+                        games) {
+                    if (g.status.equals("Waiting") && !g.players.contains(player)) {
+//                            System.out.println("join lang");
+                        g.players.add(player);
+
+
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (!g.status.equals("Waiting")) {
+                                    game = g;
+                                    player.setGame(game);
+                                }
+                            }
+                        }, 10 * 1000);
+                        break;
+                    } else if (games.get(games.size() - 1) == g && !g.players.contains(player)) {
+                        System.out.println("new game");
+                        games.add(new Game(player));
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (games.get(games.size() - 1).players.size() > 1) {
+                                    System.out.println("Match starting");
+                                    games.get(games.size() - 1).status = "Match Started";
+                                    games.get(games.size() - 1).gameID = String.valueOf(games.size());
+                                    game = games.get(games.size() - 1);
+                                    player.setGame(game);
+                                } else {
+                                    games.get(games.size() - 1).status = "";
+                                    games.remove(game);
+                                    try {
+                                        throw new NoPlayersAvailable();
+                                    } catch (NoPlayersAvailable e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+
+                            }
+                        }, 10 * 1000);
+                        break;
+                    }
                 }
-            } }
-        games.add(new Game(player));
-        return LobbyStatus.NEW_GAME;
-//        throw new RuntimeException();*/
-        return LobbyStatus.NEW_GAME;
+            }
+        }
+
+        if (game.players.size() == 0) {
+            try {
+                games.get(0).status = "";
+                throw new NoPlayersAvailable("No other players have joined the game");
+            } catch (NoPlayersAvailable e) {
+                throw new RuntimeException(e);
+            }
+        }else
+            return game;
+//        throw new RuntimeException();
     }
 
     @Override
