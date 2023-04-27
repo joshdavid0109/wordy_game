@@ -89,7 +89,7 @@ public class LetterGenerator {
     public static void main(String[] args) {
         String random = getRandomLetters();
 
-        System.out.println("GENERATED LETTERS: " + random + "\s");
+        System.out.println("GENERATED LETTERS: " + random + "");
 
         List<String> lowercased = dictionary
                 .stream()
