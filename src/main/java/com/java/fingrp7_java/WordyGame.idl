@@ -9,6 +9,7 @@ module WordyGame {
   struct WordyGamePlayer {
     long id;
     long wins;
+    Game game;
   };
 
   struct Game {
