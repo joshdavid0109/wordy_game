@@ -1,15 +1,25 @@
 module WordyGame {
 
-  typedef sequence<string> StringSeq;
+  struct TopWord{
+    string username;
+    string word;
+  };
 
-  enum CredentialsResult {SUCCESS, INVALID_CREDENTIALS, ACCOUNT_ALREADY_LOGGED_IN, USERNAME_TAKEN, SERVER_UNAVAILABLE};
-  enum WordValidation{WORD_LESS_THAN_FIVE_LETTERS, INVALID_WORD, VALID_WORD};
+  struct TopPlayer {
+    long rank;
+    string username;
+    long wins;
+  };
 
+  typedef sequence<TopWord> TopWords;
+  typedef sequence<TopPlayer> TopPlayers;
+  typedef sequence<char> letters;
 
   struct WordyGamePlayer {
     long id;
     long wins;
-    Game game;
+    string gameID;
+    string status; // ready or not
   };
 
   struct Game {
@@ -20,16 +30,35 @@ module WordyGame {
   };
 
   interface WordyGameServer {
-    CredentialsResult login(in string username, in string password); // Connect
-    void logout(in string username);
-    Game playGame(in WordyGamePlayer username);
-    WordValidation checkWord(in string word);
+    void login(in string username, in string password) exception InvalidCredentials, exception UserAlreadyLoggedIn, exception InvalidPassword, exception ServerUnavailable;
+    void logout(in long userID);
+    string playGame(in long userID) exception NoPlayersAvailable;
+    void checkWord(in string word, in string gameID, in string username) exception InvalidWord, WordLessThanFiveLetters;
+    letters requestLetters(in string gameID);
+    string checkWinner(in string gameID);
+    boolean roundStatus(in string gameID);
 
-    StringSeq getLongestWords();
-    StringSeq getTopPlayers();
+    TopWords getLongestWords();
+    TopPlayers getTopPlayers();
   };
 
   exception NoPlayersAvailable {
+    string reason;
+  };
+
+  exception UserAlreadyLoggedIn{
+    string reason;
+  };
+
+  exception InvalidCredentials{
+    string reason;
+  };
+
+  exception InvalidPassword{
+    string reason;
+  };
+
+  exception ServerUnavailable {
     string reason;
   };
 
@@ -37,7 +66,8 @@ module WordyGame {
     string reason;
   };
 
-  exception LoginFailed{
+  exception WordLessThanFiveLetters{
     string reason;
   };
+
 };
