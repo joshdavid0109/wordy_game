@@ -2,6 +2,7 @@ package com.java.fingrp7_java.Server;
 
 
 import WordyGame.*;
+import WordyGame.Game;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -15,8 +16,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ServerServant extends WordyGameServerPOA {
-    static ArrayList<Game> games = new ArrayList<>();
-    static Game game;
+    static ArrayList<WordyGame.Game> games = new ArrayList<>();
+    static WordyGame.Game game;
     private Timer timer = new Timer();
 
     @Override
@@ -32,13 +33,13 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public WordyGame.Game playGame(WordyGamePlayer player) {
-        game = new Game();
+        game = new WordyGame.Game();
 
         while (player.getGame() == null || player.getGame().status.equalsIgnoreCase("waiting")) {
             if (games.size() == 0) {
 
                 System.out.println("asd");
-                games.add(new Game(player));
+                games.add(new WordyGame.Game(player));
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
                 scheduler.schedule(()-> {
                     System.out.println("test scheduler");
@@ -65,7 +66,7 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                 }, 10 * 1000);
             } else {
-                for (Game g :
+                for (WordyGame.Game g :
                         games) {
                     if (g.status.equals("Waiting") && !g.players.contains(player)) {
 //                            System.out.println("join lang");
