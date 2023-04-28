@@ -10,6 +10,7 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.omg.SendingContext.RunTime;
 
 public class Client {
     static WordyGameServer wordyGameServer;
@@ -33,15 +34,22 @@ public class Client {
             String stub = "Hello";
             wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
-            wordyGameServer.
+            int id = 2323423;
+            String gameId = wordyGameServer.playGame(55555);
+/*            wordyGameServer.
                     login("testuser", "testuser");
 
-            System.out.println(wordyGameServer.login("testuser", "testuser"));
+            System.out.println(wordyGameServer.login("testuser", "testuser"));*/
 //            System.out.println(helloImpl.);
 
             orb.run();
-        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound e) {
-            throw new RuntimeException(e);
+        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
+                 NoPlayersAvailable |RuntimeException e) {
+            if (e instanceof RuntimeException) {
+                System.out.println(((RuntimeException) e).getCause());
+            }
+            
+            e.printStackTrace();
         }
     }
 }

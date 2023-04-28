@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="377.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.LogInPage">
+<AnchorPane prefHeight="377.0" prefWidth="343.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.client.LogIn_Page">
    <children>
       <TextArea layoutX="72.0" layoutY="82.0" prefHeight="11.0" prefWidth="200.0" />
       <TextArea layoutX="72.0" layoutY="178.0" prefHeight="11.0" prefWidth="200.0" />

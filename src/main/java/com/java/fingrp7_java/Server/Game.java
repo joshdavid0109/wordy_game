@@ -10,13 +10,27 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game {
-    public static ArrayList<WordyGamePlayer> players = new ArrayList<>();
+    public static ArrayList<WordyGame.Game> players = new ArrayList<>();
     private String gameID;
     private String status;
     private WordyGamePlayer host; // host id
     private Timer timer = new Timer();
     private WordyGamePlayer winner;
     private int roundNumber = 0;
+
+    Runnable tenSecondGameTimer = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
+
+    Runnable tenSecondRoundTimer = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 
 
     public Game(WordyGamePlayer host) {
@@ -25,11 +39,11 @@ public class Game {
         timer.schedule(new tenSecondTimer(), 10*1000);
     }
 
-    public ArrayList<WordyGamePlayer> getClients() {
+    public ArrayList<WordyGame.Game> getClients() {
         return players;
     }
 
-    public void setClients(ArrayList<WordyGamePlayer> clients) {
+    public void setClients(ArrayList<WordyGame.Game> clients) {
         this.players = clients;
     }
 

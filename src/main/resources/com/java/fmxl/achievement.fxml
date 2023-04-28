@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.Achievement">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_AchievementController">
    <children>
       <TableView layoutX="38.0" layoutY="41.0" prefHeight="318.0" prefWidth="533.0" style="-fx-background-color: WHITE;">
         <columns>
