@@ -35,18 +35,15 @@ public class Client {
             wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
             int id = 2323423;
-            String gameId = wordyGameServer.playGame(55555);
-/*            wordyGameServer.
-                    login("testuser", "testuser");
-
-            System.out.println(wordyGameServer.login("testuser", "testuser"));*/
-//            System.out.println(helloImpl.);
+            String gameId = wordyGameServer.playGame(44455544);
 
             orb.run();
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  NoPlayersAvailable |RuntimeException e) {
             if (e instanceof RuntimeException) {
                 System.out.println(((RuntimeException) e).getCause());
+            } else if (e instanceof NoPlayersAvailable) {
+                System.out.println(((NoPlayersAvailable) e).reason);
             }
             
             e.printStackTrace();

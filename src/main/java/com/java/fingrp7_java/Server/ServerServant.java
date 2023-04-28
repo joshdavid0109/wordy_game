@@ -39,7 +39,7 @@ public class ServerServant extends WordyGameServerPOA {
         timer = new Timer();
         if (games.size() == 0) {
             game = new Game();
-            System.out.println("asd");
+            System.out.println("First game of the day");
             games.add(new Game(String.valueOf(games.size() +1), userID));
 
             timer.schedule(new TimerTask() {
@@ -49,14 +49,15 @@ public class ServerServant extends WordyGameServerPOA {
                     if (games.get(0).status.equalsIgnoreCase("match started")) {
                         System.out.println("Match Starting");
                         game = games.get(0);
-                    } else if (games.get(0).status.equalsIgnoreCase("")){
-                        try {
+                    } else if (games.get(0).players.size() == 1){
                             System.out.println("no players");
-                            games.remove(game);
+                            games.remove(games.get(0));
+                        try {
                             throw new NoPlayersAvailable("No other players have joined");
                         } catch (NoPlayersAvailable e) {
                             throw new RuntimeException(e.reason);
                         }
+
                     }
                 }
             }, 10 * 1000);
@@ -94,7 +95,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 try {
                                     throw new NoPlayersAvailable();
                                 } catch (NoPlayersAvailable e) {
-                                    throw new RuntimeException(e);
+                                    throw new RuntimeException(e.reason);
                                 }
                             }
 

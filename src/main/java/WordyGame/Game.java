@@ -30,7 +30,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
         System.out.println("Match Starting");
         status = "Match Started";
       } else {
-        status = "";
+        status = null;
       }
     }
   };
