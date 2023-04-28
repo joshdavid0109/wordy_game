@@ -1,6 +1,5 @@
 package gui_package.client;
 
-import gui_package.clientController.Wordy_AchievementController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,14 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Wordy_InGame extends Application {
+public class PromptGameDraw extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         /*        Image image = new Image("SLU_LOGO.jpg");*/
 
         FXMLLoader fxmlLoader =
-                new FXMLLoader(LogIn_Page.class.getResource("src/main/resources/com/java/fmxl/inGame.fxml"));
-        Wordy_AchievementController wordy_achievementController = fxmlLoader.getController();
+                new FXMLLoader(LogIn_Page.class.getResource("src/main/resources/com/java/fmxl/gameDraw.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");
         /*        primaryStage.getIcons().add(image);*/

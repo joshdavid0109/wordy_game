@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.LongestWord">
+   <children>
+      <TableView layoutX="-9.0" layoutY="-3.0" prefHeight="408.0" prefWidth="617.0">
+        <columns>
+          <TableColumn prefWidth="230.39996910095215" text="UserName" />
+          <TableColumn prefWidth="387.2000427246094" text="Longest Word" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
