@@ -25,8 +25,8 @@ module WordyGame {
   struct Game {
     long gameID;
     string status;
-    long hostID;
-    long winnerID;
+    WordyGamePlayer host;
+    WordyGamePlayer winner;
   };
 
     exception NoPlayersAvailable {

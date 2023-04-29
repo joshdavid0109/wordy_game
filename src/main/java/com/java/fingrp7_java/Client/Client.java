@@ -44,26 +44,26 @@ public class Client {
             System.out.print("ID: ");
             id = scanner.nextInt();
             System.out.println(id);
-            int gameId;
+            int gameId =0;
             try {
-                 gameId = wordyGameServer.playGame(id);
+                gameId = wordyGameServer.playGame(id);
             } catch (NoPlayersAvailable noPlayersAvailable) {
-                throw new NoPlayersAvailable();
+                System.out.println(noPlayersAvailable.reason);
             }
 
-            if (gameId !=0) {
-                System.out.println("Type R.");
-            }
+                if (gameId !=0) {
+                    System.out.println("Type R.");
+                    if (scanner.next().equalsIgnoreCase("R")) {
+//                        System.out.println(wordyGameServer.ready(id, gameId));
+
+                        System.out.println(wordyGameServer.requestLetters(String.valueOf(gameId)));
+                    }
+                }
+
 
             orb.run();
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
-                 NoPlayersAvailable |RuntimeException e) {
-            if (e instanceof RuntimeException) {
-                System.out.println(((RuntimeException) e).getCause());
-            } else if (e instanceof NoPlayersAvailable) {
-                System.out.println(((NoPlayersAvailable) e).reason);
-            }
-            
+                 RuntimeException e) {
             e.printStackTrace();
         }
     }

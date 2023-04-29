@@ -6,6 +6,7 @@ import WordyGame.Game;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -14,8 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
+
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
+    public LetterGenerator letterGenerator = new LetterGenerator();
 
 
     @Override
@@ -37,6 +40,8 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public int playGame(int userID) throws NoPlayersAvailable {
 
+        WordyGamePlayer wordyGamePlayer = new WordyGamePlayer(userID);
+
         scheduler = Executors.newScheduledThreadPool(10);
 //        scheduler.scheduleAtFixedRate(tenSecondGameTimer, 0,1, TimeUnit.SECONDS);;
         do {
@@ -46,13 +51,16 @@ public class ServerServant extends WordyGameServerPOA {
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
 
-                scheduler.scheduleAtFixedRate(game.tenSecondGameTimer, 1, 1, TimeUnit.SECONDS);
-                if (game.timerCounter == 0) {
-                    scheduler.shutdown();
-                    game.scheduler.shutdown();
-                }
-                if (scheduler.isShutdown()) {
-                    return game.gameID;
+                if (game.tenSecondGameTimer()) {
+                    if (game.timerCounter == 0) {
+                        game.scheduler.shutdown();
+                        if (game.gameID == 0) {
+                            games.remove(game);
+                            throw new NoPlayersAvailable("No other players have joined the game.");
+                        }
+                        games.get(0).wgPlayers.add(wordyGamePlayer);
+                        return game.gameID;
+                    }
                 }
             } else {
                 for (Game g :
@@ -60,29 +68,32 @@ public class ServerServant extends WordyGameServerPOA {
                     if (g.status.equals("Waiting") && !g.players.contains(userID)) {
                         System.out.println("join lang");
                         g.players.add(userID);
+                        g.wgPlayers.add(wordyGamePlayer);
 
-                        scheduler.scheduleAtFixedRate(g.tenSecondGameTimer,0,1000, TimeUnit.SECONDS);
                         if (game.timerCounter == 0) {
                             scheduler.shutdown();
                             game.scheduler.shutdown();
-                        }
-                        if (scheduler.isShutdown()) {
                             return game.gameID;
                         }
+                        break;
                     } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
                         System.out.println("new game");
                         game = new Game();
                         games.add(new Game(games.size() + 1, userID));
                         game = games.get(games.size()-1);
-                        scheduler.scheduleAtFixedRate(game.tenSecondGameTimer,0,1000, TimeUnit.SECONDS);
-                        if (game.timerCounter == 0) {
-                            scheduler.shutdown();
-                            game.scheduler.shutdown();
+                        if (game.tenSecondGameTimer()) {
+                            if (game.timerCounter == 0) {
+                                scheduler.shutdown();
+                                game.scheduler.shutdown();
+                                if (game.gameID == 0) {
+                                    games.remove(game);
+                                    throw new NoPlayersAvailable("No other players have joined the game.");
+                                }
+                                games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
+                                return game.gameID;
+                            }
                         }
-                        if (scheduler.isShutdown()) {
-                            return game.gameID;
-                        }
-
+                        break;
                     }
                 }
             }
@@ -92,7 +103,21 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public String ready(int userID, int gameID) {
-        return null;
+        boolean checker = false;
+        do {
+            for (Game g :
+                    games) {
+                if (g.gameID == gameID) {
+                    if (g.playerChecker()) {
+                        checker = true;
+                        break;
+                    }
+                }
+            }
+
+
+        }while (game.readyCounter!= 0 || checker);
+        return "ready";
     }
 
     @Override
@@ -102,7 +127,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public char[] requestLetters(String gameID) {
-        return new char[0];
+        char[] charArray = new char[17];
+        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+        return charArray;
     }
 
     @Override
