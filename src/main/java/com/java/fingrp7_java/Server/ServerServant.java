@@ -4,6 +4,7 @@ package com.java.fingrp7_java.Server;
 import WordyGame.*;
 import WordyGame.Game;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
     static WordyGame.Game game;
-    private Timer timer;
+    ScheduledExecutorService scheduler;
 
 
     @Override
@@ -34,85 +35,70 @@ public class ServerServant extends WordyGameServerPOA {
      * @throws NoPlayersAvailable
      */
     @Override
-    public String playGame(int userID) throws NoPlayersAvailable {
+    public int playGame(int userID) throws NoPlayersAvailable {
 
-        timer = new Timer();
-        if (games.size() == 0) {
-            game = new Game();
-            System.out.println("First game of the day");
-            games.add(new Game(String.valueOf(games.size() +1), userID));
+        scheduler = Executors.newScheduledThreadPool(10);
+//        scheduler.scheduleAtFixedRate(tenSecondGameTimer, 0,1, TimeUnit.SECONDS);;
+        do {
+            if (games.size() == 0) {
+                game = new Game();
+                System.out.println("First game of the day");
+                games.add(new Game(games.size() + 1, userID));
+                game = games.get(0);
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
+                scheduler.scheduleAtFixedRate(game.tenSecondGameTimer, 1, 1, TimeUnit.SECONDS);
+                if (game.timerCounter == 0) {
+                    scheduler.shutdown();
+                    game.scheduler.shutdown();
+                }
+                if (scheduler.isShutdown()) {
+                    return game.gameID;
+                }
+            } else {
+                for (Game g :
+                        games) {
+                    if (g.status.equals("Waiting") && !g.players.contains(userID)) {
+                        System.out.println("join lang");
+                        g.players.add(userID);
 
-                    if (games.get(0).status.equalsIgnoreCase("match started")) {
-                        System.out.println("Match Starting");
-                        game = games.get(0);
-                    } else if (games.get(0).players.size() == 1){
-                            System.out.println("no players");
-                            games.remove(games.get(0));
-                        try {
-                            throw new NoPlayersAvailable("No other players have joined");
-                        } catch (NoPlayersAvailable e) {
-                            throw new RuntimeException(e.reason);
+                        scheduler.scheduleAtFixedRate(g.tenSecondGameTimer,0,1000, TimeUnit.SECONDS);
+                        if (game.timerCounter == 0) {
+                            scheduler.shutdown();
+                            game.scheduler.shutdown();
+                        }
+                        if (scheduler.isShutdown()) {
+                            return game.gameID;
+                        }
+                    } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
+                        System.out.println("new game");
+                        game = new Game();
+                        games.add(new Game(games.size() + 1, userID));
+                        game = games.get(games.size()-1);
+                        scheduler.scheduleAtFixedRate(game.tenSecondGameTimer,0,1000, TimeUnit.SECONDS);
+                        if (game.timerCounter == 0) {
+                            scheduler.shutdown();
+                            game.scheduler.shutdown();
+                        }
+                        if (scheduler.isShutdown()) {
+                            return game.gameID;
                         }
 
                     }
                 }
-            }, 10 * 1000);
-        } else {
-            for (Game g :
-                    games) {
-                if (g.status.equals("Waiting") && !g.players.contains(userID)) {
-                            System.out.println("join lang");
-                    g.players.add(userID);
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            if (!g.status.equals("Waiting")) {
-                                game = g;
-//                                player.setGame(game);
-                            }
-                        }
-                    }, 10 * 1000);
-                    break;
-                } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
-                    System.out.println("new game");
-                    game = new Game();
-                    games.add(new Game(String.valueOf(games.size()+1), userID));
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            if (games.get(games.size() - 1).players.size() > 1) {
-                                System.out.println("Match starting");
-                                games.get(games.size() - 1).status = "Match Started";
-                                games.get(games.size() - 1).gameID = String.valueOf(games.size());
-                                game = games.get(games.size() - 1);
-                            } else {
-                                games.get(games.size() - 1).status = "";
-                                games.remove(game);
-                                try {
-                                    throw new NoPlayersAvailable();
-                                } catch (NoPlayersAvailable e) {
-                                    throw new RuntimeException(e.reason);
-                                }
-                            }
-
-                        }
-                    }, 10 * 1000);
-                    break;
-                }
             }
-        }
+        } while (game.timerCounter != 0);
         return game.gameID;
     }
 
     @Override
-    public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-
+    public String ready(int userID, int gameID) {
+        return null;
     }
 
+    @Override
+    public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
+
+    }
 
     @Override
     public char[] requestLetters(String gameID) {
@@ -140,8 +126,11 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
 
-    @Override
-    public void checkWord(String word, String gameID, String username) throws InvalidWord, WordLessThanFiveLetters {
 
+
+
+
+    @Override
+    public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
     }
 }

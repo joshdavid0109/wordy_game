@@ -4,6 +4,7 @@ import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGamePlayer;
 import WordyGame.WordyGameServer;
 import WordyGame.WordyGameServerHelper;
+import com.sun.jmx.snmp.internal.SnmpSubSystem;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -12,9 +13,12 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.SendingContext.RunTime;
 
+import java.util.Scanner;
+
 public class Client {
     static WordyGameServer wordyGameServer;
     static WordyGamePlayer wordyGamePlayer;
+    static Scanner scanner;
     public static void main(String[] args) {
         try {
 
@@ -34,8 +38,22 @@ public class Client {
             String stub = "Hello";
             wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
-            int id = 2323423;
-            String gameId = wordyGameServer.playGame(44455544);
+            scanner = new Scanner(System.in);
+
+            int id;
+            System.out.print("ID: ");
+            id = scanner.nextInt();
+            System.out.println(id);
+            int gameId;
+            try {
+                 gameId = wordyGameServer.playGame(id);
+            } catch (NoPlayersAvailable noPlayersAvailable) {
+                throw new NoPlayersAvailable();
+            }
+
+            if (gameId !=0) {
+                System.out.println("Type R.");
+            }
 
             orb.run();
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |

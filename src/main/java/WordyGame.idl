@@ -18,12 +18,12 @@ module WordyGame {
   struct WordyGamePlayer {
     long id;
     long wins;
-    string gameID;
+    long gameID;
     string status; // ready or not
   };
 
   struct Game {
-    string gameID;
+    long gameID;
     string status;
     long hostID;
     long winnerID;
@@ -64,8 +64,9 @@ module WordyGame {
   interface WordyGameServer {
     void login(in string username, in string password) raises (InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable);
     void logout(in long userID);
-    string playGame(in long userID) raises (NoPlayersAvailable);
-    void checkWord(in string word, in string gameID, in long userID) raises (InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit);
+    long playGame(in long userID) raises (NoPlayersAvailable);
+    string ready(in long userID, in long gameID);
+    void checkWord(in string word, in long gameID, in long userID) raises (InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit);
     letters requestLetters(in string gameID);
     string checkWinner(in string gameID);
     boolean roundStatus(in string gameID);
