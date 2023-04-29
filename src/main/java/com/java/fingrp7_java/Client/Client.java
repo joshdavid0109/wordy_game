@@ -55,7 +55,6 @@ public class Client {
                     System.out.println("Type R.");
                     if (scanner.next().equalsIgnoreCase("R")) {
 //                        System.out.println(wordyGameServer.ready(id, gameId));
-
                         System.out.println(wordyGameServer.requestLetters(String.valueOf(gameId)));
                     }
                 }

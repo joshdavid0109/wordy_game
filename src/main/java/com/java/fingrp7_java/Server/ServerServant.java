@@ -4,14 +4,9 @@ package com.java.fingrp7_java.Server;
 import WordyGame.*;
 import WordyGame.Game;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
@@ -104,19 +99,7 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public String ready(int userID, int gameID) {
         boolean checker = false;
-        do {
-            for (Game g :
-                    games) {
-                if (g.gameID == gameID) {
-                    if (g.playerChecker()) {
-                        checker = true;
-                        break;
-                    }
-                }
-            }
 
-
-        }while (game.readyCounter!= 0 || checker);
         return "ready";
     }
 
@@ -129,6 +112,28 @@ public class ServerServant extends WordyGameServerPOA {
     public char[] requestLetters(String gameID) {
         char[] charArray = new char[17];
         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+
+        do {
+            for (Game g :
+                    games) {
+                if (g.gameID == Integer.parseInt(gameID)) {
+                    g.lettersPerRound.put(1, charArray);
+                    for (WordyGamePlayer wgp:
+                         g.wgPlayers) {
+                        if (!wgp.status.equalsIgnoreCase("ready")) {
+                            break;
+                        }
+                    }
+                    if (g.playerChecker()) {
+                        if (g.winnerID == 0) {
+                            return g.lettersPerRound.get(g.round);
+                        }
+                    }
+                }
+            }
+
+
+        }while (game.readyCounter!= 0);
         return charArray;
     }
 

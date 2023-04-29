@@ -1,10 +1,8 @@
 package WordyGame;
 
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,11 +20,12 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public String status = null;
   public int hostID = (int)0;
   public int winnerID = (int)0;
-  public HashMap<Integer, Character[]> lettersPerRound = new HashMap<>();
+  public HashMap<Integer, char[]> lettersPerRound = new HashMap<Integer, char[]>();
   public ArrayList<Integer> players;
   public ArrayList<WordyGamePlayer> wgPlayers = new ArrayList<>();
   public ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
   public String roundStatus;
+  public int round;
   public int timerCounter = 10;
   public int readyCounter = 15;
 
@@ -40,7 +39,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
         System.out.println();
         if (players.size() > 1) {
           System.out.println("Match Starting");
-
+          round = 1;
           status = "Match Started";
           scheduler.shutdown();
         } else {
@@ -64,18 +63,19 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     @Override
     public void run() {
       readyCounter--;
-      System.out.println(readyCounter);
-      for (WordyGamePlayer wp :
-              wgPlayers) {
-        System.out.println(wp.status);
-        if (wp.status.equalsIgnoreCase("ready")) {
-          if (wgPlayers.get(wgPlayers.size()-1) == wp) {
+      if (readyCounter == 0) {
+        for (WordyGamePlayer wp :
+                wgPlayers) {
+          System.out.println(wp.status);
+          if (wp.status.equalsIgnoreCase("ready")) {
+            if (wgPlayers.get(wgPlayers.size() - 1) == wp) {
+              roundStatus = "Start";
+              scheduler.shutdown();
+            }
+          } else if (readyCounter == 0) {
             roundStatus = "Start";
             scheduler.shutdown();
           }
-        } else if (readyCounter == 0) {
-            roundStatus = "Start";
-            scheduler.shutdown();
         }
       }
     }
