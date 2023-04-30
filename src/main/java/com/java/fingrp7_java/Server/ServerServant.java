@@ -122,13 +122,18 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public char[] requestLetters(String gameID) {
         char[] charArray = new char[17];
-        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+
 
         do {
             for (Game g :
                     games) {
                 if (g.gameID == Integer.parseInt(gameID)) {
-                    g.lettersPerRound.put(1, charArray);
+                    if (g.lettersPerRound.get(g.round) == null) {
+                        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                        g.lettersPerRound.put(g.round, charArray);
+                    }
+                    charArray = g.lettersPerRound.get(g.round);
+
                     for (WordyGamePlayer wgp:
                          g.wgPlayers) {
                         if (!wgp.status.equalsIgnoreCase("ready")) {
@@ -137,7 +142,7 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                     if (g.playerChecker()) {
                         if (g.winnerID == 0) {
-                            return g.lettersPerRound.get(g.round);
+                            return charArray;
                         }
                     }
                 }

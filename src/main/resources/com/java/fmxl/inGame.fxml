@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #2c0c02;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController">
+   <children>
+      <ImageView fitHeight="450.0" fitWidth="320.0" opacity="0.32" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../bookCover.jpg" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="450.0" prefWidth="302.0">
+         <children>
+            <Pane layoutX="-5.0" layoutY="76.0" prefHeight="76.0" prefWidth="312.0">
+               <children>
+                  <Text fill="#f6b604" layoutX="46.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="220.32293701171875">
+                     <font>
+                        <Font name="System Bold" size="57.0" />
+                     </font>
+                  </Text>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeaf1d" height="3.0" layoutX="36.0" layoutY="67.0" stroke="BLACK" strokeType="INSIDE" width="239.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="63.0" prefWidth="303.0">
+               <children>
+                  <Pane layoutY="26.0" prefHeight="44.0" prefWidth="303.0" style="-fx-background-color: #7f1000; -fx-border-color: #7f0000; -fx-border-width: 5;">
+                     <children>
+                        <Text fx:id="playerName" fill="WHITE" layoutX="33.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROUND ">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="playerStatus" fill="WHITE" layoutX="202.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WINS">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="playerName1" fill="WHITE" layoutX="91.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="31.6640625">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="playerStatus1" fill="WHITE" layoutX="247.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="22.902328491210938">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="57.0" fitWidth="68.0" layoutX="133.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../SLU_LOGO-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane layoutX="-5.0" layoutY="351.0" prefHeight="106.0" prefWidth="312.0">
+               <children>
+                  <TextField alignment="CENTER" layoutX="37.0" layoutY="25.0" prefHeight="25.0" prefWidth="239.0" promptText="ENTER WORDS" style="-fx-background-color: #d9d9d9; -fx-background-radius: 20;" />
+                  <Button fx:id="logOut" layoutX="238.0" layoutY="63.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: #eeaf1d; -fx-border-color: #b98805; -fx-border-radius: 50; -fx-border-width: 2; -fx-background-radius: 50;">
+                     <graphic>
+                        <ImageView fitHeight="11.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeaf1d" height="3.0" layoutX="36.0" layoutY="57.0" stroke="BLACK" strokeType="INSIDE" width="239.0" />
+               </children>
+            </Pane>
+            <Pane layoutX="32.0" layoutY="159.0" opacity="0.3" prefHeight="206.0" prefWidth="239.0" style="-fx-background-color: #d9d9d9;">
+               <children>
+                  <Text layoutX="70.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RANDOM LETTERS" textAlignment="CENTER" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
