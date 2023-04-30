@@ -8,13 +8,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LogIn_Page extends Application {
+public class LogIn extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 /*        Image image = new Image("SLU_LOGO.jpg");*/
 
         FXMLLoader fxmlLoader =
-                new FXMLLoader(LogIn_Page.class.getResource("com/java/fmxl/logInPage.fxml"));
+                new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/logInPage.fxml"));
         LogInController logInController = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");

@@ -13,7 +13,7 @@ public class PromptGameDraw extends Application {
         /*        Image image = new Image("SLU_LOGO.jpg");*/
 
         FXMLLoader fxmlLoader =
-                new FXMLLoader(LogIn_Page.class.getResource("src/main/resources/com/java/fmxl/gameDraw.fxml"));
+                new FXMLLoader(LogIn.class.getResource("src/main/resources/com/java/fmxl/gameDraw.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");
         /*        primaryStage.getIcons().add(image);*/

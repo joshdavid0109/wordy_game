@@ -28,6 +28,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int round;
   public int timerCounter = 10;
   public int readyCounter = 15;
+  public boolean[] playerReadyStatus;
 
   public Runnable tenSecondGameTimer = new Runnable() {
     private volatile boolean exit = false;
@@ -41,6 +42,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           System.out.println("Match Starting");
           round = 1;
           status = "Match Started";
+          playerReadyStatus = new boolean[players.size()];
           scheduler.shutdown();
         } else {
           System.out.println("No other players have joined");

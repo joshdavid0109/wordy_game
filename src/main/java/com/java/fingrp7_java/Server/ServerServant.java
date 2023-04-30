@@ -107,7 +107,8 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-        List<String> yungValidWordsDito = null;//paano kunin yung list ng valid words
+        List<String> yungValidWordsDito = LetterGenerator.
+                getWords("loop games para makuha game, tas check yung word sa round");//paano kunin yung list ng valid words
         if(word.length()<WORD_LIMIT){
             throw new WordLessThanFiveLetters("Word should be 5 letters or more");
         }

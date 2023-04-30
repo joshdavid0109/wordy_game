@@ -14,7 +14,7 @@ public class Wordy_Achievement extends Application {
         /*        Image image = new Image("SLU_LOGO.jpg");*/
 
         FXMLLoader fxmlLoader =
-                new FXMLLoader(LogIn_Page.class.getResource("src/main/resources/com/java/fmxl/achievement.fxml"));
+                new FXMLLoader(LogIn.class.getResource("src/main/resources/com/java/fmxl/achievement.fxml"));
         Wordy_InGameController wordy_inGameController = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");
