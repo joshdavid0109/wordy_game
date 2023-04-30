@@ -5,11 +5,13 @@ import WordyGame.*;
 import WordyGame.Game;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
+    static private final int WORD_LIMIT = 5;
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
@@ -105,7 +107,15 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-
+        List<String> yungValidWordsDito = null;//paano kunin yung list ng valid words
+        if(word.length()<WORD_LIMIT){
+            throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+        }
+        if(yungValidWordsDito.contains(word)){
+            throw new InvalidWord("word is invalid.");
+        }
+        int score = word.length();
+        //assign score sa userid, query sa database or sum
     }
 
     @Override
