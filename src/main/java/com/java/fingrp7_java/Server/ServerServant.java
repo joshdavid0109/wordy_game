@@ -49,6 +49,7 @@ public class ServerServant extends WordyGameServerPOA {
                 game = games.get(0);
 
                 if (game.tenSecondGameTimer()) {
+                    System.out.println("tens");
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
@@ -80,6 +81,7 @@ public class ServerServant extends WordyGameServerPOA {
                         games.add(new Game(games.size() + 1, userID));
                         game = games.get(games.size()-1);
                         if (game.tenSecondGameTimer()) {
+                            System.out.println("tens");
                             if (game.timerCounter == 0) {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();

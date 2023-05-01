@@ -102,8 +102,8 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-    timerCounter = 10;
-    readyCounter = 15;
+//    timerCounter = 10;
+//    readyCounter = 15;
     this.gameID = gameID;
     this.hostID = hostID;
     status = "Waiting";
