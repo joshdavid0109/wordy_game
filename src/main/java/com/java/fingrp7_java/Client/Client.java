@@ -59,8 +59,6 @@ public class Client {
                     }
                 }
 
-
-            orb.run();
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  RuntimeException e) {
             e.printStackTrace();

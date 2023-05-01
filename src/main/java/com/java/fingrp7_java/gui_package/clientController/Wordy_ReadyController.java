@@ -31,7 +31,7 @@ import java.util.Scanner;
 public class Wordy_ReadyController implements Initializable {
 
     @FXML
-    private Button readyButton;
+    private Button start;
 
     @FXML
     private TextField playerID;
@@ -51,15 +51,20 @@ public class Wordy_ReadyController implements Initializable {
                     gameID = wordyGameServer.playGame(Integer.parseInt(playerID.getText()));
 
                     if (gameID !=0) {
+                        System.out.println("game id check");
+                        start.getScene().getWindow().hide();
                         FXMLLoader loader = new FXMLLoader();
 
-                        loader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
-                        Wordy_MatchMakingController wordy_matchMakingController = new Wordy_MatchMakingController();
-                        wordy_matchMakingController.wordyGameServer = wordyGameServer;
+                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
+
+
+                        Wordy_InGameController.wordyGameServer = wordyGameServer;
+                        Wordy_InGameController.gameID = gameID;
+                        Wordy_InGameController.userID = Integer.parseInt(playerID.getText());
 
                         Parent root = loader.load();
                         Scene scene = new Scene(root);
-                        Stage stage = (Stage) readyButton.getScene().getWindow();
+                        Stage stage = (Stage) start.getScene().getWindow();
                         stage.setScene(scene);
                         stage.show();
 

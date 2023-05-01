@@ -27,7 +27,6 @@ public class Wordy_Ready extends Application{
                 new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/ready.fxml"));
         wordyReady = fxmlLoader.getController();
         Wordy_ReadyController.args = args;
-//        wordy_matchMakingController.
 
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");
