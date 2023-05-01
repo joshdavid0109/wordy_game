@@ -4,16 +4,21 @@ import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGamePlayer;
 import WordyGame.WordyGameServer;
 import WordyGame.WordyGameServerHelper;
+import com.sun.jmx.snmp.internal.SnmpSubSystem;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.omg.SendingContext.RunTime;
+
+import java.util.Scanner;
 
 public class Client {
     static WordyGameServer wordyGameServer;
     static WordyGamePlayer wordyGamePlayer;
+    static Scanner scanner;
     public static void main(String[] args) {
         try {
 
@@ -33,15 +38,30 @@ public class Client {
             String stub = "Hello";
             wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
-            wordyGameServer.
-                    login("testuser", "testuser");
+            scanner = new Scanner(System.in);
 
-            System.out.println(wordyGameServer.login("testuser", "testuser"));
-//            System.out.println(helloImpl.);
+            int id;
+            System.out.print("ID: ");
+            id = scanner.nextInt();
+            System.out.println(id);
+            int gameId =0;
+            try {
+                gameId = wordyGameServer.playGame(id);
+            } catch (NoPlayersAvailable noPlayersAvailable) {
+                System.out.println(noPlayersAvailable.reason);
+            }
 
-            orb.run();
-        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound e) {
-            throw new RuntimeException(e);
+                if (gameId !=0) {
+                    System.out.println("Type R.");
+                    if (scanner.next().equalsIgnoreCase("R")) {
+//                        System.out.println(wordyGameServer.ready(id, gameId));
+                        System.out.println(wordyGameServer.requestLetters(String.valueOf(gameId)));
+                    }
+                }
+
+        } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
+                 RuntimeException e) {
+            e.printStackTrace();
         }
     }
 }

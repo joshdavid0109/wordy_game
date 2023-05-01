@@ -4,158 +4,223 @@ package com.java.fingrp7_java.Server;
 import WordyGame.*;
 import WordyGame.Game;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
+    static private final int WORD_LIMIT = 5;
+
     static WordyGame.Game game;
-    private Timer timer = new Timer();
+    ScheduledExecutorService scheduler;
+    public LetterGenerator letterGenerator = new LetterGenerator();
+
 
     @Override
-    public CredentialsResult login(String username, String password) {
-        DataAccessClass.checkCredentials(username, password);
+    public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
+
+    }
+
+    @Override
+    public void logout(int userID) {
+
+    }
+
+    /**
+     *
+     * @param userID
+     * @return gameID
+     * @throws NoPlayersAvailable
+     */
+    @Override
+    public int playGame(int userID) throws NoPlayersAvailable {
+
+        WordyGamePlayer wordyGamePlayer = new WordyGamePlayer(userID);
+
+        scheduler = Executors.newScheduledThreadPool(10);
+//        scheduler.scheduleAtFixedRate(tenSecondGameTimer, 0,1, TimeUnit.SECONDS);;
+        do {
+            if (games.size() == 0) {
+                game = new Game();
+                
+                System.out.println("First game of the day");
+                games.add(new Game(games.size() + 1, userID));
+                game = games.get(0);
+
+                if (game.tenSecondGameTimer()) {
+                    System.out.println("tens");
+                    if (game.timerCounter == 0) {
+                        game.scheduler.shutdown();
+                        if (game.gameID == 0) {
+                            games.remove(game);
+                            System.out.println(games.size());
+                            throw new NoPlayersAvailable("No other players have joined the game.");
+                        }
+                        games.get(0).wgPlayers.add(wordyGamePlayer);
+                        return game.gameID;
+                    }
+                }
+            } else {
+                for (Game g :
+                        games) {
+                    if (g.status.equals("Waiting") && !g.players.contains(userID)) {
+                        System.out.println("join lang");
+                        g.players.add(userID);
+                        g.wgPlayers.add(wordyGamePlayer);
+
+                        if (game.timerCounter == 0) {
+                            scheduler.shutdown();
+                            game.scheduler.shutdown();
+                            return game.gameID;
+                        }
+                        break;
+                    } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
+                        System.out.println("new game");
+                        game = new Game();
+                        games.add(new Game(games.size() + 1, userID));
+                        game = games.get(games.size()-1);
+                        if (game.tenSecondGameTimer()) {
+                            System.out.println("tens");
+                            if (game.timerCounter == 0) {
+                                scheduler.shutdown();
+                                game.scheduler.shutdown();
+                                if (game.gameID == 0) {
+                                    games.remove(game);
+                                    System.out.println("size " +games.size());
+                                    throw new NoPlayersAvailable("No other players have joined the game.");
+                                }
+                                games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
+                                return game.gameID;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        } while (game.timerCounter != 0);
+        return game.gameID;
+    }
+
+    @Override
+    public String ready(int userID, int gameID) {
+        boolean checker = false;
+
+        return "ready";
+    }
+
+    @Override
+    public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
+        char [] letters;
+        StringBuilder sb = new StringBuilder();
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+
+
+                if (g.lettersPerRound.get(g.round) == null)
+                    throw new ExceededTimeLimit("Exceeded Time Limit.");
+
+                letters = g.lettersPerRound.get(g.round);
+
+                for (char c:
+                     letters) {
+                    sb.append(c);
+                }
+
+                List<String> listOfValidWords = LetterGenerator.
+                        getWords(sb.toString());
+
+                if (word.length() < WORD_LIMIT){
+                    throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                }
+                else if (!listOfValidWords.contains(word)){
+                    throw new InvalidWord("Invalid word.");
+                }
+
+
+                System.out.println("valid");
+
+                int score = word.length();
+                //assign score sa userid, query sa database or sum
+
+
+
+
+            }
+        }
+
+    }
+
+    @Override
+    public char[] requestLetters(String gameID) {
+        char[] charArray = new char[17];
+
+
+        do {
+            for (Game g :
+                    games) {
+                if (g.gameID == Integer.parseInt(gameID)) {
+                    if (g.lettersPerRound.get(g.round) == null) {
+                        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                        g.lettersPerRound.put(g.round, charArray);
+                    }
+                    charArray = g.lettersPerRound.get(g.round);
+
+                    for (WordyGamePlayer wgp:
+                         g.wgPlayers) {
+                        if (!wgp.status.equalsIgnoreCase("ready")) {
+                            break;
+                        }
+                    }
+                    if (g.playerChecker()) {
+                        if (g.winnerID == 0) {
+                            return charArray;
+                        }
+                    }
+                }
+            }
+
+
+        }while (game.readyCounter!= 0);
+
+        StringBuilder sb = new StringBuilder();
+
+        for (char c :
+                charArray) {
+            sb.append(c);
+        }
+        System.out.println(LetterGenerator.getWords(sb.toString()));
+        return charArray;
+    }
+
+    @Override
+    public String checkWinner(String gameID) {
         return null;
     }
 
     @Override
-    public void logout(String username) {
-
+    public boolean roundStatus(String gameID) {
+        return false;
     }
 
     @Override
-    public WordyGame.Game playGame(WordyGamePlayer player) {
-        game = new WordyGame.Game();
-
-        while (player.getGame() == null || player.getGame().status.equalsIgnoreCase("waiting")) {
-            if (games.size() == 0) {
-
-                System.out.println("asd");
-                games.add(new WordyGame.Game(player));
-                ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-                scheduler.schedule(()-> {
-                    System.out.println("test scheduler");
-                }, 10, TimeUnit.SECONDS);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-
-                        if (games.get(0).players.size() >1) {
-                            System.out.println("Match Starting");
-                            games.get(0).status = "Match Started";
-                            games.get(0).gameID =String.valueOf(games.size());
-                            game = games.get(0);
-                            player.setGame(game);
-                        } else {
-                            games.get(games.size() - 1).status = "";
-                            games.remove(game);
-                            try {
-                                throw new NoPlayersAvailable();
-                            } catch (NoPlayersAvailable e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                }, 10 * 1000);
-            } else {
-                for (WordyGame.Game g :
-                        games) {
-                    if (g.status.equals("Waiting") && !g.players.contains(player)) {
-//                            System.out.println("join lang");
-                        g.players.add(player);
-
-
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (!g.status.equals("Waiting")) {
-                                    game = g;
-                                    player.setGame(game);
-                                }
-                            }
-                        }, 10 * 1000);
-                        break;
-                    } else if (games.get(games.size() - 1) == g && !g.players.contains(player)) {
-                        System.out.println("new game");
-                        games.add(new Game(player));
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (games.get(games.size() - 1).players.size() > 1) {
-                                    System.out.println("Match starting");
-                                    games.get(games.size() - 1).status = "Match Started";
-                                    games.get(games.size() - 1).gameID = String.valueOf(games.size());
-                                    game = games.get(games.size() - 1);
-                                    player.setGame(game);
-                                } else {
-                                    games.get(games.size() - 1).status = "";
-                                    games.remove(game);
-                                    try {
-                                        throw new NoPlayersAvailable();
-                                    } catch (NoPlayersAvailable e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-
-                            }
-                        }, 10 * 1000);
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (game.players.size() == 0) {
-            try {
-                games.get(0).status = "";
-                throw new NoPlayersAvailable("No other players have joined the game");
-            } catch (NoPlayersAvailable e) {
-                throw new RuntimeException(e);
-            }
-        }else
-            return game;
-//        throw new RuntimeException();
+    public TopWord[] getLongestWords() {
+        return new TopWord[0];
     }
 
     @Override
-    public WordValidation checkWord(String word) {
-        FileReader file = null;
-        /*try {
-            file = new FileReader("com/java/fingrp7_java/words.txt");
-            BufferedReader bufferedReader = new BufferedReader(file);
-
-            String string;
-            if (word.length() < 5) {
-                return WordValidation.WORD_LESS_THAN_FIVE_LETTERS;
-            }
-
-            while ((string = bufferedReader.readLine())!= null) {
-                if (word.equals(string)) {
-                    return WordValidation.VALID_WORD;
-                }
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }*/
-
-        return WordValidation.INVALID_WORD;
+    public TopPlayer[] getTopPlayers() {
+        return new TopPlayer[0];
     }
 
-    @Override
-    public String[] getLongestWords() {
-        return new String[0];
-    }
+
+
+
+
 
     @Override
-    public String[] getTopPlayers() {
-        return new String[0];
+    public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
     }
 }

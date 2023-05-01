@@ -15,6 +15,10 @@ public class LetterGenerator {
     private static List<String> possibleWords;
     private static List<String> lowerCase;
 
+    public LetterGenerator() {
+
+    }
+
     private static List<String> getAllWords() {
         List<String> allWords = null;
         try {
@@ -30,6 +34,7 @@ public class LetterGenerator {
     public static String getRandomLetters() {
         String vowels = "aeiou";
         StringBuilder sb = new StringBuilder();
+//        char [] letter
         int vowelCount = 0;
         int letterCount = 0;
 
@@ -50,7 +55,7 @@ public class LetterGenerator {
                 vowelCount = 0;
             }
         }
-        System.out.println(vowelCount + " " + letterCount);
+//        System.out.println(vowelCount + " " + letterCount);
         return sb.toString();
     }
 
@@ -103,9 +108,6 @@ public class LetterGenerator {
                 .map(s -> s.toLowerCase())
                 .filter(s -> s.chars().allMatch(Character::isLetter))
                 .collect(Collectors.toList());
-
-        System.out.println("XXX");
-        System.out.println(findOptions(letters));
 
         return findOptions(letters);
 

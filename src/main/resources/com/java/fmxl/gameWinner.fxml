@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="220.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane opacity="0.26" prefHeight="220.0" prefWidth="420.0" style="-fx-background-color: GRAY;" />
+      <Pane prefHeight="220.0" prefWidth="420.0">
+         <children>
+            <ImageView fitHeight="243.0" fitWidth="262.0" layoutX="-7.0" layoutY="-11.0" opacity="0.32" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../confetti.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="262.0" fitWidth="277.0" layoutX="168.0" layoutY="-21.0" opacity="0.33" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../confetti.png" />
+               </image>
+            </ImageView>
+            <Text fill="#b38c12" layoutX="123.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME WINNER ">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Text>
+            <Text fill="#ffc527" layoutX="123.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME WINNER ">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Text>
+            <Text layoutX="102.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Name">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Text>
+            <Pane layoutX="53.0" layoutY="131.0" prefHeight="4.0" prefWidth="313.0" style="-fx-background-color: GRAY;" />
+            <Pane layoutX="53.0" layoutY="128.0" prefHeight="4.0" prefWidth="313.0" style="-fx-background-color: BLACK;" />
+            <Text layoutX="168.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Longest Word">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </Text>
+            <Button layoutX="318.0" layoutY="179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: #063710; -fx-border-color: #0e7b25;" text="NEXT" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <effect>
+                  <DropShadow height="0.0" radius="0.0" width="0.0" />
+               </effect>
+            </Button>
+            <ImageView fitHeight="90.0" fitWidth="73.0" layoutX="17.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../trophy_icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
