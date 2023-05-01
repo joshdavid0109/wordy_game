@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Wordy_MatchMaking extends Application {
+    public static String[] args;
     @Override
     public void start(Stage primaryStage) throws IOException {
         /*        Image image = new Image("SLU_LOGO.jpg");*/
@@ -25,6 +26,8 @@ public class Wordy_MatchMaking extends Application {
     }
 
     public static void main(String[] args) {
+        Wordy_MatchMaking.args = args;
         launch(args);
+
     }
 }

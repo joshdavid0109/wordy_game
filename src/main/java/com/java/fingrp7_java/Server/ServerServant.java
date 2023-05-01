@@ -111,16 +111,45 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-        List<String> yungValidWordsDito = LetterGenerator.
-                getWords("loop games para makuha game, tas check yung word sa round");//paano kunin yung list ng valid words
-        if(word.length()<WORD_LIMIT){
-            throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+        char [] letters;
+        StringBuilder sb = new StringBuilder();
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+
+
+                if (g.lettersPerRound.get(g.round) == null)
+                    throw new ExceededTimeLimit("Exceeded Time Limit.");
+
+                letters = g.lettersPerRound.get(g.round);
+
+                for (char c:
+                     letters) {
+                    sb.append(c);
+                }
+
+                List<String> listOfValidWords = LetterGenerator.
+                        getWords(sb.toString());
+
+                if (word.length() < WORD_LIMIT){
+                    throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                }
+                else if (!listOfValidWords.contains(word)){
+                    throw new InvalidWord("Invalid word.");
+                }
+
+
+                System.out.println("valid");
+
+                int score = word.length();
+                //assign score sa userid, query sa database or sum
+
+
+
+
+            }
         }
-        if(yungValidWordsDito.contains(word)){
-            throw new InvalidWord("word is invalid.");
-        }
-        int score = word.length();
-        //assign score sa userid, query sa database or sum
+
     }
 
     @Override
@@ -154,6 +183,14 @@ public class ServerServant extends WordyGameServerPOA {
 
 
         }while (game.readyCounter!= 0);
+
+        StringBuilder sb = new StringBuilder();
+
+        for (char c :
+                charArray) {
+            sb.append(c);
+        }
+        System.out.println(LetterGenerator.getWords(sb.toString()));
         return charArray;
     }
 

@@ -109,9 +109,6 @@ public class LetterGenerator {
                 .filter(s -> s.chars().allMatch(Character::isLetter))
                 .collect(Collectors.toList());
 
-        System.out.println("XXX");
-        System.out.println(findOptions(letters));
-
         return findOptions(letters);
 
     }

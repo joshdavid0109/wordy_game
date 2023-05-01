@@ -45,38 +45,7 @@ public class Wordy_ReadyController implements Initializable {
 
     @FXML
     void logIn(ActionEvent event) {
-        if (wordyGameServer != null) {
-            if (playerID != null) {
-                try {
-                    gameID = wordyGameServer.playGame(Integer.parseInt(playerID.getText()));
 
-                    if (gameID !=0) {
-                        System.out.println("game id check");
-                        start.getScene().getWindow().hide();
-                        FXMLLoader loader = new FXMLLoader();
-
-                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
-
-
-                        Wordy_InGameController.wordyGameServer = wordyGameServer;
-                        Wordy_InGameController.gameID = gameID;
-                        Wordy_InGameController.userID = Integer.parseInt(playerID.getText());
-
-                        Parent root = loader.load();
-                        Scene scene = new Scene(root);
-                        Stage stage = (Stage) start.getScene().getWindow();
-                        stage.setScene(scene);
-                        stage.show();
-
-                    }
-                } catch (NoPlayersAvailable e) {
-                    Alert dialog = new Alert(Alert.AlertType.ERROR, e.reason);
-                    dialog.show();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
     }
 
 

@@ -1,13 +1,24 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
+import WordyGame.ExceededTimeLimit;
+import WordyGame.InvalidWord;
+import WordyGame.WordLessThanFiveLetters;
 import WordyGame.WordyGameServer;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-public class Wordy_InGameController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Wordy_InGameController implements Initializable {
 
     @FXML
     private Button logOut;
@@ -57,4 +68,30 @@ public class Wordy_InGameController {
         randomLettersText.setText(sb.toString());
     }
 
+
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     *                  the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        wordsTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    try {
+                        wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
+                    } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {
+                        Alert dialog = new Alert(Alert.AlertType.INFORMATION, e.toString());
+                        dialog.show();
+                    }
+                }
+            }
+        });
+    }
 }
