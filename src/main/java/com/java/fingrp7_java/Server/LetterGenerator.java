@@ -55,7 +55,7 @@ public class LetterGenerator {
                 vowelCount = 0;
             }
         }
-        System.out.println(vowelCount + " " + letterCount);
+//        System.out.println(vowelCount + " " + letterCount);
         return sb.toString();
     }
 

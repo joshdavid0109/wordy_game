@@ -5,11 +5,13 @@ import WordyGame.*;
 import WordyGame.Game;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
+    static private final int WORD_LIMIT = 5;
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
@@ -47,10 +49,12 @@ public class ServerServant extends WordyGameServerPOA {
                 game = games.get(0);
 
                 if (game.tenSecondGameTimer()) {
+                    System.out.println("tens");
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
                             games.remove(game);
+                            System.out.println(games.size());
                             throw new NoPlayersAvailable("No other players have joined the game.");
                         }
                         games.get(0).wgPlayers.add(wordyGamePlayer);
@@ -77,11 +81,13 @@ public class ServerServant extends WordyGameServerPOA {
                         games.add(new Game(games.size() + 1, userID));
                         game = games.get(games.size()-1);
                         if (game.tenSecondGameTimer()) {
+                            System.out.println("tens");
                             if (game.timerCounter == 0) {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
                                     games.remove(game);
+                                    System.out.println("size " +games.size());
                                     throw new NoPlayersAvailable("No other players have joined the game.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
@@ -105,19 +111,33 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void checkWord(String word, int gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-
+        List<String> yungValidWordsDito = LetterGenerator.
+                getWords("loop games para makuha game, tas check yung word sa round");//paano kunin yung list ng valid words
+        if(word.length()<WORD_LIMIT){
+            throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+        }
+        if(yungValidWordsDito.contains(word)){
+            throw new InvalidWord("word is invalid.");
+        }
+        int score = word.length();
+        //assign score sa userid, query sa database or sum
     }
 
     @Override
     public char[] requestLetters(String gameID) {
         char[] charArray = new char[17];
-        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+
 
         do {
             for (Game g :
                     games) {
                 if (g.gameID == Integer.parseInt(gameID)) {
-                    g.lettersPerRound.put(1, charArray);
+                    if (g.lettersPerRound.get(g.round) == null) {
+                        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                        g.lettersPerRound.put(g.round, charArray);
+                    }
+                    charArray = g.lettersPerRound.get(g.round);
+
                     for (WordyGamePlayer wgp:
                          g.wgPlayers) {
                         if (!wgp.status.equalsIgnoreCase("ready")) {
@@ -126,7 +146,7 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                     if (g.playerChecker()) {
                         if (g.winnerID == 0) {
-                            return g.lettersPerRound.get(g.round);
+                            return charArray;
                         }
                     }
                 }
