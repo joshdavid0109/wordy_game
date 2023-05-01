@@ -44,6 +44,7 @@ public class ServerServant extends WordyGameServerPOA {
         do {
             if (games.size() == 0) {
                 game = new Game();
+                
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);

@@ -15,8 +15,10 @@ public class DataAccessClass {
             throw new RuntimeException(e);
         }
     }
+
+
     public void getConnection() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/comprog", "root", "");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordy_schema", "root", "");
     }
 
     public static int checkCredentials(String username, String password) {

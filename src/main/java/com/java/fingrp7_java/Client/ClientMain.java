@@ -1,6 +1,7 @@
 package com.java.fingrp7_java.Client;
 
 import WordyGame.WordyGameServerHelper;
+import com.java.fingrp7_java.gui_package.client.LogIn;
 import com.java.fingrp7_java.gui_package.client.Wordy_MatchMaking;
 import com.java.fingrp7_java.gui_package.client.Wordy_Ready;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
@@ -34,7 +35,7 @@ public class ClientMain extends Application{
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-            Wordy_MatchMaking wordyMatchMaking= new Wordy_MatchMaking();
-            wordyMatchMaking.start(primaryStage);
+            LogIn logIn= new LogIn();
+            logIn.start(primaryStage);
     }
 }
