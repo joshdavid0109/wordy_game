@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="218.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
    <children>
       <Text layoutX="140.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR GAME IS READY" />
-      <Button layoutX="170.0" layoutY="126.0" mnemonicParsing="false" text="ACCEPT" />
+      <Button fx:id="readyButton" layoutX="170.0" layoutY="126.0" mnemonicParsing="false" onAction="#ready" text="READY" textAlignment="JUSTIFY" />
       <Button layoutX="300.0" layoutY="172.0" mnemonicParsing="false" text="DECLINE" />
-      <TextField fx:id="d" layoutX="128.0" layoutY="72.0" promptText="id" />
+      <Text fx:id="playerID" layoutX="147.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" textAlignment="CENTER" wrappingWidth="98.607421875" />
 
    </children>
 </AnchorPane>

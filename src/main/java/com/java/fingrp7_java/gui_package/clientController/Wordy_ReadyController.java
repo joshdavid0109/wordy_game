@@ -7,9 +7,14 @@ import WordyGame.WordyGameServerHelper;
 import com.java.fingrp7_java.gui_package.client.Wordy_Ready;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -17,7 +22,9 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -33,16 +40,34 @@ public class Wordy_ReadyController implements Initializable {
 
     public static WordyGameServer wordyGameServer;
     public static WordyGamePlayer wordyGamePlayer;
+    public int gameID;
     public static Scanner scanner;
 
     @FXML
-    void ready(ActionEvent event) {
+    void logIn(ActionEvent event) {
         if (wordyGameServer != null) {
             if (playerID != null) {
                 try {
-                    wordyGameServer.playGame(Integer.parseInt(playerID.getSelectedText()));
+                    gameID = wordyGameServer.playGame(Integer.parseInt(playerID.getText()));
 
+                    if (gameID !=0) {
+                        FXMLLoader loader = new FXMLLoader();
+
+                        loader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
+                        Wordy_MatchMakingController wordy_matchMakingController = new Wordy_MatchMakingController();
+                        wordy_matchMakingController.wordyGameServer = wordyGameServer;
+
+                        Parent root = loader.load();
+                        Scene scene = new Scene(root);
+                        Stage stage = (Stage) readyButton.getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.show();
+
+                    }
                 } catch (NoPlayersAvailable e) {
+                    Alert dialog = new Alert(Alert.AlertType.ERROR, e.reason);
+                    dialog.show();
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -79,7 +104,6 @@ public class Wordy_ReadyController implements Initializable {
 
             Wordy_ReadyController.wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
-            orb.run();
         } catch (NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName e) {
             throw new RuntimeException(e);
         } catch (org.omg.CORBA.ORBPackage.InvalidName e) {

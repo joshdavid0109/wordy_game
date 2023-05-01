@@ -14,13 +14,6 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import java.io.IOException;
 
 public class ClientMain extends Application{
-    public static Stage stage;
-    public static String [] argss;
-
-    public static void main(String[] args) throws IOException {
-        argss= args;
-
-    }
 
     /**
      * The main entry point for all JavaFX applications.
@@ -39,33 +32,7 @@ public class ClientMain extends Application{
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try {
-            /**
-             * Default codes for
-             */
-            // create and initialize ORB
-            ORB orb = ORB.init(argss, null);
-
-            // get the root naming context
-            org.omg.CORBA.Object objectRef = orb.resolve_initial_references("NameService");
-
-            // Use NamingContextExt which is part of the Interoperable Naming Service (INS) specs
-            NamingContextExt namingContextExt = NamingContextExtHelper.narrow(objectRef);
-
-            // bind the Object reference in Namin
-            String stub = "Hello";
-
-            Wordy_ReadyController.wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
             Wordy_Ready wordyReady = new Wordy_Ready();
-            wordyReady.start(stage);
-
-            orb.run();
-        } catch (NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName e) {
-            throw new RuntimeException(e);
-        } catch (org.omg.CORBA.ORBPackage.InvalidName e) {
-            throw new RuntimeException(e);
-        }
-
-
+            wordyReady.start(primaryStage);
     }
 }

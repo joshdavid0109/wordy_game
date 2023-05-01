@@ -53,6 +53,7 @@ public class ServerServant extends WordyGameServerPOA {
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
                             games.remove(game);
+                            System.out.println(games.size());
                             throw new NoPlayersAvailable("No other players have joined the game.");
                         }
                         games.get(0).wgPlayers.add(wordyGamePlayer);
@@ -84,6 +85,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
                                     games.remove(game);
+                                    System.out.println("size " +games.size());
                                     throw new NoPlayersAvailable("No other players have joined the game.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);

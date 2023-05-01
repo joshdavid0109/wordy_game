@@ -26,6 +26,7 @@ public class Wordy_Ready extends Application{
         FXMLLoader fxmlLoader =
                 new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/ready.fxml"));
         wordyReady = fxmlLoader.getController();
+        Wordy_ReadyController.args = args;
 //        wordy_matchMakingController.
 
         Scene scene = new Scene(fxmlLoader.load());
@@ -37,9 +38,8 @@ public class Wordy_Ready extends Application{
     }
 
     public static void main(String[] args) {
-
+        args = args;
         launch(args);
-        wordyReady.args = args;
 
     }
 
