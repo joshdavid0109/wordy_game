@@ -51,7 +51,7 @@ public class ServerServant extends WordyGameServerPOA {
         do {
             if (games.size() == 0) {
                 game = new Game();
-                
+
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
@@ -133,7 +133,7 @@ public class ServerServant extends WordyGameServerPOA {
                 letters = g.lettersPerRound.get(g.round);
 
                 for (char c:
-                     letters) {
+                        letters) {
                     sb.append(c);
                 }
 
@@ -172,7 +172,7 @@ public class ServerServant extends WordyGameServerPOA {
                     charArray = g.lettersPerRound.get(g.round);
 
                     for (WordyGamePlayer wgp:
-                         g.wgPlayers) {
+                            g.wgPlayers) {
                         if (!wgp.status.equalsIgnoreCase("ready")) {
                             break;
                         }

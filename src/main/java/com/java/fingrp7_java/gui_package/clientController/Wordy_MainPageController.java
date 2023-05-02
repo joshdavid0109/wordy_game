@@ -37,19 +37,15 @@ public class Wordy_MainPageController implements Initializable {
     private Text playerStatus;
 
     @FXML
-    private Button topLongestWords;
+    private Button topLongestWordsBtn;
 
     @FXML
     private Button topPlayers;
 
     public static int playerID;
+
     public int gameID;
     public static WordyGameServer wordyGameServer;
-
-    @FXML
-    void logOut(ActionEvent event) {
-
-    }
 
     @FXML
     void playGame(ActionEvent event) {
@@ -83,6 +79,7 @@ public class Wordy_MainPageController implements Initializable {
                     }
                 } catch (NoPlayersAvailable e) {
                     Alert dialog = new Alert(Alert.AlertType.ERROR, e.reason);
+                    dialog.setTitle("NO PLAYER AVAILABLE");
                     dialog.show();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -94,15 +91,62 @@ public class Wordy_MainPageController implements Initializable {
     }
 
     @FXML
-    void showTopLongestWords(ActionEvent event) {
+    void showTopLongestWords(ActionEvent event){
+        FXMLLoader showLongestWord = new FXMLLoader();
 
+        showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/longestWord.fxml"));
+
+        Parent root = null;
+        try {
+            root = showLongestWord.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) topLongestWordsBtn.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
     void showTopPlayers(ActionEvent event) {
+        FXMLLoader showTopPlayers = new FXMLLoader();
 
+        showTopPlayers.setLocation(getClass().getResource("/com/java/fmxl/achievement.fxml"));
+
+        Parent root = null;
+        try {
+            root = showTopPlayers.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) topPlayers.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
+
+    @FXML
+    void logOut(ActionEvent event) {
+        FXMLLoader showLongestWord = new FXMLLoader();
+
+        showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/logInPage.fxml"));
+
+        Parent root = null;
+        try {
+            root = showLongestWord.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) topLongestWordsBtn.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
