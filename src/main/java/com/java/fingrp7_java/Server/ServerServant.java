@@ -3,7 +3,14 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -44,12 +51,13 @@ public class ServerServant extends WordyGameServerPOA {
         do {
             if (games.size() == 0) {
                 game = new Game();
-                
+
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
 
                 if (game.tenSecondGameTimer()) {
+
                     System.out.println("tens");
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
@@ -125,7 +133,7 @@ public class ServerServant extends WordyGameServerPOA {
                 letters = g.lettersPerRound.get(g.round);
 
                 for (char c:
-                     letters) {
+                        letters) {
                     sb.append(c);
                 }
 
@@ -142,11 +150,7 @@ public class ServerServant extends WordyGameServerPOA {
 
                 System.out.println("valid");
 
-                int score = word.length();
-                //assign score sa userid, query sa database or sum
-
-
-
+                //
 
             }
         }
@@ -156,7 +160,6 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public char[] requestLetters(String gameID) {
         char[] charArray = new char[17];
-
 
         do {
             for (Game g :
@@ -169,7 +172,7 @@ public class ServerServant extends WordyGameServerPOA {
                     charArray = g.lettersPerRound.get(g.round);
 
                     for (WordyGamePlayer wgp:
-                         g.wgPlayers) {
+                            g.wgPlayers) {
                         if (!wgp.status.equalsIgnoreCase("ready")) {
                             break;
                         }
@@ -191,7 +194,9 @@ public class ServerServant extends WordyGameServerPOA {
                 charArray) {
             sb.append(c);
         }
+
         System.out.println(LetterGenerator.getWords(sb.toString()));
+
         return charArray;
     }
 
@@ -214,11 +219,6 @@ public class ServerServant extends WordyGameServerPOA {
     public TopPlayer[] getTopPlayers() {
         return new TopPlayer[0];
     }
-
-
-
-
-
 
     @Override
     public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
