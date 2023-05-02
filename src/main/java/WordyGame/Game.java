@@ -1,6 +1,16 @@
 package WordyGame;
 
 
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
@@ -21,15 +31,20 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int hostID = (int)0;
   public int winnerID = (int)0;
   public HashMap<Integer, char[]> lettersPerRound = new HashMap<Integer, char[]>();
+
   public ArrayList<Integer> players;
   public ArrayList<WordyGamePlayer> wgPlayers = new ArrayList<>();
+
   public ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
   public String roundStatus;
   public int round;
   public int roundCounter = 10;
-  public int timerCounter = 10;
+  public static int timerCounter = 10;
   public int readyCounter = 15;
   public boolean[] playerReadyStatus;
+
+
+  public static Stage stage;
 
   public Runnable tenSecondGameTimer = new Runnable() {
     @Override
@@ -37,7 +52,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       timerCounter--;
       System.out.println(timerCounter);
       if (timerCounter == 0) {
-        System.out.println();
         if (players.size() > 1) {
           System.out.println("Match Starting");
           round = 1;
@@ -115,8 +129,37 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
 
   public boolean tenSecondGameTimer() {
     scheduler.scheduleAtFixedRate(tenSecondGameTimer, 0, 1, TimeUnit.SECONDS);
+    new JFXPanel();
+
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
+        Parent parent = null;
+        try {
+          parent = fxmlLoader.load();
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+        Wordy_MatchMakingController matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
+        Wordy_MatchMakingController.timer = timerCounter;
+
+        Scene scene = new Scene(parent, 400, 200);
+        stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+        stage.show();
+
+      }
+    });
+
     while (!scheduler.isShutdown()) {
       if (scheduler.isShutdown()) {
+        if (Wordy_MatchMakingController.timer == 0) {
+          System.out.println("zero na");
+          Platform.exit();
+        }
         return true;
       }
     }
