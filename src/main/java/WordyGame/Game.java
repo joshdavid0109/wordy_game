@@ -104,6 +104,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   {
     gameID = 0;
     status = "";
+    timerCounter = 10;
     winnerID = 0;
     hostID = 0;
   } // ctor
