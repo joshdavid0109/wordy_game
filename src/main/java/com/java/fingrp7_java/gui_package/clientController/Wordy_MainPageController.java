@@ -53,16 +53,9 @@ public class Wordy_MainPageController implements Initializable {
             if (playerID != 0) {
                 try {
 
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
-                    Parent parent = fxmlLoader.load();
-                    Wordy_MatchMakingController matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
 
-                    Scene scene = new Scene(parent, 400, 200);
-                    Stage stage = new Stage();
-                    stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setScene(scene);
-                    stage.showAndWait();
+
+//                    matchMakingController.decline.fire();
 
                     gameID = wordyGameServer.playGame(playerID);
 
@@ -70,16 +63,16 @@ public class Wordy_MainPageController implements Initializable {
                         System.out.println("game id check");
                         playGameButton.getScene().getWindow().hide();
 
-
-                        fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
 
                         Wordy_InGameController.wordyGameServer = wordyGameServer;
                         Wordy_InGameController.gameID = gameID;
 //                        Wordy_InGameController.userID = Integer.parseInt(playerID.getText());
 
-                        Parent root = fxmlLoader.load();
-                        scene = new Scene(root);
-                        stage = (Stage) playGameButton.getScene().getWindow();
+                        Parent root = loader.load();
+                        Scene scene = new Scene(root);
+                        Stage stage = (Stage) playGameButton.getScene().getWindow();
                         stage.setScene(scene);
                         stage.show();
 
