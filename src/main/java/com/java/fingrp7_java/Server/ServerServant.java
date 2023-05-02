@@ -3,6 +3,7 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MainPageController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
-    public LetterGenerator letterGenerator = new LetterGenerator();
+    DataAccessClass dataAccessClass = new DataAccessClass();
 
 
     @Override
@@ -55,14 +57,15 @@ public class ServerServant extends WordyGameServerPOA {
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
+                Wordy_MatchMakingController.timer = game.timerCounter;
 
                 if (game.tenSecondGameTimer()) {
-
                     System.out.println("tens");
-                    if (Game.timerCounter == 0) {
+                    if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
                             games.remove(game);
+
                             System.out.println(games.size());
                             throw new NoPlayersAvailable("No other players have joined the game.");
                         }
@@ -78,7 +81,7 @@ public class ServerServant extends WordyGameServerPOA {
                         g.players.add(userID);
                         g.wgPlayers.add(wordyGamePlayer);
 
-                        if (Game.timerCounter == 0) {
+                        if (game.timerCounter == 0) {
                             scheduler.shutdown();
                             game.scheduler.shutdown();
                             return game.gameID;
@@ -126,31 +129,36 @@ public class ServerServant extends WordyGameServerPOA {
                 games) {
             if (g.gameID == gameID) {
 
+                try {
+                    if (g.lettersPerRound.get(g.round) == null)
+                        throw new ExceededTimeLimit("Exceeded Time Limit.");
 
-                if (g.lettersPerRound.get(g.round) == null)
-                    throw new ExceededTimeLimit("Exceeded Time Limit.");
+                    letters = g.lettersPerRound.get(g.round);
 
-                letters = g.lettersPerRound.get(g.round);
+                    for (char c :
+                            letters) {
+                        sb.append(c);
+                    }
 
-                for (char c:
-                        letters) {
-                    sb.append(c);
+                    List<String> listOfValidWords = LetterGenerator.
+                            getWords(sb.toString());
+
+                    if (word.length() < WORD_LIMIT) {
+                        throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                    } else if (!listOfValidWords.contains(word)) {
+                        throw new InvalidWord("Invalid word.");
+                    }
+
+                }catch (ExceededTimeLimit | InvalidWord | WordLessThanFiveLetters e) {
+                    if (e instanceof ExceededTimeLimit)
+                        throw new ExceededTimeLimit("Exceeded Time Limit.");
+                    else if (e instanceof WordLessThanFiveLetters)
+                        throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                    else
+                        throw new InvalidWord("Invalid word.");
                 }
 
-                List<String> listOfValidWords = LetterGenerator.
-                        getWords(sb.toString());
-
-                if (word.length() < WORD_LIMIT){
-                    throw new WordLessThanFiveLetters("Word should be 5 letters or more");
-                }
-                else if (!listOfValidWords.contains(word)){
-                    throw new InvalidWord("Invalid word.");
-                }
-
-
-                System.out.println("valid");
-
-                //
+                dataAccessClass.writeToWord(word, gameID, userID, g.round);
 
             }
         }
@@ -206,6 +214,11 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
+    public int getTimer() {
+        return game.timerCounter;
+    }
+
+    @Override
     public boolean roundStatus(String gameID) {
         return false;
     }
@@ -220,7 +233,4 @@ public class ServerServant extends WordyGameServerPOA {
         return new TopPlayer[0];
     }
 
-    @Override
-    public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-    }
 }

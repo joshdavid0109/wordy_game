@@ -14,7 +14,7 @@ public class Wordy_LongestWord extends Application {
         /*        Image image = new Image("SLU_LOGO.jpg");*/
 
         FXMLLoader fxmlLoader =
-                new FXMLLoader(LogIn.class.getResource("src/main/resources/com/java/fmxl/longestWord.fxml"));
+                new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/longestWord.fxml"));
         Wordy_LongestWordController wordy_longestWordController = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("EMPLOYEE");

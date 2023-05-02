@@ -1,6 +1,7 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
 import WordyGame.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,6 +34,9 @@ public class Wordy_MatchMakingController implements Initializable {
     public Button decline;
     @FXML
     private Button playGame;
+
+    @FXML
+    public AnchorPane mmDialog;
 
     @FXML
     private Text timerText;
@@ -69,7 +74,6 @@ public class Wordy_MatchMakingController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
-
     }
 
     Runnable Timer = new Runnable() {
@@ -78,6 +82,8 @@ public class Wordy_MatchMakingController implements Initializable {
             timerText.setText(String.valueOf(timer--));
             if (timer < 1) {
                 scheduledExecutorService.shutdown();
+                mmDialog.getScene().getWindow().hide();
+                mmDialog.setVisible(false);
 //                closeWindow(new ActionEvent());
 //                decline.fire();
             }

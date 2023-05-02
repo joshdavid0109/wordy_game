@@ -17,7 +17,7 @@ public class DataAccessClass {
         }
     }
 
-    public static void writeToWord(String word, int gameID, int userID, int round) {
+    public void writeToWord(String word, int gameID, int userID, int round) {
         String query = "INSERT INTO words (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
@@ -35,41 +35,41 @@ public class DataAccessClass {
         }
     }
 
-    public static void writeToRound(String gameID, int roundNum, String roundWinner, String longestWord) {
+    public void writeToRound(int gameID, int roundNum, int roundWinner, String longestWord) {
         String query = "INSERT INTO round (gameID, roundNum, roundWin, longestWord) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-            preparedStatement.setString(1, gameID);
-            preparedStatement.setString(2, String.valueOf(roundNum));
-            preparedStatement.setString(3, roundWinner);//userID yung roundWinner
+            preparedStatement.setInt(1, gameID);
+            preparedStatement.setInt(2, roundNum);
+            preparedStatement.setInt(3, roundWinner);//userID yung roundWinner
             preparedStatement.setString(4, longestWord);
 
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
 
-    public static void writeGameWinner(String gameID, int userID) {
+    public void writeGameWinner(int gameID, int userID) {
         String query = "INSERT INTO game (gameID, userID) VALUES (?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-            preparedStatement.setString(1, gameID);
+            preparedStatement.setInt(1, gameID);
             preparedStatement.setString(2, String.valueOf(userID));
 
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
 
-    public static TopWord[] getLongestWords() {
+    public TopWord[] getLongestWords() {
         int TOP_LIMIT = 5;
         String query = "SELECT top 5 words, userID FROM word";
         TopWord[] topWords = null;
@@ -89,19 +89,21 @@ public class DataAccessClass {
     }
 
     public static void main(String[] args) {
-        /*try {
-            getConnection();
-            getLongestWords();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }*/
+        DataAccessClass dataAccessClass = new DataAccessClass();
+        dataAccessClass.run();
     }
 
-    public static void getConnection() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordy", "root", "");
+    public void run(){
+
+        writeToRound(123, 1, 2234423, "longestto");
+
     }
 
-    public static int checkCredentials(String username, String password) {
+    public void getConnection() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordy_schema", "root", "");
+    }
+
+    public int checkCredentials(String username, String password) {
         String query = "SELECT * FROM USERS where username=? AND password=?";
         PreparedStatement preparedStatement = null;
         try {

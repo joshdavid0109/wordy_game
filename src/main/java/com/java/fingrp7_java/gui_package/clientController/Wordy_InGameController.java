@@ -8,12 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -87,8 +90,21 @@ public class Wordy_InGameController implements Initializable {
                     try {
                         wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
                     } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {
-                        Alert dialog = new Alert(Alert.AlertType.INFORMATION, e.toString());
-                        dialog.show();
+                        if (e instanceof InvalidWord)
+                            System.out.println();
+                        Notifications notificationBuilder = Notifications.create()
+                                .title(e.getLocalizedMessage())
+                                .text(e.toString())
+                                .graphic(null)
+                                .hideAfter(Duration.seconds(3))
+                                .position(Pos.TOP_CENTER)
+                                .onAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        System.out.println("Error caught");
+                                    }
+                                });
+                        notificationBuilder.showConfirm();
                     }
                 }
             }

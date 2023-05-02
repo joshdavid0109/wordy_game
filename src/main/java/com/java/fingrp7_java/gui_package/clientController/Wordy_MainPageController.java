@@ -1,7 +1,10 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
+import WordyGame.Game;
 import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGameServer;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -20,12 +24,18 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 public class Wordy_MainPageController implements Initializable {
 
     @FXML
     private Button logOutButton;
+
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private Button playGameButton;
@@ -46,24 +56,77 @@ public class Wordy_MainPageController implements Initializable {
 
     public int gameID;
     public static WordyGameServer wordyGameServer;
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
 
     @FXML
-    void playGame(ActionEvent event) {
+    void playGame(ActionEvent event) throws IOException {
         if (wordyGameServer != null) {
             if (playerID != 0) {
-                try {
-
-
 
 //                    matchMakingController.decline.fire();
+                    FXMLLoader loader = new FXMLLoader();
 
-                    gameID = wordyGameServer.playGame(playerID);
+                    Runnable timer = new Runnable() {
+                        @Override
+                        public void run() {
+                            new JFXPanel().requestFocus();
+
+                            Platform.setImplicitExit(false);
+
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
+                                    Parent parent = null;
+                                    try {
+                                        parent = fxmlLoader.load();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    Wordy_MatchMakingController matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
+
+
+                                    Scene scene = new Scene(parent, 400, 200);
+                                    Stage stage = new Stage();
+                                    stage.initStyle(StageStyle.UNDECORATED);
+                                    stage.setScene(scene);
+//        stage.show();
+                                    stage.show();
+
+
+                                }
+                            });
+
+                        }
+                    };
+
+                    Runnable playGame = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                gameID = wordyGameServer.playGame(playerID);
+                            } catch (NoPlayersAvailable e) {
+                                throw new RuntimeException(e.reason);
+                            }
+                        }
+                    };
+                executorService.execute(playGame);
+                executorService.execute(timer);
+
+
+
+
+
+
 
                     if (gameID !=0) {
-                        System.out.println("game id check");
+//                        System.out.println("game id check");
                         playGameButton.getScene().getWindow().hide();
 
-                        FXMLLoader loader = new FXMLLoader();
+
                         loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
 
                         Wordy_InGameController.wordyGameServer = wordyGameServer;
@@ -75,15 +138,9 @@ public class Wordy_MainPageController implements Initializable {
                         Stage stage = (Stage) playGameButton.getScene().getWindow();
                         stage.setScene(scene);
                         stage.show();
-
                     }
-                } catch (NoPlayersAvailable e) {
-                    Alert dialog = new Alert(Alert.AlertType.ERROR, e.reason);
-                    dialog.setTitle("NO PLAYER AVAILABLE");
-                    dialog.show();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+
+
             }
         } else {
             System.out.println("orb not read");
