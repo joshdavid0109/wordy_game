@@ -1,9 +1,6 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
-import WordyGame.NoPlayersAvailable;
-import WordyGame.WordyGamePlayer;
-import WordyGame.WordyGameServer;
-import WordyGame.WordyGameServerHelper;
+import WordyGame.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,7 +36,7 @@ public class Wordy_MatchMakingController implements Initializable {
     @FXML
     private Text timerText;
 
-    int timer = 10;
+    public static int timer;
 
     public static String[] args;
     public static WordyGameServer wordyGameServer;
@@ -72,15 +69,17 @@ public class Wordy_MatchMakingController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
+
     }
 
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
             timerText.setText(String.valueOf(timer--));
-            if (timer == 0) {
+            if (timer < 1) {
                 scheduledExecutorService.shutdown();
-                decline.fire();
+//                closeWindow(new ActionEvent());
+//                decline.fire();
             }
         }
     };
