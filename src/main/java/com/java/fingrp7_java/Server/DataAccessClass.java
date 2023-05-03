@@ -29,7 +29,7 @@ public class DataAccessClass {
             preparedStatement.setString(3, String.valueOf(userID));
             preparedStatement.setString(4, word);
 
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
         }

@@ -185,7 +185,9 @@ public class ServerServant extends WordyGameServerPOA {
                             break;
                         }
                     }
-                    g.createSchedule();
+                    if (g.scheduler.isShutdown()) {
+                        g.createSchedule();
+                    }
                     if (g.playerChecker()) {
                         if (g.winnerID == 0) {
                             return charArray;
