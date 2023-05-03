@@ -1,9 +1,6 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
-import WordyGame.ExceededTimeLimit;
-import WordyGame.InvalidWord;
-import WordyGame.WordLessThanFiveLetters;
-import WordyGame.WordyGameServer;
+import WordyGame.*;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -165,11 +162,17 @@ public class Wordy_InGameController implements Initializable {
                     try {
                         wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
                     } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {
+                        String reason;
                         if (e instanceof InvalidWord)
-                            System.out.println();
+                            reason = ((InvalidWord) e).reason;
+                        else if (e instanceof WordLessThanFiveLetters)
+                            reason = ((WordLessThanFiveLetters) e).reason;
+                        else
+                            reason = ((ExceededTimeLimit) e).reason;
+
                         Notifications notificationBuilder = Notifications.create()
                                 .title(e.getLocalizedMessage())
-                                .text(e.toString())
+                                .text(reason)
                                 .graphic(null)
                                 .hideAfter(Duration.seconds(3))
                                 .position(Pos.TOP_CENTER)

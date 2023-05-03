@@ -151,7 +151,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   }
 
   public void createSchedule(){
-    if (scheduler.isShutdown()) {
+    if (scheduler.isShutdown() && roundCounter != 0) {
       scheduler = Executors.newScheduledThreadPool(10);
     }
   }
