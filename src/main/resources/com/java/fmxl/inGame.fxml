@@ -21,7 +21,7 @@
          <children>
             <Pane layoutX="-5.0" layoutY="76.0" prefHeight="76.0" prefWidth="312.0">
                <children>
-                  <Text fill="#f6b604" layoutX="46.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="220.32293701171875">
+                  <Text fx:id="roundTimer" fill="#f6b604" layoutX="46.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="220.32293701171875">
                      <font>
                         <Font name="System Bold" size="57.0" />
                      </font>
@@ -75,15 +75,16 @@
                      </graphic>
                   </Button>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeaf1d" height="3.0" layoutX="36.0" layoutY="57.0" stroke="BLACK" strokeType="INSIDE" width="239.0" />
-                  <Button fx:id="readyButton" layoutX="37.0" layoutY="65.0" mnemonicParsing="false" onAction="#ready" text="READY" />
                </children>
             </Pane>
-            <Pane layoutX="32.0" layoutY="159.0" opacity="0.3" prefHeight="206.0" prefWidth="239.0" style="-fx-background-color: #d9d9d9;">
+            <Pane fx:id="Ready" layoutX="32.0" layoutY="159.0" opacity="0.3" prefHeight="206.0" prefWidth="239.0" style="-fx-background-color: #d9d9d9;">
                <children>
                   <Text fx:id="randomLettersText" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RANDOM LETTERS" textAlignment="CENTER" wrappingWidth="239.0">
                      <font>
                         <Font name="System Bold" size="15.0" />
-                     </font></Text>
+                     </font>
+                  </Text>
+                  <Button fx:id="readyButton" layoutX="45.0" layoutY="91.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="149.0" text="READY" />
                </children>
             </Pane>
          </children>

@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,6 +59,7 @@ public class Wordy_MainPageController implements Initializable {
     public static WordyGameServer wordyGameServer;
     ExecutorService executorService = Executors.newFixedThreadPool(5);
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
+    static Wordy_MatchMakingController matchMakingController;
 
     @FXML
     void playGame(ActionEvent event) throws IOException {
@@ -80,25 +82,29 @@ public class Wordy_MainPageController implements Initializable {
                                 public void run() {
                                     FXMLLoader fxmlLoader = new FXMLLoader();
                                     fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
-                                    Parent parent = null;
+
+                                    DialogPane dialogPane;
                                     try {
-                                        parent = fxmlLoader.load();
+                                        dialogPane= fxmlLoader.load();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    Wordy_MatchMakingController matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
+                                    matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
 
 
-                                    Scene scene = new Scene(parent, 400, 200);
-                                    Stage stage = new Stage();
-                                    stage.initStyle(StageStyle.UNDECORATED);
-                                    stage.setScene(scene);
-//        stage.show();
-                                    stage.show();
-
+                                    Dialog<ButtonType> dialog = new Dialog<>();
+                                    dialog.initStyle(StageStyle.UNDECORATED);
+                                    dialog.setDialogPane(dialogPane);
+                                    dialog.show();
 
                                 }
                             });
+                            if (matchMakingController != null) {
+                                if (Wordy_MatchMakingController.scheduledExecutorService.isShutdown()) {
+                                    executorService.shutdown();
+                                    Platform.exit();
+                                }
+                            }
 
                         }
                     };
@@ -109,36 +115,54 @@ public class Wordy_MainPageController implements Initializable {
                             try {
                                 gameID = wordyGameServer.playGame(playerID);
                             } catch (NoPlayersAvailable e) {
-                                throw new RuntimeException(e.reason);
+                                new JFXPanel();
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        matchMakingController.closeWindow(event);
+                                        Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                                        alert.showAndWait();
+                                    }
+                                });
+                            }
+
+                            if (gameID != 0) {
+                                new JFXPanel();
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        matchMakingController.closeWindow(event);
+                                        executorService.shutdown();
+
+                                        matchMakingController.closeWindow(new ActionEvent());
+                                        playGameButton.getScene().getWindow().hide();
+
+                                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
+
+                                        Wordy_InGameController.wordyGameServer = wordyGameServer;
+                                        Wordy_InGameController.gameID = gameID;
+
+                                        Parent root;
+
+                                        try {
+                                            root = loader.load();
+                                            Scene scene = new Scene(root);
+                                            Stage stage = (Stage) playGameButton.getScene().getWindow();
+                                            stage.setScene(scene);
+                                            stage.show();
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+
+
+                                    }
+                                });
                             }
                         }
                     };
                 executorService.execute(playGame);
                 executorService.execute(timer);
 
-
-
-
-
-
-
-                    if (gameID !=0) {
-//                        System.out.println("game id check");
-                        playGameButton.getScene().getWindow().hide();
-
-
-                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
-
-                        Wordy_InGameController.wordyGameServer = wordyGameServer;
-                        Wordy_InGameController.gameID = gameID;
-//                        Wordy_InGameController.userID = Integer.parseInt(playerID.getText());
-
-                        Parent root = loader.load();
-                        Scene scene = new Scene(root);
-                        Stage stage = (Stage) playGameButton.getScene().getWindow();
-                        stage.setScene(scene);
-                        stage.show();
-                    }
 
 
             }

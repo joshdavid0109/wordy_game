@@ -36,9 +36,6 @@ public class Wordy_MatchMakingController implements Initializable {
     private Button playGame;
 
     @FXML
-    public AnchorPane mmDialog;
-
-    @FXML
     private Text timerText;
 
     public static int timer;
@@ -47,17 +44,18 @@ public class Wordy_MatchMakingController implements Initializable {
     public static WordyGameServer wordyGameServer;
     public static WordyGamePlayer wordyGamePlayer;
     public int gameID;
-    ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+    public static ScheduledExecutorService scheduledExecutorService;
 
 
     @FXML
     void play(ActionEvent event) {
-
+        Stage stage = (Stage) decline.getScene().getWindow();
+        stage.close();
     }
 
 
     @FXML
-    void closeWindow(ActionEvent event) {
+    public void closeWindow(ActionEvent event) {
         Stage stage = (Stage) decline.getScene().getWindow();
         stage.close();
     }
@@ -73,6 +71,7 @@ public class Wordy_MatchMakingController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
     }
 
@@ -82,11 +81,13 @@ public class Wordy_MatchMakingController implements Initializable {
             timerText.setText(String.valueOf(timer--));
             if (timer < 1) {
                 scheduledExecutorService.shutdown();
-                mmDialog.getScene().getWindow().hide();
-                mmDialog.setVisible(false);
+                Stage stage = (Stage) decline.getScene().getWindow();
+                stage.close();
 //                closeWindow(new ActionEvent());
 //                decline.fire();
             }
         }
     };
+
+
 }
