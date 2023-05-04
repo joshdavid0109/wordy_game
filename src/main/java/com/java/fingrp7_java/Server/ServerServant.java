@@ -204,14 +204,14 @@ public class ServerServant extends WordyGameServerPOA {
                         }
                     }
                     if (g.scheduler.isShutdown()) {
-                        g.createSchedule();
-                    }
-                    if (g.playerChecker()) {
-                        if (g.winner == null) {
-                            System.out.println("wala pang winner");
-                            System.out.println(words);
-                            game.roundTimer();
-                            return charArray;
+                        if (g.playerChecker()) {
+                            g.scheduler.shutdown();
+                            if (g.winner == null) {
+                                System.out.println("wala pang winner");
+                                System.out.println(words);
+                                game.roundTimer();
+                                return charArray;
+                            }
                         }
                     }
                 }
@@ -254,7 +254,7 @@ public class ServerServant extends WordyGameServerPOA {
         if (of.equalsIgnoreCase("g")) {
             return game.timerCounter;
         } else if (of.equalsIgnoreCase("r"))
-            return game.roundCounter;
+            return game.readyCounter;
         return 0;
     }
 

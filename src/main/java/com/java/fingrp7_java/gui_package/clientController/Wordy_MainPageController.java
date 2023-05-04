@@ -102,7 +102,7 @@ public class Wordy_MainPageController implements Initializable {
                                 if (matchMakingController.timerCheck()) {
                                         executorService.shutdown();
                                         Platform.exit();
-                                    }
+                                }
                             }
                         }
                     };

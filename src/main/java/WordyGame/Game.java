@@ -80,7 +80,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Runnable tenSecondRoundTimer = new Runnable() {
     @Override
     public void run() {
-      System.out.println("round" + roundCounter);
       roundCounter--;
       if (roundCounter == 0) {
         for (Word w :
@@ -214,8 +213,15 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   }
 
   public boolean playerChecker() {
-    scheduler.scheduleAtFixedRate(readyChecker, 0,1,TimeUnit.SECONDS);
-    Wordy_MatchMakingController.timer = readyCounter;
+//    if (scheduler.isShutdown()) {
+      if (readyCounter == 0)
+        scheduler.shutdown();
+      else {
+        scheduler = Executors.newScheduledThreadPool(10);
+        Wordy_MatchMakingController.timer = readyCounter;
+        scheduler.scheduleAtFixedRate(readyChecker, 0, 1, TimeUnit.SECONDS);
+      }
+//    }
     while (!scheduler.isShutdown()) {
       if (scheduler.isShutdown()) {
         return true;
@@ -227,7 +233,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public void roundTimer() {
     scheduler =Executors.newScheduledThreadPool(10);
     scheduler.scheduleAtFixedRate(tenSecondRoundTimer, 0, 1, TimeUnit.SECONDS);
-    Wordy_InGameController.roundTime = roundCounter;
+    Wordy_InGameController.roundTime = readyCounter;
 /*    while (!scheduler.isShutdown()) {
       if (scheduler.isShutdown())
         return true;
