@@ -56,7 +56,7 @@ public class Wordy_InGameController implements Initializable {
 
     public static int userID;
     public static int gameID;
-    int roundTime = 10;
+    int roundTime;
     public static WordyGameServer wordyGameServer;
     char[] letters = new char[17];
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
