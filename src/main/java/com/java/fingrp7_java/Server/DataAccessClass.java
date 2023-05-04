@@ -2,8 +2,10 @@ package com.java.fingrp7_java.Server;
 
 
 import WordyGame.TopWord;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataAccessClass {
     static Connection connection;
@@ -18,7 +20,7 @@ public class DataAccessClass {
     }
 
     public void writeToWord(String word, int gameID, int userID, int round) {
-        String query = "INSERT INTO words (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO word (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -125,5 +127,32 @@ public class DataAccessClass {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<Word> getWords() throws SQLException {
+        ArrayList<Word> words = new ArrayList<>();
+        String query = "SELECT * FROM word";
+        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE  );
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            words.add(new Word(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3),
+                    resultSet.getString(4)));
+        }
+        resultSet.close();
+        return words;
+    }
+
+    public String getGameWinner (int id) throws SQLException{
+        String query = "SELECT username from users where userID=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+
+        return "";
     }
 }

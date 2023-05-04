@@ -56,7 +56,7 @@ public class Wordy_InGameController implements Initializable {
 
     public static int userID;
     public static int gameID;
-    int roundTime;
+    public static int roundTime = 10;
     public static WordyGameServer wordyGameServer;
     char[] letters = new char[17];
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
@@ -70,7 +70,7 @@ public class Wordy_InGameController implements Initializable {
         Runnable reqLetters = new Runnable() {
             @Override
             public void run() {
-                letters = wordyGameServer.requestLetters(String.valueOf(gameID));
+                letters = wordyGameServer.requestLetters(gameID);
 
                 StringBuilder sb = new StringBuilder();
 
@@ -85,17 +85,23 @@ public class Wordy_InGameController implements Initializable {
                     randomLettersText.setVisible(true);
                     randomLettersText.setText(sb.toString());
 
+                if (letters != null) {
+                    executorService.shutdown();
+                }
+
                     scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
                         @Override
                         public void run() {
                             roundTimer.setText(String.valueOf(roundTime--));
                             if (roundTime < 0) {
+                                System.out.println("checking winner");
+                                System.out.println(wordyGameServer.checkWinner(gameID));
                                 scheduledExecutorService.shutdown();
-                                executorService.shutdown();
+
                             }
                         }
                     }, 0, 1, TimeUnit.SECONDS);
-                    executorService.shutdown();
+
                 }
             }
         };
@@ -107,7 +113,7 @@ public class Wordy_InGameController implements Initializable {
 
                 Platform.setImplicitExit(false);
 
-                Wordy_MatchMakingController.timer = wordyGameServer.getTimer();
+                Wordy_MatchMakingController.timer = wordyGameServer.getTimer("r");
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -184,6 +190,7 @@ public class Wordy_InGameController implements Initializable {
                                 });
                         notificationBuilder.showConfirm();
                     }
+                    wordsTF.clear();
                 }
             }
         });

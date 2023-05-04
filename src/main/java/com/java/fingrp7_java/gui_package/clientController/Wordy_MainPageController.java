@@ -75,7 +75,7 @@ public class Wordy_MainPageController implements Initializable {
 
                             Platform.setImplicitExit(false);
 
-                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer();
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("g");
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -139,6 +139,7 @@ public class Wordy_MainPageController implements Initializable {
 
                                         Wordy_InGameController.wordyGameServer = wordyGameServer;
                                         Wordy_InGameController.gameID = gameID;
+                                        Wordy_InGameController.userID = playerID;
 
                                         Parent root;
 
