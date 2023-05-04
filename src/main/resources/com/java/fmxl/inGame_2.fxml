@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="382.0" prefWidth="420.0" style="-fx-background-color: #2c0c02;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController">
+   <children>
+      <Pane layoutX="102.0" prefHeight="422.0" prefWidth="349.0" style="-fx-border-color: black; -fx-border-width: 3;">
+         <children>
+            <ImageView fitHeight="422.0" fitWidth="349.0" opacity="0.37" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../bookshelves.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="316.0" fitWidth="349.0" opacity="0.27" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../vines_background-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="roundTimer" fill="#f6b604" layoutX="56.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="238.9999999999999">
+               <font>
+                  <Font name="System Bold" size="80.0" />
+               </font>
+            </Text>
+            <Pane fx:id="Ready" layoutX="40.0" layoutY="102.0" opacity="0.48" prefHeight="234.0" prefWidth="286.0" style="-fx-background-color: #d9d9d9;">
+               <children>
+                  <TextField alignment="CENTER" editable="false" layoutX="13.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="68.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="2">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="122.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="3">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="176.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="4">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="230.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="5">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="14.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="6">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="69.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="7">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="123.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="8">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="177.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="231.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="10">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="15.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="11">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="70.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="12">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="124.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="13">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="178.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="14">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="232.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="15">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="97.0" layoutY="174.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="16">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="151.0" layoutY="174.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="17">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane fx:id="Ready1" layoutX="40.0" layoutY="102.0" prefHeight="234.0" prefWidth="286.0">
+               <children>
+                  <TextField alignment="CENTER" editable="false" layoutX="13.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="68.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="2">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="122.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="3">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="176.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="4">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="230.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="5">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="14.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="6">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="69.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="7">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="123.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="8">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="177.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="231.0" layoutY="73.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="10">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="15.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="11">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="70.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="12">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="124.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="13">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="178.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="14">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="232.0" layoutY="125.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="15">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="97.0" layoutY="174.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="16">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" editable="false" layoutX="151.0" layoutY="174.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="17">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </Pane>
+            <TextField fx:id="wordsTF" alignment="CENTER" layoutX="40.0" layoutY="358.0" prefHeight="25.0" prefWidth="286.0" promptText="ENTER WORDS" style="-fx-background-color: #d9d9d9; -fx-background-radius: 20;" />
+         </children>
+      </Pane>
+      <Pane layoutX="-8.0" prefHeight="422.0" prefWidth="110.0" style="-fx-background-color: #2A0201;">
+         <children>
+            <Pane layoutX="6.0" layoutY="36.0" prefHeight="26.0" prefWidth="104.0" style="-fx-background-color: #550001; -fx-border-color: #550001; -fx-border-width: 5;" />
+            <Text fx:id="playerName" fill="WHITE" layoutX="20.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROUND ">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fx:id="playerName1" fill="WHITE" layoutX="65.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="31.6640625">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Pane layoutX="19.0" layoutY="171.0" prefHeight="3.0" prefWidth="80.0" style="-fx-background-color: #f6b604;" />
+            <Text fx:id="playerStatus" fill="WHITE" layoutX="20.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WINS">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fx:id="playerStatus1" fill="WHITE" layoutX="70.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="22.902328491210938">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Pane layoutX="19.0" layoutY="241.0" prefHeight="3.0" prefWidth="80.0" style="-fx-background-color: #f6b604;" />
+            <Button fx:id="readyButton" layoutX="26.0" layoutY="295.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="66.0" text="READY" />
+            <Button fx:id="logOut" layoutX="40.0" layoutY="358.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: #eeaf1d; -fx-border-color: #b98805; -fx-border-radius: 50; -fx-border-width: 2; -fx-background-radius: 50;">
+               <graphic>
+                  <ImageView fitHeight="11.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ImageView fitHeight="81.0" fitWidth="57.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../SLU_LOGO-removebg-preview.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
