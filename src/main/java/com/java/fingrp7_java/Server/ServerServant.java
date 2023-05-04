@@ -72,10 +72,6 @@ public class ServerServant extends WordyGameServerPOA {
                         games.get(0).wgPlayers.add(wordyGamePlayer);
                         return game.gameID;
                     }
-                } else {
-                    System.out.println("game will be removed from the listel");
-                    games.remove(game);
-                    throw new NoPlayersAvailable("No other players have joined the game3.");
                 }
             } else {
                 for (Game g :
@@ -183,6 +179,7 @@ public class ServerServant extends WordyGameServerPOA {
             for (Game g :
                     games) {
                 if (g.gameID == Integer.parseInt(gameID)) {
+                    game = g;
                     if (g.lettersPerRound.get(g.round) == null) {
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
@@ -227,8 +224,12 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
-    public int getTimer() {
-        return game.timerCounter;
+    public int getTimer(String of) {
+        if (of.equalsIgnoreCase("g")) {
+            return game.timerCounter;
+        } else if (of.equalsIgnoreCase("r"))
+            return game.roundCounter;
+        return 0;
     }
 
     @Override

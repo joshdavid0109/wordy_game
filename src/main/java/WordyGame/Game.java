@@ -1,6 +1,7 @@
 package WordyGame;
 
 
+import com.java.fingrp7_java.Server.DataAccessClass;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -43,6 +44,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int readyCounter = 10;
   public boolean[] playerReadyStatus;
 
+  DataAccessClass dataAccessClass = new DataAccessClass();
 
   WordyGamePlayer host;
   WordyGamePlayer winner;
@@ -77,6 +79,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     public void run() {
       roundCounter--;
       if (roundCounter == 0) {
+
         scheduler.shutdown();
       }
     }
