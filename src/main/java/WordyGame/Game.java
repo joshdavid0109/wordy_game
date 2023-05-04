@@ -214,9 +214,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   }
 
   public boolean playerChecker() {
-    scheduler =Executors.newScheduledThreadPool(10);
-    if (scheduler.isShutdown())
-      scheduler.scheduleAtFixedRate(readyChecker, 0,1,TimeUnit.SECONDS);
+    scheduler.scheduleAtFixedRate(readyChecker, 0,1,TimeUnit.SECONDS);
     Wordy_MatchMakingController.timer = readyCounter;
     while (!scheduler.isShutdown()) {
       if (scheduler.isShutdown()) {
