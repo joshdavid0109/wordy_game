@@ -237,6 +237,7 @@ public class ServerServant extends WordyGameServerPOA {
                 for (WordyGamePlayer wgp :
                         g.wgPlayers) {
                     if (wgp.wins>0) {
+                        System.out.println(wgp.id);
                         try {
                             return dataAccessClass.getGameWinner(wgp.id);
                         } catch (SQLException e) {

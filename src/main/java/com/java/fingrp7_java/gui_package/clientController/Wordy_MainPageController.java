@@ -75,7 +75,7 @@ public class Wordy_MainPageController implements Initializable {
 
                             Platform.setImplicitExit(false);
 
-                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("g");
+
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -84,6 +84,7 @@ public class Wordy_MainPageController implements Initializable {
 
                                     DialogPane dialogPane;
                                     try {
+                                        Wordy_MatchMakingController.timer = wordyGameServer.getTimer("g");
                                         dialogPane= fxmlLoader.load();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -100,6 +101,7 @@ public class Wordy_MainPageController implements Initializable {
                             });
                             if (matchMakingController != null) {
                                 if (matchMakingController.timerCheck()) {
+                                    System.out.println("closing");
                                         executorService.shutdown();
                                         Platform.exit();
                                 }

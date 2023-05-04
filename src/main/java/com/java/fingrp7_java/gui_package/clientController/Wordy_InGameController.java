@@ -113,7 +113,6 @@ public class Wordy_InGameController implements Initializable {
 
                 Platform.setImplicitExit(false);
 
-                Wordy_MatchMakingController.timer = wordyGameServer.getTimer("r");
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -122,6 +121,7 @@ public class Wordy_InGameController implements Initializable {
 
                         DialogPane dialogPane;
                         try {
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("r");
                             dialogPane= fxmlLoader.load();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -136,16 +136,29 @@ public class Wordy_InGameController implements Initializable {
 
                     }
                 });
+
                 if (matchMakingController != null) {
+//                    if (matchMakingController.timerCheck())
                     if (matchMakingController.timerCheck()) {
+                        System.out.println("pasok");
                         executorService.shutdown();
-                        matchMakingController.closeWindow(event);
+                        new JFXPanel();
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                matchMakingController.closeWindow(event);
+                                matchMakingController.closeWindow(new ActionEvent());
+                                readyButton.getScene().getWindow().hide();
+
+                            }
+                        });
                         Platform.exit();
                     }
                 }
 
             }
         };
+
         executorService.execute(reqLetters);
         executorService.execute(timer);
     }
