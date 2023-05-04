@@ -44,7 +44,7 @@ public class Wordy_MatchMakingController implements Initializable {
     public static WordyGameServer wordyGameServer;
     public static WordyGamePlayer wordyGamePlayer;
     public int gameID;
-    public static ScheduledExecutorService scheduledExecutorService;
+    public ScheduledExecutorService scheduledExecutorService;
 
 
     @FXML
@@ -73,6 +73,9 @@ public class Wordy_MatchMakingController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
+        if (timer == 0) {
+            timer = 10;
+        }
     }
 
     Runnable Timer = new Runnable() {
@@ -88,6 +91,18 @@ public class Wordy_MatchMakingController implements Initializable {
             }
         }
     };
+
+    public boolean timerCheck()  {
+        while (!scheduledExecutorService.isShutdown()) {
+            if (scheduledExecutorService.isShutdown()) {
+                if (Wordy_MatchMakingController.timer == 0) {
+                    System.out.println("zero na");
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

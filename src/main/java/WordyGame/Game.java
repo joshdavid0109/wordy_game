@@ -63,7 +63,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
 //          playerReadyStatus = new boolean[players.size()];
           scheduler.shutdown();
         } else {
-          System.out.println("No other players have joined");
+          System.out.println("No other players have joined123");
           gameID = 0;
           status = null;
           scheduler.shutdown();
@@ -111,7 +111,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   {
     gameID = 0;
     status = "";
-    timerCounter = 10;
     winnerID = 0;
     hostID = 0;
   } // ctor
@@ -127,7 +126,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-//    timerCounter = 10;
+    timerCounter = 11;
 //    readyCounter = 15;
     this.gameID = gameID;
     this.hostID = hostID;

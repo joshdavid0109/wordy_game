@@ -61,17 +61,21 @@ public class ServerServant extends WordyGameServerPOA {
 
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
+                    if (game.gameID == 0) {
+                        System.out.println("game will be removed from the listfg");
+                        games.remove(game);
+                        System.out.println(games.size());
+                        throw new NoPlayersAvailable("No other players have joined the game.4");
+                    }
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
-                        if (game.gameID == 0) {
-                            games.remove(game);
-
-                            System.out.println(games.size());
-                            throw new NoPlayersAvailable("No other players have joined the game.");
-                        }
                         games.get(0).wgPlayers.add(wordyGamePlayer);
                         return game.gameID;
                     }
+                } else {
+                    System.out.println("game will be removed from the listel");
+                    games.remove(game);
+                    throw new NoPlayersAvailable("No other players have joined the game3.");
                 }
             } else {
                 for (Game g :
@@ -98,19 +102,25 @@ public class ServerServant extends WordyGameServerPOA {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
+                                    System.out.println("game will be removed from the listw");
                                     games.remove(game);
                                     System.out.println("size " +games.size());
-                                    throw new NoPlayersAvailable("No other players have joined the game.");
+                                    throw new NoPlayersAvailable("No other players have joined the game2.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
                                 return game.gameID;
                             }
+                        } else {
+                            System.out.println("game will be removed from the listg");
+                            games.remove(game);
+                            throw new NoPlayersAvailable("No other players have joined the game1.");
                         }
                         break;
                     }
                 }
             }
         } while (game.timerCounter != 0);
+
         return game.gameID;
     }
 

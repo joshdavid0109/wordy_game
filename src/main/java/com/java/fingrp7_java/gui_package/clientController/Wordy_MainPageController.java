@@ -65,9 +65,8 @@ public class Wordy_MainPageController implements Initializable {
     void playGame(ActionEvent event) throws IOException {
         if (wordyGameServer != null) {
             if (playerID != 0) {
-
 //                    matchMakingController.decline.fire();
-                    FXMLLoader loader = new FXMLLoader();
+                FXMLLoader loader = new FXMLLoader();
 
                     Runnable timer = new Runnable() {
                         @Override
@@ -100,12 +99,11 @@ public class Wordy_MainPageController implements Initializable {
                                 }
                             });
                             if (matchMakingController != null) {
-                                if (Wordy_MatchMakingController.scheduledExecutorService.isShutdown()) {
-                                    executorService.shutdown();
-                                    Platform.exit();
-                                }
+                                if (matchMakingController.timerCheck()) {
+                                        executorService.shutdown();
+                                        Platform.exit();
+                                    }
                             }
-
                         }
                     };
 
@@ -160,6 +158,7 @@ public class Wordy_MainPageController implements Initializable {
                             }
                         }
                     };
+
                 executorService.execute(playGame);
                 executorService.execute(timer);
 

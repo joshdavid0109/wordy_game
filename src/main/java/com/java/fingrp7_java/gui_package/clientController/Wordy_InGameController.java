@@ -131,7 +131,7 @@ public class Wordy_InGameController implements Initializable {
                     }
                 });
                 if (matchMakingController != null) {
-                    if (Wordy_MatchMakingController.scheduledExecutorService.isShutdown()) {
+                    if (matchMakingController.timerCheck()) {
                         executorService.shutdown();
                         Platform.exit();
                     }
