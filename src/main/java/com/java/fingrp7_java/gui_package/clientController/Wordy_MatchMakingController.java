@@ -49,14 +49,14 @@ public class Wordy_MatchMakingController implements Initializable {
 
     @FXML
     void play(ActionEvent event) {
-        Stage stage = (Stage) decline.getScene().getWindow();
+        Stage stage = (Stage) timerText.getScene().getWindow();
         stage.close();
     }
 
 
     @FXML
     public void closeWindow(ActionEvent event) {
-        Stage stage = (Stage) decline.getScene().getWindow();
+        Stage stage = (Stage) timerText.getScene().getWindow();
         stage.close();
     }
 
