@@ -211,6 +211,7 @@ public class ServerServant extends WordyGameServerPOA {
                             charArray) {
                         sb.append(c);
                     }
+//                    System.out.println(sb);
                     words = LetterGenerator.getWords(sb.toString());
 
 
@@ -236,9 +237,7 @@ public class ServerServant extends WordyGameServerPOA {
 
 
         }while (Game.readyCounter != 0);
-
-/*        System.out.println("fsav");
-        System.out.println(Arrays.toString(charArray));*/
+//        System.out.println(game.lettersPerRound.get(1));
         words = LetterGenerator.getWords(sb.toString());
         System.out.println(words);
         game.roundTimer();

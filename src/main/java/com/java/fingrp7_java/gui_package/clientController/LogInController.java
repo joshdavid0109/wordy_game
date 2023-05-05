@@ -60,8 +60,8 @@ public class LogInController implements Initializable {
 
 
 
-//            Wordy_MainPageController.wordyGameServer = wordyGameServer;
-//            Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+            Wordy_MainPageController.wordyGameServer = wordyGameServer;
+            Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
 
             Parent root = null;
             try {

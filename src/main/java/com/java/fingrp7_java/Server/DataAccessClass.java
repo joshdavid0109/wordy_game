@@ -8,7 +8,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 import java.sql.*;
 import java.util.ArrayList;
 
-/*
+
 public class DataAccessClass {
     static Connection connection;
 
@@ -88,8 +88,8 @@ public class DataAccessClass {
             e.printStackTrace();
         }
 
-*/
-/*        topWords = new TopWord();*//*
+
+//        topWords = new TopWord();
 
         return topWords;
     }
@@ -170,4 +170,4 @@ public class DataAccessClass {
         return "";
     }
 }
-*/
+
