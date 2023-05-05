@@ -3,7 +3,18 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MainPageController;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import javax.xml.crypto.Data;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -15,7 +26,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
-    public LetterGenerator letterGenerator = new LetterGenerator();
+    DataAccessClass dataAccessClass = new DataAccessClass();
 
 
     @Override
@@ -44,20 +55,22 @@ public class ServerServant extends WordyGameServerPOA {
         do {
             if (games.size() == 0) {
                 game = new Game();
-                
+
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
+                Wordy_MatchMakingController.timer = game.timerCounter;
 
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
+                    if (game.gameID == 0) {
+                        System.out.println("game will be removed from the listfg");
+                        games.remove(game);
+                        System.out.println(games.size());
+                        throw new NoPlayersAvailable("No other players have joined the game.4");
+                    }
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
-                        if (game.gameID == 0) {
-                            games.remove(game);
-                            System.out.println(games.size());
-                            throw new NoPlayersAvailable("No other players have joined the game.");
-                        }
                         games.get(0).wgPlayers.add(wordyGamePlayer);
                         return game.gameID;
                     }
@@ -87,19 +100,25 @@ public class ServerServant extends WordyGameServerPOA {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
+                                    System.out.println("game will be removed from the listw");
                                     games.remove(game);
                                     System.out.println("size " +games.size());
-                                    throw new NoPlayersAvailable("No other players have joined the game.");
+                                    throw new NoPlayersAvailable("No other players have joined the game2.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
                                 return game.gameID;
                             }
+                        } else {
+                            System.out.println("game will be removed from the listg");
+                            games.remove(game);
+                            throw new NoPlayersAvailable("No other players have joined the game1.");
                         }
                         break;
                     }
                 }
             }
         } while (game.timerCounter != 0);
+
         return game.gameID;
     }
 
@@ -118,35 +137,36 @@ public class ServerServant extends WordyGameServerPOA {
                 games) {
             if (g.gameID == gameID) {
 
+                try {
+                    if (g.lettersPerRound.get(g.round) == null)
+                        throw new ExceededTimeLimit("Exceeded Time Limit.");
 
-                if (g.lettersPerRound.get(g.round) == null)
-                    throw new ExceededTimeLimit("Exceeded Time Limit.");
+                    letters = g.lettersPerRound.get(g.round);
 
-                letters = g.lettersPerRound.get(g.round);
+                    for (char c :
+                            letters) {
+                        sb.append(c);
+                    }
 
-                for (char c:
-                     letters) {
-                    sb.append(c);
+                    List<String> listOfValidWords = LetterGenerator.
+                            getWords(sb.toString());
+
+                    if (word.length() < WORD_LIMIT) {
+                        throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                    } else if (!listOfValidWords.contains(word)) {
+                        throw new InvalidWord("Invalid word.");
+                    }
+
+                }catch (ExceededTimeLimit | InvalidWord | WordLessThanFiveLetters e) {
+                    if (e instanceof ExceededTimeLimit)
+                        throw new ExceededTimeLimit("Exceeded Time Limit.");
+                    else if (e instanceof WordLessThanFiveLetters)
+                        throw new WordLessThanFiveLetters("Word should be 5 letters or more");
+                    else
+                        throw new InvalidWord("Invalid word.");
                 }
 
-                List<String> listOfValidWords = LetterGenerator.
-                        getWords(sb.toString());
-
-                if (word.length() < WORD_LIMIT){
-                    throw new WordLessThanFiveLetters("Word should be 5 letters or more");
-                }
-                else if (!listOfValidWords.contains(word)){
-                    throw new InvalidWord("Invalid word.");
-                }
-
-
-                System.out.println("valid");
-
-                int score = word.length();
-                //assign score sa userid, query sa database or sum
-
-
-
+                dataAccessClass.writeToWord(word, gameID, userID, g.round);
 
             }
         }
@@ -154,29 +174,44 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
-    public char[] requestLetters(String gameID) {
+    public char[] requestLetters(int gameID) {
         char[] charArray = new char[17];
-
+        StringBuilder sb = new StringBuilder();
+        List<String> words = null;
 
         do {
-            for (Game g :
-                    games) {
-                if (g.gameID == Integer.parseInt(gameID)) {
+            for (int i = 0; i < games.size(); i++) {
+                Game g = games.get(i);
+                if (g.gameID == gameID) {
+                    game = g;
                     if (g.lettersPerRound.get(g.round) == null) {
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
                     }
                     charArray = g.lettersPerRound.get(g.round);
 
+                    for (char c :
+                            charArray) {
+                        sb.append(c);
+                    }
+                    words = LetterGenerator.getWords(sb.toString());
+
+
                     for (WordyGamePlayer wgp:
-                         g.wgPlayers) {
+                            g.wgPlayers) {
                         if (!wgp.status.equalsIgnoreCase("ready")) {
                             break;
                         }
                     }
-                    if (g.playerChecker()) {
-                        if (g.winnerID == 0) {
-                            return charArray;
+                    if (g.scheduler.isShutdown()) {
+                        if (g.playerChecker()) {
+                            g.scheduler.shutdown();
+                            if (g.winner == null) {
+                                System.out.println("wala pang winner");
+                                System.out.println(words);
+                                game.roundTimer();
+                                return charArray;
+                            }
                         }
                     }
                 }
@@ -185,24 +220,43 @@ public class ServerServant extends WordyGameServerPOA {
 
         }while (game.readyCounter!= 0);
 
-        StringBuilder sb = new StringBuilder();
 
-        for (char c :
-                charArray) {
-            sb.append(c);
-        }
-        System.out.println(LetterGenerator.getWords(sb.toString()));
+        System.out.println(words);
+        game.roundTimer();
+
+
+
         return charArray;
     }
 
     @Override
-    public String checkWinner(String gameID) {
-        return null;
+    public String checkWinner(int gameID) {
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+                for (WordyGamePlayer wgp :
+                        g.wgPlayers) {
+                    if (wgp.wins>0) {
+                        System.out.println(wgp.id);
+                        try {
+                            return dataAccessClass.getGameWinner(wgp.id);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+        return "";
     }
 
     @Override
-    public boolean roundStatus(String gameID) {
-        return false;
+    public int getTimer(String of) {
+        if (of.equalsIgnoreCase("g")) {
+            return game.timerCounter;
+        } else if (of.equalsIgnoreCase("r"))
+            return game.readyCounter;
+        return 0;
     }
 
     @Override
@@ -215,12 +269,4 @@ public class ServerServant extends WordyGameServerPOA {
         return new TopPlayer[0];
     }
 
-
-
-
-
-
-    @Override
-    public void checkWord(String word, String gameID, int userID) throws InvalidWord, WordLessThanFiveLetters, ExceededTimeLimit {
-    }
 }

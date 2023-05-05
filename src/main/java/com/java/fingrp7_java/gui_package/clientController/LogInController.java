@@ -79,6 +79,7 @@ public class LogInController implements Initializable {
     void showPassword(ActionEvent event) {
 
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {

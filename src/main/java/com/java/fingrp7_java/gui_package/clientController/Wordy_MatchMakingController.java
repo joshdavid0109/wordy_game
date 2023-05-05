@@ -1,9 +1,7 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
-import WordyGame.NoPlayersAvailable;
-import WordyGame.WordyGamePlayer;
-import WordyGame.WordyGameServer;
-import WordyGame.WordyGameServerHelper;
+import WordyGame.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -39,23 +38,24 @@ public class Wordy_MatchMakingController implements Initializable {
     @FXML
     private Text timerText;
 
-    int timer = 10;
+    public static int timer;
 
     public static String[] args;
     public static WordyGameServer wordyGameServer;
     public static WordyGamePlayer wordyGamePlayer;
     public int gameID;
-    ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+    public ScheduledExecutorService scheduledExecutorService;
 
 
     @FXML
     void play(ActionEvent event) {
-
+        Stage stage = (Stage) decline.getScene().getWindow();
+        stage.close();
     }
 
 
     @FXML
-    void closeWindow(ActionEvent event) {
+    public void closeWindow(ActionEvent event) {
         Stage stage = (Stage) decline.getScene().getWindow();
         stage.close();
     }
@@ -71,17 +71,38 @@ public class Wordy_MatchMakingController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
+        if (timer == 0) {
+            timer = 10;
+        }
     }
 
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
             timerText.setText(String.valueOf(timer--));
-            if (timer == 0) {
+            if (timer < 1) {
                 scheduledExecutorService.shutdown();
-                decline.fire();
+                Stage stage = (Stage) decline.getScene().getWindow();
+                stage.close();
+//                closeWindow(new ActionEvent());
+//                decline.fire();
             }
         }
     };
+
+    public boolean timerCheck()  {
+        while (!scheduledExecutorService.isShutdown()) {
+            if (scheduledExecutorService.isShutdown()) {
+                if (Wordy_MatchMakingController.timer == 0) {
+                    System.out.println("zero na");
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
