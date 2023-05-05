@@ -26,6 +26,7 @@ public class ServerServant extends WordyGameServerPOA {
     static private final int WORD_LIMIT = 5;
 
     static WordyGame.Game game;
+    static char[] charArray = new char[17];
     ScheduledExecutorService scheduler;
     DataAccessClass dataAccessClass = new DataAccessClass();
 
@@ -155,6 +156,7 @@ public class ServerServant extends WordyGameServerPOA {
                         throw new ExceededTimeLimit("Exceeded Time Limit.");
 
                     letters = g.lettersPerRound.get(g.round);
+                    System.out.println(g.lettersPerRound.get(g.round));
 
                     for (char c :
                             letters) {
@@ -189,7 +191,6 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public char[] requestLetters(int gameID) {
-        char[] charArray = new char[17];
         StringBuilder sb = new StringBuilder();
         List<String> words = null;
 
@@ -201,32 +202,31 @@ public class ServerServant extends WordyGameServerPOA {
                     if (g.lettersPerRound.get(g.round) == null) {
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
-                    }
+                        for (char c :
+                                charArray) {
+                            sb.append(c);
+                        }
+                    }else {
                         charArray = g.lettersPerRound.get(g.round);
+                    }
 
 //                    System.out.println("asd");
 //                    System.out.println(Arrays.toString(charArray));
 
-                    for (char c :
-                            charArray) {
-                        sb.append(c);
-                    }
+
 //                    System.out.println(sb);
                     words = LetterGenerator.getWords(sb.toString());
+/*                    if (g.scheduler.isShutdown()) {
+                        charArray
+                    }*/
 
-
-                    for (WordyGamePlayer wgp:
-                            g.wgPlayers) {
-                        if (!wgp.status.equalsIgnoreCase("ready")) {
-                            break;
-                        }
-                    }
-                    if (g.scheduler.isShutdown()) {
+                    if (g.scheduler.isShutdown() && g.timerCounter == 0) {
                         if (g.playerChecker()) {
                             g.scheduler.shutdown();
                             if (g.winner == null) {
                                 System.out.println("wala pang winner");
-                                System.out.println(words);
+                                System.out.println("1"+words);
+                                System.out.println(sb.toString());
                                 game.roundTimer();
                                 return charArray;
                             }
@@ -237,12 +237,10 @@ public class ServerServant extends WordyGameServerPOA {
 
 
         }while (Game.readyCounter != 0);
-//        System.out.println(game.lettersPerRound.get(1));
+        System.out.println(sb.toString());
         words = LetterGenerator.getWords(sb.toString());
         System.out.println(words);
         game.roundTimer();
-
-
 
         return charArray;
     }

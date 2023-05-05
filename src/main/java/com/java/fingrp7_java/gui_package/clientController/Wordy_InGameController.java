@@ -140,7 +140,7 @@ public class Wordy_InGameController implements Initializable {
 
                 if (matchMakingController != null) {
 //                    if (matchMakingController.timerCheck())
-                    if (matchMakingController.timerCheck()) {
+                    if (Wordy_MatchMakingController.timer == 0) {
                         System.out.println("pasok");
                         executorService.shutdown();
                         new JFXPanel();

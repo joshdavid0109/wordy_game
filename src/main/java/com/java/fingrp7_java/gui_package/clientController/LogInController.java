@@ -10,7 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
+
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.ir.EmptyNode;
 import org.omg.CORBA.ORB;
@@ -19,12 +21,15 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
+
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
+    public TextField usernameTF;
+    public PasswordField passwordTF;
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -39,14 +44,10 @@ public class LogInController implements Initializable {
     @FXML
     private Button enterButton;
 
-    @FXML
-    private TextArea passwordTF;
 
     @FXML
     private CheckBox showPasswordCB;
 
-    @FXML
-    private TextArea usernameTF;
 
     public static String[] args;
     public static WordyGameServer wordyGameServer;
