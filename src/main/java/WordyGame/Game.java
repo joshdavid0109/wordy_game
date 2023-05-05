@@ -1,7 +1,6 @@
 package WordyGame;
 
 
-import com.java.fingrp7_java.Server.DataAccessClass;
 import com.java.fingrp7_java.Server.Word;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
@@ -47,7 +46,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public ArrayList<Word> words;
   public ArrayList<String> strings = new ArrayList<>();
 
-  DataAccessClass dataAccessClass = new DataAccessClass();
+/*  DataAccessClass dataAccessClass = new DataAccessClass();*/
 
   public WordyGamePlayer host;
   public WordyGamePlayer winner;
