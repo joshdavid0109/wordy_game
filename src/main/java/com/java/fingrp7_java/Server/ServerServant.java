@@ -29,6 +29,8 @@ public class ServerServant extends WordyGameServerPOA {
     static char[] charArray = new char[17];
     ScheduledExecutorService scheduler;
     DataAccessClass dataAccessClass = new DataAccessClass();
+    public ArrayList<Word> words;
+    public ArrayList<String> strings = new ArrayList<>();
 
 
     @Override
@@ -156,7 +158,6 @@ public class ServerServant extends WordyGameServerPOA {
                         throw new ExceededTimeLimit("Exceeded Time Limit.");
 
                     letters = g.lettersPerRound.get(g.round);
-                    System.out.println(g.lettersPerRound.get(g.round));
 
                     for (char c :
                             letters) {
@@ -227,7 +228,9 @@ public class ServerServant extends WordyGameServerPOA {
                                 System.out.println("wala pang winner");
                                 System.out.println("1"+words);
                                 System.out.println(sb.toString());
-                                game.roundTimer();
+                                if (g.roundTimer()) {
+                                    g.scheduler.shutdown();
+                                }
                                 return charArray;
                             }
                         }
@@ -237,16 +240,19 @@ public class ServerServant extends WordyGameServerPOA {
 
 
         }while (Game.readyCounter != 0);
-        System.out.println(sb.toString());
-        words = LetterGenerator.getWords(sb.toString());
+//        System.out.println(sb.toString());
+//        words = LetterGenerator.getWords(sb.toString());
         System.out.println(words);
-        game.roundTimer();
+        if (game.playerChecker()) {
+            game.scheduler.shutdown();
+        }
 
         return charArray;
     }
 
     @Override
     public String checkWinner(int gameID) {
+        int round = 0;
         for (Game g :
                 games) {
             if (g.gameID == gameID) {
