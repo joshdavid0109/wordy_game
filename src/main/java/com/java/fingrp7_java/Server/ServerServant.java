@@ -31,7 +31,19 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
+        int loginStatus = dataAccessClass.checkCredentials(username, password);
 
+        switch (loginStatus) {
+            case 0:
+                System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
+                break;
+            case 1:
+                System.out.println("USER: " + username + " TRIED TO LOG IN WITH THE WRONG PASSWORD: " + password);
+                throw new InvalidPassword("Invalid password! Try again.");
+            case 2:
+                System.out.println("LOG IN ATTEMPT BY " + username + " WITH THE PASSWORD " + password);
+                throw new InvalidCredentials("Invalid credentials! Try again.");
+        }
     }
 
     @Override

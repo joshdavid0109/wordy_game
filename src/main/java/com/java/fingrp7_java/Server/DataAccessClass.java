@@ -1,6 +1,7 @@
 package com.java.fingrp7_java.Server;
 
 
+import WordyGame.InvalidCredentials;
 import WordyGame.TopWord;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 
@@ -105,25 +106,35 @@ public class DataAccessClass {
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordy_schema", "root", "");
     }
 
-    public int checkCredentials(String username, String password) {
-        String query = "SELECT * FROM USERS where username=? AND password=?";
-        PreparedStatement preparedStatement = null;
+    int checkCredentials(String username, String password) {
+        String query = "SELECT * FROM USERS WHERE username = ?";
+        String query2 = "SELECT * FROM USERS WHERE password = ?";
+        PreparedStatement ps = null;
         try {
-            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            ps.setString(1, username);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                //query returned; log in OK:)
+                ps = connection.prepareStatement(query2, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+                ps.setString(1, password);
+
+                ResultSet rs1 = ps.executeQuery();
+
+                if (rs1.next()) {
+                    return 0;
+                } else {
+                    // throw InvalidPassword exception
+                    return 1;
+                }
+            } else {
+                // throw InvalidCredentials exception
                 return 2;
-            } else
-            {
-                //no match sa db; login invalid
-                return 0;
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
