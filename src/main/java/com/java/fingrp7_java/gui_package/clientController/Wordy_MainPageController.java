@@ -131,11 +131,11 @@ public class Wordy_MainPageController implements Initializable {
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                            matchMakingController.closeWindow(event);
-                                            executorService.shutdown();
+                                        matchMakingController.closeWindow(event);
+                                        executorService.shutdown();
 
-                                            matchMakingController.closeWindow(new ActionEvent());
-                                            playGameButton.getScene().getWindow().hide();
+                                        matchMakingController.closeWindow(new ActionEvent());
+                                        playGameButton.getScene().getWindow().hide();
                                         loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
 
                                         Wordy_InGameController.wordyGameServer = wordyGameServer;

@@ -16,6 +16,7 @@ import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -64,10 +65,10 @@ public class ServerServant extends WordyGameServerPOA {
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
                     if (game.gameID == 0) {
-                        System.out.println("game will be removed from the listfg");
+                        System.out.println("game will be removed from the list");
                         games.remove(game);
                         System.out.println(games.size());
-                        throw new NoPlayersAvailable("No other players have joined the game.4");
+                        throw new NoPlayersAvailable("No other players have joined the game.");
                     }
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
@@ -100,18 +101,18 @@ public class ServerServant extends WordyGameServerPOA {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
-                                    System.out.println("game will be removed from the listw");
+                                    System.out.println("game will be removed from the list");
                                     games.remove(game);
                                     System.out.println("size " +games.size());
-                                    throw new NoPlayersAvailable("No other players have joined the game2.");
+                                    throw new NoPlayersAvailable("No other players have joined the game.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
                                 return game.gameID;
                             }
                         } else {
-                            System.out.println("game will be removed from the listg");
+                            System.out.println("game will be removed from the list");
                             games.remove(game);
-                            throw new NoPlayersAvailable("No other players have joined the game1.");
+                            throw new NoPlayersAvailable("No other players have joined the game.");
                         }
                         break;
                     }
@@ -189,7 +190,10 @@ public class ServerServant extends WordyGameServerPOA {
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
                     }
-                    charArray = g.lettersPerRound.get(g.round);
+                        charArray = g.lettersPerRound.get(g.round);
+
+//                    System.out.println("asd");
+//                    System.out.println(Arrays.toString(charArray));
 
                     for (char c :
                             charArray) {
@@ -221,7 +225,9 @@ public class ServerServant extends WordyGameServerPOA {
 
         }while (Game.readyCounter != 0);
 
-
+/*        System.out.println("fsav");
+        System.out.println(Arrays.toString(charArray));*/
+        words = LetterGenerator.getWords(sb.toString());
         System.out.println(words);
         game.roundTimer();
 

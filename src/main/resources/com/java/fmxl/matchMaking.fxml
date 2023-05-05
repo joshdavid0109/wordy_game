@@ -29,7 +29,7 @@
                   <Image url="@../../../SLU_LOGO-removebg-preview.png" />
                </image>
             </ImageView>
-            <Button fx:id="closeButton" layoutX="305.0" layoutY="121.0" mnemonicParsing="false" onAction="#closeButton" text="CLOSE" />
+            <Button fx:id="closeButton" layoutX="305.0" layoutY="121.0" mnemonicParsing="false" onAction="#closeWindow" text="CLOSE" />
          </children>
       </Pane>
    </content>

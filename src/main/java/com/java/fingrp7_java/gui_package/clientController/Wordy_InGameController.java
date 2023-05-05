@@ -87,6 +87,7 @@ public class Wordy_InGameController implements Initializable {
 
                 if (letters != null) {
                     executorService.shutdown();
+
                 }
 
                     scheduledExecutorService.scheduleAtFixedRate(new Runnable() {

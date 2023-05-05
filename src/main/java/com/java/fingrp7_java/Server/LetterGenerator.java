@@ -132,5 +132,6 @@ public class LetterGenerator {
         String a = getRandomLetters();
         System.out.println(a);
         System.out.println(getWords(a));
+        System.out.println(getWords(a));
     }
 }
