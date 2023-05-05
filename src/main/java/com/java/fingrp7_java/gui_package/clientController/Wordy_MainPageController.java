@@ -75,7 +75,7 @@ public class Wordy_MainPageController implements Initializable {
 
                             Platform.setImplicitExit(false);
 
-                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer();
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("g");
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -84,6 +84,7 @@ public class Wordy_MainPageController implements Initializable {
 
                                     DialogPane dialogPane;
                                     try {
+
                                         dialogPane= fxmlLoader.load();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -100,9 +101,10 @@ public class Wordy_MainPageController implements Initializable {
                             });
                             if (matchMakingController != null) {
                                 if (matchMakingController.timerCheck()) {
+                                    System.out.println("closing");
                                         executorService.shutdown();
                                         Platform.exit();
-                                    }
+                                }
                             }
                         }
                     };
@@ -134,11 +136,11 @@ public class Wordy_MainPageController implements Initializable {
 
                                         matchMakingController.closeWindow(new ActionEvent());
                                         playGameButton.getScene().getWindow().hide();
-
                                         loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
 
                                         Wordy_InGameController.wordyGameServer = wordyGameServer;
                                         Wordy_InGameController.gameID = gameID;
+                                        Wordy_InGameController.userID = playerID;
 
                                         Parent root;
 

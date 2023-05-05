@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Wordy_MatchMakingController implements Initializable {
     public Button decline;
+    public Button closeButton;
     @FXML
     private Button playGame;
 
@@ -47,16 +48,10 @@ public class Wordy_MatchMakingController implements Initializable {
     public ScheduledExecutorService scheduledExecutorService;
 
 
-    @FXML
-    void play(ActionEvent event) {
-        Stage stage = (Stage) decline.getScene().getWindow();
-        stage.close();
-    }
-
 
     @FXML
     public void closeWindow(ActionEvent event) {
-        Stage stage = (Stage) decline.getScene().getWindow();
+        Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
@@ -103,6 +98,5 @@ public class Wordy_MatchMakingController implements Initializable {
         }
         return false;
     }
-
 
 }

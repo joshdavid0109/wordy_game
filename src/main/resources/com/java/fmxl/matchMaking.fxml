@@ -8,11 +8,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane fx:id="matchmakingDialog" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
+<DialogPane fx:id="matchmakingDialog" prefHeight="153.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
    <content>
-      <Pane prefHeight="177.0" prefWidth="400.0">
+      <Pane prefHeight="182.0" prefWidth="400.0">
          <children>
-            <Text fx:id="timerText" fill="#434343" layoutX="138.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="123.0">
+            <Text fx:id="timerText" fill="#434343" layoutX="138.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="123.0">
                <font>
                   <Font name="System Bold" size="65.0" />
                </font>
@@ -22,23 +22,14 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Text>
-            <Button fx:id="playGame" layoutX="22.0" layoutY="163.0" mnemonicParsing="false" onAction="#play" prefHeight="25.0" prefWidth="123.0" style="-fx-background-color: #063710FF;" text="ACCEPT" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
             <Pane layoutX="70.0" layoutY="67.0" prefHeight="5.0" prefWidth="261.0" style="-fx-background-color: #B38C12;" />
             <Pane layoutX="69.0" layoutY="65.0" prefHeight="5.0" prefWidth="261.0" style="-fx-background-color: #FFC527;" />
-            <Button fx:id="decline" layoutX="255.0" layoutY="163.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="25.0" prefWidth="123.0" style="-fx-background-color: #830000;" text="DECLINE" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
             <ImageView fitHeight="64.0" fitWidth="74.0" layoutX="22.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../SLU_LOGO-removebg-preview.png" />
                </image>
             </ImageView>
+            <Button fx:id="closeButton" layoutX="305.0" layoutY="121.0" mnemonicParsing="false" onAction="#closeWindow" text="CLOSE" />
          </children>
       </Pane>
    </content>

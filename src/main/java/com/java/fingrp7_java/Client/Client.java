@@ -1,9 +1,6 @@
 package com.java.fingrp7_java.Client;
 
-import WordyGame.NoPlayersAvailable;
-import WordyGame.WordyGamePlayer;
-import WordyGame.WordyGameServer;
-import WordyGame.WordyGameServerHelper;
+import WordyGame.*;
 import com.sun.jmx.snmp.internal.SnmpSubSystem;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -40,24 +37,41 @@ public class Client {
 
             scanner = new Scanner(System.in);
 
-            int id;
-            System.out.print("ID: ");
-            id = scanner.nextInt();
-            System.out.println(id);
-            int gameId =0;
-            try {
-                gameId = wordyGameServer.playGame(id);
-            } catch (NoPlayersAvailable noPlayersAvailable) {
-                System.out.println(noPlayersAvailable.reason);
-            }
+//            int id;
+//            System.out.print("ID: ");
+//            id = scanner.nextInt();
+//            System.out.println(id);
+//            int gameId =0;
+//            try {
+//                gameId = wordyGameServer.playGame(id);
+//            } catch (NoPlayersAvailable noPlayersAvailable) {
+//                System.out.println(noPlayersAvailable.reason);
+//            }
+//
+//                if (gameId !=0) {
+//                    System.out.println("Type R.");
+//                    if (scanner.next().equalsIgnoreCase("R")) {
+////                        System.out.println(wordyGameServer.ready(id, gameId));
+//                        System.out.println(wordyGameServer.requestLetters(gameId));
+//                    }
+//                }
 
-                if (gameId !=0) {
-                    System.out.println("Type R.");
-                    if (scanner.next().equalsIgnoreCase("R")) {
-//                        System.out.println(wordyGameServer.ready(id, gameId));
-                        System.out.println(wordyGameServer.requestLetters(String.valueOf(gameId)));
-                    }
-                }
+//            System.out.print("USERNAME: ");
+//            String username = scanner.nextLine();
+//            System.out.print("PASSWORD: ");
+//            String password = scanner.nextLine();
+//
+//            try {
+//                wordyGameServer.login(username, password);
+//            } catch (ServerUnavailable e) {
+//                throw new RuntimeException(e);
+//            } catch (UserAlreadyLoggedIn e) {
+//                throw new RuntimeException(e);
+//            } catch (InvalidCredentials e) {
+//                throw new RuntimeException(e);
+//            } catch (InvalidPassword e) {
+//                throw new RuntimeException(e);
+//            }
 
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  RuntimeException e) {
