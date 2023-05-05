@@ -26,7 +26,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
-//    DataAccessClass dataAccessClass = new DataAccessClass();
+    DataAccessClass dataAccessClass = new DataAccessClass();
 
 
     @Override
@@ -167,7 +167,7 @@ public class ServerServant extends WordyGameServerPOA {
                 }
 
                 System.out.println("valid word");
-//                dataAccessClass.writeToWord(word, gameID, userID, g.round);
+                dataAccessClass.writeToWord(word, gameID, userID, g.round);
 
             }
         }
@@ -239,11 +239,11 @@ public class ServerServant extends WordyGameServerPOA {
                         g.wgPlayers) {
                     if (wgp.wins>0) {
                         System.out.println(wgp.id);
-/*                        try {
+                        try {
                             return dataAccessClass.getGameWinner(wgp.id);
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
-                        }*/
+                        }
                     }
                 }
             }
