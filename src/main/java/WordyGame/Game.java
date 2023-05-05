@@ -47,7 +47,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public ArrayList<Word> words;
   public ArrayList<String> strings = new ArrayList<>();
 
-  DataAccessClass dataAccessClass = new DataAccessClass();
+//  DataAccessClass dataAccessClass = new DataAccessClass();
 
   public WordyGamePlayer host;
   public WordyGamePlayer winner;

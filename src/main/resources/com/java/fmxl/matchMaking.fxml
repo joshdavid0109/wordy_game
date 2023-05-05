@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane fx:id="matchmakingDialog" prefHeight="151.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
+<DialogPane fx:id="matchmakingDialog" prefHeight="153.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
    <content>
       <Pane prefHeight="182.0" prefWidth="400.0">
          <children>
@@ -28,6 +29,7 @@
                   <Image url="@../../../SLU_LOGO-removebg-preview.png" />
                </image>
             </ImageView>
+            <Button fx:id="closeButton" layoutX="305.0" layoutY="121.0" mnemonicParsing="false" onAction="#closeButton" text="CLOSE" />
          </children>
       </Pane>
    </content>

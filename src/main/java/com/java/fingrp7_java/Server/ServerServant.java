@@ -26,7 +26,7 @@ public class ServerServant extends WordyGameServerPOA {
 
     static WordyGame.Game game;
     ScheduledExecutorService scheduler;
-    DataAccessClass dataAccessClass = new DataAccessClass();
+//    DataAccessClass dataAccessClass = new DataAccessClass();
 
 
     @Override
@@ -166,7 +166,8 @@ public class ServerServant extends WordyGameServerPOA {
                         throw new InvalidWord("Invalid word.");
                 }
 
-                dataAccessClass.writeToWord(word, gameID, userID, g.round);
+                System.out.println("valid word");
+//                dataAccessClass.writeToWord(word, gameID, userID, g.round);
 
             }
         }
@@ -218,7 +219,7 @@ public class ServerServant extends WordyGameServerPOA {
             }
 
 
-        }while (game.readyCounter!= 0);
+        }while (Game.readyCounter != 0);
 
 
         System.out.println(words);
@@ -238,11 +239,11 @@ public class ServerServant extends WordyGameServerPOA {
                         g.wgPlayers) {
                     if (wgp.wins>0) {
                         System.out.println(wgp.id);
-                        try {
+/*                        try {
                             return dataAccessClass.getGameWinner(wgp.id);
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
-                        }
+                        }*/
                     }
                 }
             }
@@ -252,10 +253,12 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public int getTimer(String of) {
-        if (of.equalsIgnoreCase("g")) {
-            return game.timerCounter;
-        } else if (of.equalsIgnoreCase("r"))
-            return game.readyCounter;
+        if (game != null) {
+            if (of.equalsIgnoreCase("g")) {
+                return game.timerCounter;
+            } else if (of.equalsIgnoreCase("r"))
+                return Game.readyCounter;
+        }
         return 0;
     }
 
