@@ -59,7 +59,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void logout(int userID) {
-
+        // userID is the username of the 456 user for now as of this commit until we find a way to get the UID of users
+        dataAccessClass.setStatusOffline(userID);
+        System.out.println("USER: " + userID + " HAS SUCCESSFULLY LOGGED OUT!");
     }
 
     /**

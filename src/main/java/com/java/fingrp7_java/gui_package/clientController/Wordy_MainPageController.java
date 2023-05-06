@@ -217,6 +217,8 @@ public class Wordy_MainPageController implements Initializable {
 
         showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/logInPage.fxml"));
 
+        wordyGameServer.logout(playerID);
+
         Parent root = null;
         try {
             root = showLongestWord.load();

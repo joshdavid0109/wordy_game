@@ -109,6 +109,20 @@ public class DataAccessClass {
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wordy_schema", "root", "");
     }
 
+    void setStatusOffline(int uid) {
+        String query = "UPDATE users SET isOnline = 0 WHERE username = ?";
+        PreparedStatement ps;
+
+        try {
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            // remove String.valueOf() sooner or later
+            ps.setString(1, String.valueOf(uid));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     int checkCredentials(String username, String password) {
         String query = "SELECT * FROM USERS WHERE username = ?";
         String query2 = "SELECT * FROM USERS WHERE password = ?";
