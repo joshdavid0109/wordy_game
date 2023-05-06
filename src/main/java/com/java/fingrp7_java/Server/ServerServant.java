@@ -35,18 +35,25 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
-        int loginStatus = dataAccessClass.checkCredentials(username, password);
+        try {
+            int loginStatus = dataAccessClass.checkCredentials(username, password);
 
-        switch (loginStatus) {
-            case 0:
-                System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
-                break;
-            case 1:
-                System.out.println("USER: " + username + " TRIED TO LOG IN WITH THE WRONG PASSWORD: " + password);
-                throw new InvalidPassword("Invalid password! Try again.");
-            case 2:
-                System.out.println("LOG IN ATTEMPT BY " + username + " WITH THE PASSWORD " + password);
-                throw new InvalidCredentials("Invalid credentials! Try again.");
+            switch (loginStatus) {
+                default:
+                    System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
+                    break;
+                case 1:
+                    System.out.println("USER: " + username + " IS ATTEMPTING TO LOG IN TO AN ONLINE ACCOUNT!");
+                    throw new UserAlreadyLoggedIn("Already logged in!");
+                case 2:
+                    System.out.println("USER: " + username + " TRIED TO LOG IN WITH THE WRONG PASSWORD: " + password);
+                    throw new InvalidPassword("Invalid password! Try again.");
+                case 3:
+                    System.out.println("LOG IN ATTEMPT BY " + username + " WITH THE PASSWORD " + password);
+                    throw new InvalidCredentials("Invalid credentials! Try again.");
+            }
+        } catch (Exception e) {
+//            throw new ServerUnavailable("Server not up!");
         }
     }
 

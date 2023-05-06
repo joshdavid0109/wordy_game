@@ -1,17 +1,15 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
-import WordyGame.WordyGameServer;
-import WordyGame.WordyGameServerHelper;
+import WordyGame.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.ir.EmptyNode;
@@ -59,9 +57,33 @@ public class LogInController implements Initializable {
 
             loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
 
+            String username = usernameTF.getText();
+            String password = passwordTF.getText();
+
+            int UID;
+
+            try {
+                wordyGameServer.login(username, password);
+            } catch (UserAlreadyLoggedIn e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                alert.showAndWait();
+            } catch (InvalidPassword e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                alert.showAndWait();
+            } catch (InvalidCredentials e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                alert.showAndWait();
+            } catch (ServerUnavailable e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                alert.showAndWait();
+            }
+
 
 
             Wordy_MainPageController.wordyGameServer = wordyGameServer;
+
+            // TODO: how do i get uid, help
+            // use username: 456 and password: 55555 for now to continue to the main page
             Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
 
             Parent root = null;

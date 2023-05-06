@@ -56,22 +56,22 @@ public class Client {
 //                    }
 //                }
 
-//            System.out.print("USERNAME: ");
-//            String username = scanner.nextLine();
-//            System.out.print("PASSWORD: ");
-//            String password = scanner.nextLine();
-//
-//            try {
-//                wordyGameServer.login(username, password);
-//            } catch (ServerUnavailable e) {
-//                throw new RuntimeException(e);
-//            } catch (UserAlreadyLoggedIn e) {
-//                throw new RuntimeException(e);
-//            } catch (InvalidCredentials e) {
-//                throw new RuntimeException(e);
-//            } catch (InvalidPassword e) {
-//                throw new RuntimeException(e);
-//            }
+            System.out.print("USERNAME: ");
+            String username = scanner.nextLine();
+            System.out.print("PASSWORD: ");
+            String password = scanner.nextLine();
+
+            try {
+                wordyGameServer.login(username, password);
+            } catch (ServerUnavailable e) {
+                throw new RuntimeException(e);
+            } catch (UserAlreadyLoggedIn e) {
+                throw new RuntimeException(e);
+            } catch (InvalidCredentials e) {
+                throw new RuntimeException(e);
+            } catch (InvalidPassword e) {
+                throw new RuntimeException(e);
+            }
 
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  RuntimeException e) {

@@ -112,7 +112,9 @@ public class DataAccessClass {
     int checkCredentials(String username, String password) {
         String query = "SELECT * FROM USERS WHERE username = ?";
         String query2 = "SELECT * FROM USERS WHERE password = ?";
-        PreparedStatement ps = null;
+        String query3 = "SELECT * FROM USERS WHERE username = ? AND password = ? AND isOnline = 0";
+        String query4 = "UPDATE users SET isOnline = 1 WHERE username = ? AND password = ?";
+        PreparedStatement ps;
         try {
             ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
@@ -128,14 +130,33 @@ public class DataAccessClass {
                 ResultSet rs1 = ps.executeQuery();
 
                 if (rs1.next()) {
-                    return 0;
+                    ps = connection.prepareStatement(query3, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+                    ps.setString(1, username);
+                    ps.setString(2, password);
+
+                    ResultSet rs2 = ps.executeQuery();
+
+                    if (rs2.next()) {
+                        // set status to 1 - which means user is now online
+                        ps = connection.prepareStatement(query4, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                        ps.setString(1, username);
+                        ps.setString(2, password);
+                        ps.executeUpdate();
+
+                        // successful login
+                        return 0;
+                    } else {
+                        // throw UserAlreadyLoggedIn exception
+                        return 1;
+                    }
                 } else {
                     // throw InvalidPassword exception
-                    return 1;
+                    return 2;
                 }
             } else {
                 // throw InvalidCredentials exception
-                return 2;
+                return 3;
             }
 
         } catch (SQLException e) {
