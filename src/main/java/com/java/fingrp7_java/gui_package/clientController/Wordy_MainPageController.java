@@ -136,11 +136,11 @@ public class Wordy_MainPageController implements Initializable {
 
                                         matchMakingController.closeWindow(new ActionEvent());
                                         playGameButton.getScene().getWindow().hide();
-                                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame.fxml"));
+                                        loader.setLocation(getClass().getResource("/com/java/fmxl/inGame_2.fxml"));
 
-                                        Wordy_InGameController.wordyGameServer = wordyGameServer;
-                                        Wordy_InGameController.gameID = gameID;
-                                        Wordy_InGameController.userID = playerID;
+                                        Wordy_InGameController2.wordyGameServer = wordyGameServer;
+                                        Wordy_InGameController2.gameID = gameID;
+                                        Wordy_InGameController2.userID = playerID;
 
                                         Parent root;
 

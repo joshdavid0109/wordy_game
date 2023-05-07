@@ -97,12 +97,12 @@ public class Wordy_InGameController implements Initializable {
                             if (roundTime < 0) {
                                 System.out.println("checking winner");
                                 System.out.println(wordyGameServer.checkWinner(gameID));
+                                executorService.shutdown();
                                 scheduledExecutorService.shutdown();
 
                             }
                         }
                     }, 0, 1, TimeUnit.SECONDS);
-
                 }
             }
         };

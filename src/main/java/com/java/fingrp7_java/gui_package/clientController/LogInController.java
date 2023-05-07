@@ -2,6 +2,7 @@ package com.java.fingrp7_java.gui_package.clientController;
 
 import WordyGame.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,12 +12,15 @@ import javafx.scene.control.*;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.ir.EmptyNode;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 
@@ -56,6 +60,7 @@ public class LogInController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
 
             loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+/*
 
             String username = usernameTF.getText();
             String password = passwordTF.getText();
@@ -79,6 +84,7 @@ public class LogInController implements Initializable {
             }
 
 
+*/
 
             Wordy_MainPageController.wordyGameServer = wordyGameServer;
 
@@ -125,9 +131,15 @@ public class LogInController implements Initializable {
 
             LogInController.wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
-        } catch (NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName e) {
-            throw new RuntimeException(e);
-        } catch (org.omg.CORBA.ORBPackage.InvalidName e) {
+            usernameTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode().equals(KeyCode.ENTER))
+                        logIn(new ActionEvent());
+                }
+            });
+
+        } catch (NotFound | CannotProceed | InvalidName | org.omg.CORBA.ORBPackage.InvalidName e) {
             throw new RuntimeException(e);
         }
     }

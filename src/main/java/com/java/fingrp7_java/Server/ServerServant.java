@@ -3,20 +3,10 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_MainPageController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import javax.xml.crypto.Data;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -85,11 +75,10 @@ public class ServerServant extends WordyGameServerPOA {
 //        scheduler.scheduleAtFixedRate(tenSecondGameTimer, 0,1, TimeUnit.SECONDS);;
         do {
             if (games.size() == 0) {
-                game = new Game();
-
                 System.out.println("First game of the day");
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
+                game.wgPlayers.add(wordyGamePlayer);
                 Wordy_MatchMakingController.timer = game.timerCounter;
 
                 if (game.tenSecondGameTimer()) {
@@ -102,7 +91,8 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                     if (game.timerCounter == 0) {
                         game.scheduler.shutdown();
-                        games.get(0).wgPlayers.add(wordyGamePlayer);
+                        if (!game.players.contains(userID))
+                            game.players.add(userID);
                         return game.gameID;
                     }
                 }
@@ -122,9 +112,9 @@ public class ServerServant extends WordyGameServerPOA {
                         break;
                     } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
                         System.out.println("new game");
-                        game = new Game();
                         games.add(new Game(games.size() + 1, userID));
                         game = games.get(games.size()-1);
+                        game.wgPlayers.add(wordyGamePlayer);
                         if (game.tenSecondGameTimer()) {
                             System.out.println("tens");
                             if (game.timerCounter == 0) {
@@ -155,7 +145,18 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public String ready(int userID, int gameID) {
-        boolean checker = false;
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+                for (WordyGamePlayer wgp :
+                        g.wgPlayers) {
+                    if (wgp.id == userID) {
+                        wgp.status = "ready";
+                        break;
+                    }
+                }
+            }
+        }
 
         return "ready";
     }
@@ -215,6 +216,8 @@ public class ServerServant extends WordyGameServerPOA {
                 Game g = games.get(i);
                 if (g.gameID == gameID) {
                     game = g;
+                    if (g.roundStat)
+                        break;
                     if (g.lettersPerRound.get(g.round) == null) {
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
@@ -226,65 +229,55 @@ public class ServerServant extends WordyGameServerPOA {
                         charArray = g.lettersPerRound.get(g.round);
                     }
 
-//                    System.out.println("asd");
-//                    System.out.println(Arrays.toString(charArray));
-
-
-//                    System.out.println(sb);
                     words = LetterGenerator.getWords(sb.toString());
-/*                    if (g.scheduler.isShutdown()) {
-                        charArray
-                    }*/
 
                     if (g.scheduler.isShutdown() && g.timerCounter == 0) {
                         if (g.playerChecker()) {
                             g.scheduler.shutdown();
-                            if (g.winner == null) {
-                                System.out.println("wala pang winner");
-                                System.out.println("1"+words);
-                                System.out.println(sb.toString());
-                                if (g.roundTimer()) {
-                                    g.scheduler.shutdown();
-                                }
-                                return charArray;
-                            }
                         }
                     }
                 }
             }
-
-
+            break;
         }while (Game.readyCounter != 0);
-//        System.out.println(sb.toString());
-//        words = LetterGenerator.getWords(sb.toString());
+
         System.out.println(words);
-        if (game.playerChecker()) {
-            game.scheduler.shutdown();
-        }
 
         return charArray;
     }
 
     @Override
     public String checkWinner(int gameID) {
-        int round = 0;
-        for (Game g :
-                games) {
-            if (g.gameID == gameID) {
-                for (WordyGamePlayer wgp :
-                        g.wgPlayers) {
-                    if (wgp.wins>0) {
-                        System.out.println(wgp.id);
-                        try {
-                            return dataAccessClass.getGameWinner(wgp.id);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
+        boolean checking = false;
+            for (Game g :
+                    games) {
+                if (g.gameID == gameID) {
+                    game = g;
+/*                    if (!checking) {
+                        g.checkRoundWin();
+                        checking = true;
+                    }*/
+                        for (WordyGamePlayer wgp :
+                                g.wgPlayers) {
+                            System.out.println(wgp.id + " " + wgp.wins);
+                            if (wgp.wins > 0) {
+                                System.out.println(wgp.id);
+
+                                // for tests lang
+                                return String.valueOf(wgp.id);
+
+                                // for registered users na ito
+/*                                try {
+                                    return dataAccessClass.getGameWinner(wgp.id);
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }*/
+                            }
                         }
-                    }
+
                 }
             }
-        }
-        return "";
+        return "end";
     }
 
     @Override

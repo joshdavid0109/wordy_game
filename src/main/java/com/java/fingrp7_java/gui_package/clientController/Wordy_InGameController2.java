@@ -1,5 +1,7 @@
 package com.java.fingrp7_java.gui_package.clientController;
 import WordyGame.*;
+import com.java.fingrp7_java.gui_package.client.PromptGameDraw;
+import com.java.fingrp7_java.gui_package.client.PromptGameWinner;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -9,71 +11,501 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Wordy_InGameController2 {
+public class Wordy_InGameController2 implements Initializable{
 
     @FXML
     private Text roundTimer;
     @FXML
-    private TextField letter1;
+    public TextField letter1;
     @FXML
-    private TextField letter2;
+    public TextField letter2;
     @FXML
-    private TextField letter3;
+    public TextField letter3;
     @FXML
-    private TextField letter4;
+    public TextField letter4;
     @FXML
-    private TextField letter5;
+    public TextField letter5;
     @FXML
-    private TextField letter6;
+    public TextField letter6;
     @FXML
-    private TextField letter7;
+    public TextField letter7;
     @FXML
-    private TextField letter8;
+    public TextField letter8;
     @FXML
-    private TextField letter9;
+    public TextField letter9;
     @FXML
-    private TextField letter10;
+    public TextField letter10;
     @FXML
-    private TextField letter11;
+    public TextField letter11;
     @FXML
-    private TextField letter12;
+    public TextField letter12;
     @FXML
-    private TextField letter13;
+    public TextField letter13;
     @FXML
-    private TextField letter14;
+    public TextField letter14;
     @FXML
-    private TextField letter15;
+    public TextField letter15;
     @FXML
-    private TextField letter16;
+    public TextField letter16;
     @FXML
-    private TextField letter17;
+    public TextField letter17;
     @FXML
-    private TextField wordsTF;
+    public TextField wordsTF;
     @FXML
     private Button ready;
     @FXML
     private Button exitGame;
 
+    public static int userID;
+    public static int gameID;
+    public static int roundTime = 10;
+    public static WordyGameServer wordyGameServer;
+    char[] letters = new char[17];
+    ScheduledExecutorService scheduledExecutorService;
+    ExecutorService executorService;
+    static Wordy_MatchMakingController matchMakingController;
+
+    ArrayList<TextField> textFields = new ArrayList<>();
+
     public void ready(ActionEvent actionEvent) {
+//        ready.setVisible(false);
+        executorService = Executors.newFixedThreadPool(10);
+        scheduledExecutorService = Executors.newScheduledThreadPool(10);
+
+        wordyGameServer.ready(userID, gameID);
+
+        Runnable reqLetters = new Runnable() {
+            @Override
+            public void run() {
+                letters = wordyGameServer.requestLetters(gameID);
+
+                StringBuilder sb = new StringBuilder();
+
+                if (letters != null) {
+
+                    for (int i = 0; i < textFields.size(); i++)  {
+                        TextField tf = textFields.get(i);
+                        tf.setText(String.valueOf(letters[i]));
+                    }
+
+                    if (letters != null) {
+                        executorService.shutdown();
+                    }
+
+                    scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+                        @Override
+                        public void run() {
+                            roundTimer.setText(String.valueOf(roundTime--));
+                            if (roundTime < 0) {
+                                System.out.println("checking winner");
+                                String winnerID = wordyGameServer.checkWinner(gameID);
+
+                                System.out.println(winnerID + " " + userID);
+                                GameWinnerController.name = winnerID;
+                                if (Integer.parseInt(winnerID) == userID) {
+                                    new JFXPanel().requestFocus();
+
+                                    Platform.setImplicitExit(false);
+
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            FXMLLoader fxmlLoader = new FXMLLoader();
+                                            fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+
+                                            DialogPane dialogPane;
+                                            try {
+                                                dialogPane= fxmlLoader.load();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            GameWinnerController gameWinnerController = fxmlLoader.getController();
+
+
+                                            Dialog<ButtonType> dialog = new Dialog<>();
+                                            dialog.initStyle(StageStyle.UNDECORATED);
+                                            dialog.setDialogPane(dialogPane);
+                                            dialog.show();
+
+                                        }
+                                    });
+                                } else if (GameDrawController.longestWords.length > 1) {
+                                    new JFXPanel().requestFocus();
+
+                                    Platform.setImplicitExit(false);
+
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            FXMLLoader fxmlLoader = new FXMLLoader();
+                                            fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameDraw.fxml"));
+
+                                            DialogPane dialogPane;
+                                            try {
+
+                                                dialogPane= fxmlLoader.load();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            GameDrawController gameDrawController = fxmlLoader.getController();
+
+                                            Dialog<ButtonType> dialog = new Dialog<>();
+                                            dialog.initStyle(StageStyle.UNDECORATED);
+                                            dialog.setDialogPane(dialogPane);
+                                            dialog.show();
+
+
+                                        }
+                                    });
+                                }
+                                scheduledExecutorService.shutdown();
+                            }
+                        }
+                    }, 0, 1, TimeUnit.SECONDS);
+                }
+            }
+        };
+
+        Runnable timer = new Runnable() {
+            @Override
+            public void run() {
+                new JFXPanel().requestFocus();
+
+                Platform.setImplicitExit(false);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
+
+                        DialogPane dialogPane;
+                        try {
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("r");
+                            dialogPane= fxmlLoader.load();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        matchMakingController = fxmlLoader.getController();
+
+
+                        Dialog<ButtonType> dialog = new Dialog<>();
+                        dialog.initStyle(StageStyle.UNDECORATED);
+                        dialog.setDialogPane(dialogPane);
+                        dialog.show();
+
+                    }
+                });
+
+                if (matchMakingController != null) {
+//                    if (matchMakingController.timerCheck())
+                    if (Wordy_MatchMakingController.timer == 0) {
+                        System.out.println("pasok");
+                        executorService.shutdown();
+                        new JFXPanel();
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                matchMakingController.closeWindow(actionEvent);
+                                matchMakingController.closeWindow(new ActionEvent());
+                                ready.getScene().getWindow().hide();
+
+                            }
+                        });
+                        Platform.exit();
+                    }
+                }
+
+            }
+        };
+
+        executorService.execute(reqLetters);
+        executorService.execute(timer);
+
     }
 
 
     public void exitGame(ActionEvent actionEvent) {
     }
+
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     *                  the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textFields.add(letter1);
+        textFields.add(letter2);
+        textFields.add(letter3);
+        textFields.add(letter4);
+        textFields.add(letter5);
+        textFields.add(letter6);
+        textFields.add(letter7);
+        textFields.add(letter8);
+        textFields.add(letter9);
+        textFields.add(letter10);
+        textFields.add(letter11);
+        textFields.add(letter12);
+        textFields.add(letter13);
+        textFields.add(letter14);
+        textFields.add(letter15);
+        textFields.add(letter16);
+        textFields.add(letter17 );
+
+        wordsTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (!event.getCode().equals(KeyCode.BACK_SPACE)){
+                    if (event.getCode().equals(KeyCode.A)) {
+                        changeOpacityOfTF("A", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.B)) {
+                        changeOpacityOfTF("B", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.C)) {
+                        changeOpacityOfTF("C", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.D)) {
+                        changeOpacityOfTF("D", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.E)) {
+                        changeOpacityOfTF("E", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.F)) {
+                        changeOpacityOfTF("F", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.G)) {
+                        changeOpacityOfTF("G", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.H)) {
+                        changeOpacityOfTF("H", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.I)) {
+                        changeOpacityOfTF("I", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.J)) {
+                        changeOpacityOfTF("J", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.K)) {
+                        changeOpacityOfTF("K", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.L)) {
+                        changeOpacityOfTF("L", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.M)) {
+                        changeOpacityOfTF("M", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.N)) {
+                        changeOpacityOfTF("N", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.O)) {
+                        changeOpacityOfTF("O", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.P)) {
+                        changeOpacityOfTF("P", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.Q)) {
+                        changeOpacityOfTF("Q", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.R)) {
+                        changeOpacityOfTF("R", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.S)) {
+                        changeOpacityOfTF("S", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.T)) {
+                        changeOpacityOfTF("T", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.U)) {
+                        changeOpacityOfTF("U", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.V)) {
+                        changeOpacityOfTF("V", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.W)) {
+                        changeOpacityOfTF("W", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.X)) {
+                        changeOpacityOfTF("X", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.Y)) {
+                        changeOpacityOfTF("Y", 0.5, 1);
+                    }
+                    if (event.getCode().equals(KeyCode.Z)) {
+                        changeOpacityOfTF("Z", 0.5, 1);
+                    }
+                }else {
+                // change opacity to 1 if nagback space
+                    KeyCode.BACK_SPACE.getName();
+                    backToOneOpacity(event);
+                }
+
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    try {
+                        wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
+                    } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {
+                        String reason;
+                        if (e instanceof InvalidWord)
+                            reason = ((InvalidWord) e).reason;
+                        else if (e instanceof WordLessThanFiveLetters)
+                            reason = ((WordLessThanFiveLetters) e).reason;
+                        else
+                            reason = ((ExceededTimeLimit) e).reason;
+
+                        Notifications notificationBuilder = Notifications.create()
+                                .title(e.getLocalizedMessage())
+                                .text(reason)
+                                .graphic(null)
+                                .hideAfter(Duration.seconds(3))
+                                .position(Pos.TOP_CENTER)
+                                .onAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        System.out.println("Error caught");
+                                    }
+                                });
+                        notificationBuilder.showConfirm();
+                    }
+                    wordsTF.clear();
+                    for (char letter : letters) {
+                            for (TextField tf :
+                                    textFields) {
+                                if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                        && tf.getOpacity() == 0.5) {
+                                    tf.setOpacity(1);
+                                    break;
+                                }
+                            }
+
+                    }
+                }
+            }
+        });
+    }
+
+    private void backToOneOpacity(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.A)) {
+            changeOpacityOfTF("A", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.B)) {
+            changeOpacityOfTF("B", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.C)) {
+            changeOpacityOfTF("C", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.D)) {
+            changeOpacityOfTF("D", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.E)) {
+            changeOpacityOfTF("E", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.F)) {
+            changeOpacityOfTF("F", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.G)) {
+            changeOpacityOfTF("G", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.H)) {
+            changeOpacityOfTF("H", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.I)) {
+            changeOpacityOfTF("I", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.J)) {
+            changeOpacityOfTF("J", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.K)) {
+            changeOpacityOfTF("K", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.L)) {
+            changeOpacityOfTF("L", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.M)) {
+            changeOpacityOfTF("M", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.N)) {
+            changeOpacityOfTF("N", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.O)) {
+            changeOpacityOfTF("O", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.P)) {
+            changeOpacityOfTF("P", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.Q)) {
+            changeOpacityOfTF("Q", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.R)) {
+            changeOpacityOfTF("R", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.S)) {
+            changeOpacityOfTF("S", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.T)) {
+            changeOpacityOfTF("T", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.U)) {
+            changeOpacityOfTF("U", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.V)) {
+            changeOpacityOfTF("V", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.W)) {
+            changeOpacityOfTF("W", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.X)) {
+            changeOpacityOfTF("X", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.Y)) {
+            changeOpacityOfTF("Y", 1, 0.5 );
+        }
+        if (event.getCode().equals(KeyCode.Z)) {
+            changeOpacityOfTF("Z", 1, 0.5 );
+        }
+    }
+
+    public void changeOpacityOfTF(String s, double opacity, double initialOpacity) {
+        for (char letter : letters) {
+            if (letter == s.toLowerCase().charAt(0) || letter == s.toUpperCase().charAt(0)) {
+                for (TextField tf :
+                        textFields) {
+                    if ((tf.getText().equals(s.toLowerCase()) || tf.getText().equals(s.toUpperCase())) && tf.getOpacity() == initialOpacity) {
+//                        tf.setStyle("-fx-background-color: #6F7378");
+                        tf.setOpacity(opacity);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+
 }

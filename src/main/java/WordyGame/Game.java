@@ -3,19 +3,13 @@ package WordyGame;
 
 import com.java.fingrp7_java.Server.DataAccessClass;
 import com.java.fingrp7_java.Server.Word;
+import com.java.fingrp7_java.gui_package.clientController.GameDrawController;
+import com.java.fingrp7_java.gui_package.clientController.GameWinnerController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -45,16 +39,13 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int roundCounter = 10;
   public int timerCounter = 10;
   public static int readyCounter = 10;
-  public ArrayList<String> strings = new ArrayList<>();
+  public ArrayList<String> strings;
+  public boolean roundStat = false;
 
   DataAccessClass dataAccessClass = new DataAccessClass();
   public ArrayList<Word> words ;
-
-
   public WordyGamePlayer host;
   public WordyGamePlayer winner;
-
-
   public static Stage stage;
 
   public Runnable tenSecondGameTimer = new Runnable() {
@@ -85,67 +76,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       System.out.println(roundCounter);
       roundCounter--;
       if (roundCounter == 0) {
-        System.out.println("round check");
-        try {
-          words = dataAccessClass.getWords();
-        } catch (SQLException e) {
-          throw new RuntimeException(e);
-        }
-        for (Word w :
-                words) {
-            if (w.getGameID() == gameID) {
-                if (w.getRoundNum() == round) {
-                    strings.add(w.getWord()); // all valid words in current round
-                }
-            }
-        }
-
-        int max = 0; // max length
-        int counter = 0; // number of repeating words
-        for (int i = 0; i < strings.size(); i++) {
-          int wordLength = strings.get(i).length();
-          if (max == wordLength) {
-            counter++;
-          } else if (max < wordLength) { // change max length of the word
-            max = wordLength;
-            counter = 1;
-          }
-        }
-
-        int j = 0;
-        String [] winnerWords = new String[counter]; // all winning words
-        for (int i = 0; i < strings.size(); i++) {
-          int wordLength = strings.get(i).length();
-          if (max == wordLength) {
-            winnerWords[j] = strings.get(i);
-            j++;
-          }
-
-        }
-        System.out.println("Winner words");
-        System.out.println(Arrays.toString(winnerWords));
-        if (winnerWords.length == 1) { // if there is only one winner
-          for (Word w :
-                  words) {
-            if (w.getGameID() == gameID) {
-              if (w.getRoundNum() == round) {
-                if (winnerWords[0].equalsIgnoreCase(w.getWord())) {
-                  for (WordyGamePlayer wgp:
-                       wgPlayers) {
-                    if (w.getUserID() == wgp.id) {
-                      wgp.wins++; // increment win sa winner
-                      System.out.println(wgp.id);
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }  //otherwise, walang gagawin, since tie ang round
+        //otherwise, walang gagawin, since tie ang round
+        checkRoundWin();
         scheduler.shutdown();
-
-
-
       }
     }
   };
@@ -153,22 +86,24 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Runnable readyChecker = new Runnable() {
     @Override
     public void run() {
-      readyCounter--;
       System.out.println(readyCounter);
+      readyCounter--;
       if (readyCounter == 0) {
+            System.out.println("g naaa");
+            roundStat = true;
+            scheduler.shutdown();
+            roundTimer();
+      } else {
         for (WordyGamePlayer wp :
                 wgPlayers) {
           if (wp.status.equalsIgnoreCase("ready")) {
             if (wgPlayers.get(wgPlayers.size() - 1) == wp) {
               System.out.println("g na");
-              roundStatus = "Start";
+              roundStat = true;
               scheduler.shutdown();
+              roundTimer();
             }
-          } else if (readyCounter == 0) {
-            System.out.println("g naaa");
-            roundStatus = "Start";
-            scheduler.shutdown();
-          }
+          } else break;
         }
       }
     }
@@ -193,7 +128,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-    wgPlayers.add(new WordyGamePlayer(hostID));
     timerCounter = 10;
 //    readyCounter = 15;
     this.gameID = gameID;
@@ -241,19 +175,116 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     return false;
   }
 
-  public boolean roundTimer() {
-    if (roundCounter == 0) {
+  public void roundTimer() {
       scheduler.shutdown();
-    } else {
       scheduler = Executors.newScheduledThreadPool(10);
       scheduler.scheduleAtFixedRate(tenSecondRoundTimer, 0, 1, TimeUnit.SECONDS);
       Wordy_InGameController.roundTime = roundCounter;
+  }
+
+  public void checkRoundWin() {
+    System.out.println("round check");
+
+      try {
+        words = dataAccessClass.getWords();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    strings = new ArrayList<>();
+
+/*      for (Word w :
+              words) {
+        if (w.getGameID() == gameID) {
+          if (w.getRoundNum() == round) {
+            System.out.println(w.getWord());
+            if (!strings.contains(w.getWord())) {
+              strings.add(w.getWord()); // all valid words in current game and round
+            }else {
+              for (Word w1 :
+                      words) {
+                if (w.getWord().equals(w1.getWord())){
+                  if (w1.getUserID())
+                }
+              }
+            }
+          }
+        }
+      }*/
+
+    for (int i = 0; i < words.size(); i++) {
+      Word w = words.get(i);
+      if (w.getGameID() == gameID) {
+        if (w.getRoundNum() == round) {
+          System.out.println(w.getWord());
+          if (!strings.contains(w.getWord())) {
+            strings.add(w.getWord()); // all valid words in current game and round
+          }else {
+            for (int j = 0; j < words.size(); j++) {
+              Word w1 = words.get(j);
+              if (strings.contains(w1.getWord())) {
+                if (w.getUserID() == w1.getUserID()) {
+                  break;
+                }else {
+                  strings.add(w1.getWord()); // all valid words in current game and round
+
+                }
+              }
+            }
+          }
+        }
+      }
     }
-    while (!scheduler.isShutdown()) {
-      if (scheduler.isShutdown())
-        return true;
-    }
-    return false;
+
+
+      int max = 0; // max length of the word
+      int counter = 0; // number of repeating words with same length
+      for (int i = 0; i < strings.size(); i++) {
+        int wordLength = strings.get(i).length();
+        if (max == wordLength) {
+          counter++;
+        } else if (max < wordLength) { // change max length of the word
+          max = wordLength;
+          counter = 1;
+        }
+      }
+
+      int j = 0;
+      String[] winnerWords = new String[counter]; // all winning words
+      for (int i = 0; i < strings.size(); i++) {
+        int wordLength = strings.get(i).length();
+        if (max == wordLength) {
+          winnerWords[j] = strings.get(i);
+          j++;
+        }
+
+      }
+      System.out.println("Winner words");
+      System.out.println(Arrays.toString(winnerWords));
+
+      if (winnerWords.length == 1) { // if there is only one winner
+        GameWinnerController gameWinnerController;
+        gameWinnerController = new GameWinnerController();
+        gameWinnerController.longestWords = winnerWords;
+        for (Word w :
+                words) {
+          if (w.getGameID() == gameID) {
+            if (w.getRoundNum() == round) {
+              if (w.getWord().equals(winnerWords[0])) {
+                for (WordyGamePlayer wgp :
+                        wgPlayers) {
+                  if (w.getUserID() == wgp.id) {
+                      wgp.wins++; // increment win sa winner
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        GameDrawController.longestWords = winnerWords;
+      }
+      round++;
+
   }
 
 } // class Game
