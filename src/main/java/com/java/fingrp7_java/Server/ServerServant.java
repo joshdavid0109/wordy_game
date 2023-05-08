@@ -219,6 +219,7 @@ public class ServerServant extends WordyGameServerPOA {
                     if (g.roundStat)
                         break;
                     if (g.lettersPerRound.get(g.round) == null) {
+                        System.out.println("populating round " + g.round);
                         LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
                         g.lettersPerRound.put(g.round, charArray);
                         for (char c :

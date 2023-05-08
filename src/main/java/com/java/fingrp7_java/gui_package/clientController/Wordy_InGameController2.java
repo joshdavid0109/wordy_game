@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Wordy_InGameController2 implements Initializable{
 
+    public Text roundNo;
+    public Text playerWinCount;
     @FXML
     private Text roundTimer;
     @FXML
@@ -77,10 +79,13 @@ public class Wordy_InGameController2 implements Initializable{
     private Button ready;
     @FXML
     private Button exitGame;
+    @FXML
+    private Text readyTimerCounter;
 
     public static int userID;
     public static int gameID;
-    public static int roundTime = 10;
+    public static int roundTime;
+    public static int readyTimer;
     public static WordyGameServer wordyGameServer;
     char[] letters = new char[17];
     ScheduledExecutorService scheduledExecutorService;
@@ -93,6 +98,10 @@ public class Wordy_InGameController2 implements Initializable{
 //        ready.setVisible(false);
         executorService = Executors.newFixedThreadPool(10);
         scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        if (roundTime == 0) {
+            roundTime = 10;
+            roundTimer.setText(String.valueOf(roundTime));
+        }
 
         wordyGameServer.ready(userID, gameID);
 
@@ -104,6 +113,7 @@ public class Wordy_InGameController2 implements Initializable{
                 StringBuilder sb = new StringBuilder();
 
                 if (letters != null) {
+
 
                     for (int i = 0; i < textFields.size(); i++)  {
                         TextField tf = textFields.get(i);
@@ -180,7 +190,6 @@ public class Wordy_InGameController2 implements Initializable{
                                         }
                                     });
                                 }
-                                scheduledExecutorService.shutdown();
                             }
                         }
                     }, 0, 1, TimeUnit.SECONDS);
@@ -191,34 +200,9 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable timer = new Runnable() {
             @Override
             public void run() {
-                new JFXPanel().requestFocus();
-
-                Platform.setImplicitExit(false);
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/matchMaking.fxml"));
-
-                        DialogPane dialogPane;
-                        try {
-                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("r");
-                            dialogPane= fxmlLoader.load();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        matchMakingController = fxmlLoader.getController();
-
-
-                        Dialog<ButtonType> dialog = new Dialog<>();
-                        dialog.initStyle(StageStyle.UNDECORATED);
-                        dialog.setDialogPane(dialogPane);
-                        dialog.show();
-
-                    }
-                });
-
+               readyTimer = wordyGameServer.getTimer("r");
+                readyTimerCounter.setText(String.valueOf(readyTimer--));
+/*
                 if (matchMakingController != null) {
 //                    if (matchMakingController.timerCheck())
                     if (Wordy_MatchMakingController.timer == 0) {
@@ -237,12 +221,13 @@ public class Wordy_InGameController2 implements Initializable{
                         Platform.exit();
                     }
                 }
+*/
 
             }
         };
 
         executorService.execute(reqLetters);
-        executorService.execute(timer);
+        scheduledExecutorService.scheduleAtFixedRate(timer, 0,1,TimeUnit.SECONDS);
 
     }
 
@@ -261,6 +246,8 @@ public class Wordy_InGameController2 implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        roundNo.setText(String.valueOf(1));
+
         textFields.add(letter1);
         textFields.add(letter2);
         textFields.add(letter3);

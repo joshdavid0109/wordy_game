@@ -162,6 +162,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       if (readyCounter == 0)
         scheduler.shutdown();
       else {
+        readyCounter = 10;
         scheduler = Executors.newScheduledThreadPool(10);
         Wordy_MatchMakingController.timer = readyCounter;
         scheduler.scheduleAtFixedRate(readyChecker, 0, 1, TimeUnit.SECONDS);
@@ -272,6 +273,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
               if (w.getWord().equals(winnerWords[0])) {
                 for (WordyGamePlayer wgp :
                         wgPlayers) {
+                  wgp.status = "";
                   if (w.getUserID() == wgp.id) {
                       wgp.wins++; // increment win sa winner
                   }
@@ -283,6 +285,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       } else {
         GameDrawController.longestWords = winnerWords;
       }
+      roundStat =false;
+      roundCounter = 10;
+      readyCounter = 10;
       round++;
 
   }

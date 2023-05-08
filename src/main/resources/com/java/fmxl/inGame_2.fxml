@@ -28,8 +28,8 @@
                   <Font name="System Bold" size="80.0" />
                </font>
             </Text>
-            <Pane fx:id="Ready" layoutX="40.0" layoutY="102.0" opacity="0.48" prefHeight="234.0" prefWidth="286.0" style="-fx-background-color: #d9d9d9;" />
-            <Pane fx:id="Ready1" layoutX="40.0" layoutY="102.0" prefHeight="234.0" prefWidth="286.0">
+            <Pane layoutX="40.0" layoutY="102.0" opacity="0.48" prefHeight="234.0" prefWidth="286.0" style="-fx-background-color: #d9d9d9;" />
+            <Pane layoutX="40.0" layoutY="102.0" prefHeight="234.0" prefWidth="286.0">
                <children>
                   <TextField fx:id="letter1" alignment="CENTER" editable="false" layoutX="13.0" layoutY="22.0" prefHeight="38.0" prefWidth="41.0" style="-fx-background-color: #966700; -fx-border-color: #FFE548; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 6;" text="1">
                      <font>
@@ -129,7 +129,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Text>
-            <Text fx:id="playerName1" fill="WHITE" layoutX="65.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="31.6640625">
+            <Text fx:id="roundNo" fill="WHITE" layoutX="65.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="31.6640625">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -140,13 +140,13 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Text>
-            <Text fx:id="playerStatus1" fill="WHITE" layoutX="70.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="22.902328491210938">
+            <Text fx:id="playerWinCount" fill="WHITE" layoutX="70.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="22.902328491210938">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Text>
             <Pane layoutX="19.0" layoutY="241.0" prefHeight="3.0" prefWidth="80.0" style="-fx-background-color: #f6b604;" />
-            <Button fx:id="ready" layoutX="32.0" layoutY="297.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="66.0" text="READY" />
+            <Button fx:id="ready" layoutX="25.0" layoutY="316.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="66.0" text="READY" />
             <Button fx:id="exitGame" layoutX="40.0" layoutY="358.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: #eeaf1d; -fx-border-color: #b98805; -fx-border-radius: 50; -fx-border-width: 2; -fx-background-radius: 50;">
                <graphic>
                   <ImageView fitHeight="11.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
@@ -161,6 +161,11 @@
                   <Image url="@../../../SLU_LOGO-removebg-preview.png" />
                </image>
             </ImageView>
+            <Text fx:id="readyTimerCounter" fill="#f6b604" layoutX="46.0" layoutY="300.0" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="10">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>
