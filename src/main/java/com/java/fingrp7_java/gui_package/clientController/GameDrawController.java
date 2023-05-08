@@ -27,6 +27,7 @@ public class GameDrawController implements Initializable {
     @FXML
     void proceedToNextRound(ActionEvent event) {
         Stage stage = (Stage) nextButton.getScene().getWindow();
+        Wordy_InGameController2.roundNumber++;
         stage.close();
     }
 
