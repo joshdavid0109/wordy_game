@@ -1,7 +1,7 @@
 package com.java.fingrp7_java.Client;
 
 import WordyGame.*;
-import com.sun.jmx.snmp.internal.SnmpSubSystem;
+/*import com.sun.jmx.snmp.internal.SnmpSubSystem;*/
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;

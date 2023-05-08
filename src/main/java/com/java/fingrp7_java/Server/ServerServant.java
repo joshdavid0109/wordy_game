@@ -288,7 +288,13 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public TopWord[] getLongestWords() {
-        return new TopWord[0];
+        TopWord[] topWords = null;
+
+        dataAccessClass.getLongestWords();
+        List<TopWord> topWordList = new ArrayList<>();
+
+        topWords = topWordList.toArray(new TopWord[0]);
+        return topWords;
     }
 
     @Override

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_LongestWordController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_LongestWordController">
    <children>
-      <TableView layoutX="49.0" layoutY="25.0" prefHeight="293.0" prefWidth="508.0">
-        <columns>
-          <TableColumn prefWidth="230.39996910095215" text="UserName" />
-          <TableColumn prefWidth="387.2000427246094" text="Longest Word" />
-        </columns>
-      </TableView>
       <Button fx:id="toMainPage" layoutX="484.0" layoutY="344.0" mnemonicParsing="false" onAction="#toMainPage" text="Button" />
+      <TreeTableView fx:id="treeTableView" layoutX="50.0" layoutY="48.0" prefHeight="250.0" prefWidth="500.0">
+        <columns>
+          <TreeTableColumn fx:id="userName" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="username" />
+          <TreeTableColumn fx:id="longestWord" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="words" />
+        </columns>
+      </TreeTableView>
    </children>
 </AnchorPane>
