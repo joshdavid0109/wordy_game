@@ -191,7 +191,7 @@ public class _WordyGameServerStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // getTimer
 
-  public WordyGame.TopWord[] getLongestWords ()
+  public TopWord[] getLongestWords ()
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {

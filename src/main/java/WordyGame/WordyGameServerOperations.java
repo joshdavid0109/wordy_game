@@ -18,6 +18,6 @@ public interface WordyGameServerOperations
   char[] requestLetters (int gameID);
   String checkWinner (int gameID);
   int getTimer (String of);
-  WordyGame.TopWord[] getLongestWords ();
+  TopWord[] getLongestWords ();
   WordyGame.TopPlayer[] getTopPlayers ();
 } // interface WordyGameServerOperations

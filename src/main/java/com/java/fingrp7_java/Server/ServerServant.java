@@ -3,20 +3,10 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_MainPageController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import javax.xml.crypto.Data;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -300,7 +290,13 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public TopWord[] getLongestWords() {
-        return new TopWord[0];
+        TopWord[] topWords = null;
+
+        dataAccessClass.getLongestWords();
+        List<TopWord> topWordList = new ArrayList<>();
+
+        topWords = topWordList.toArray(new TopWord[0]);
+        return topWords;
     }
 
     @Override
