@@ -3,10 +3,7 @@ package WordyGame;
 
 import com.java.fingrp7_java.Server.DataAccessClass;
 import com.java.fingrp7_java.Server.Word;
-import com.java.fingrp7_java.gui_package.clientController.GameDrawController;
-import com.java.fingrp7_java.gui_package.clientController.GameWinnerController;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
-import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
+import com.java.fingrp7_java.gui_package.clientController.*;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -36,7 +33,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
   public String roundStatus;
   public int round;
-  public int roundCounter = 10;
+  public static  int roundCounter = 11;
   public int timerCounter = 10;
   public static int readyCounter = 10;
   public ArrayList<String> strings;
@@ -88,20 +85,18 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     public void run() {
       System.out.println(readyCounter);
       readyCounter--;
-      if (readyCounter == 0) {
+      if (readyCounter == 0 && roundStat) {
             System.out.println("g naaa");
-            roundStat = true;
             scheduler.shutdown();
             roundTimer();
-      } else {
+      } else if (!roundStat) {
         for (WordyGamePlayer wp :
                 wgPlayers) {
           if (wp.status.equalsIgnoreCase("ready")) {
             if (wgPlayers.get(wgPlayers.size() - 1) == wp) {
               System.out.println("g na");
+              readyCounter = 3;
               roundStat = true;
-              scheduler.shutdown();
-              roundTimer();
             }
           } else break;
         }
@@ -128,7 +123,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-    timerCounter = 10;
+    timerCounter = 11;
 //    readyCounter = 15;
     this.gameID = gameID;
     this.hostID = hostID;
@@ -177,10 +172,13 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   }
 
   public void roundTimer() {
+    if (roundCounter == 0)
       scheduler.shutdown();
+    else {
       scheduler = Executors.newScheduledThreadPool(10);
       scheduler.scheduleAtFixedRate(tenSecondRoundTimer, 0, 1, TimeUnit.SECONDS);
-      Wordy_InGameController.roundTime = roundCounter;
+      Wordy_InGameController2.roundTime = roundCounter;
+    }
   }
 
   public void checkRoundWin() {
@@ -216,7 +214,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       Word w = words.get(i);
       if (w.getGameID() == gameID) {
         if (w.getRoundNum() == round) {
-          System.out.println(w.getWord());
           if (!strings.contains(w.getWord())) {
             strings.add(w.getWord()); // all valid words in current game and round
           }else {

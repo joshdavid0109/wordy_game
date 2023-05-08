@@ -90,6 +90,7 @@ public class Wordy_MainPageController implements Initializable {
                                         throw new RuntimeException(e);
                                     }
                                     matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
+                                    Wordy_MatchMakingController.wordyGameServer = wordyGameServer;
 
 
                                     Dialog<ButtonType> dialog = new Dialog<>();

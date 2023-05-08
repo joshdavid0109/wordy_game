@@ -47,8 +47,6 @@ public class Wordy_MatchMakingController implements Initializable {
     public int gameID;
     public ScheduledExecutorService scheduledExecutorService;
 
-
-
     @FXML
     public void closeWindow(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -76,7 +74,8 @@ public class Wordy_MatchMakingController implements Initializable {
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
-            timerText.setText(String.valueOf(timer--));
+            timer = wordyGameServer.getTimer("g");
+            timerText.setText(String.valueOf(timer));
             if (timer < 1) {
                 scheduledExecutorService.shutdown();
                 Stage stage = (Stage) decline.getScene().getWindow();
