@@ -73,7 +73,15 @@ public class DataAccessClass {
 
     public TopWord[] getLongestWords() {
         int TOP_LIMIT = 5;
-        String query = "SELECT top 5 words, userID FROM word";
+
+/*        String query = "SELECT top 5 words, userID FROM word";*/
+
+        // SELECT userID, words FROM word
+        // WHERE LENGTH(words) =
+        // (SELECT MIN(LENGTH(words)) FROM word)
+        // ORDER BY words;
+        String query = "SELECT userId, words FROM word WHERE LENGTH(words) = " +
+                "(SELECT MIN(LENGTH(words) FROM word) ORDER BY words;";
         TopWord[] topWords = null;
 
         PreparedStatement preparedStatement = null;

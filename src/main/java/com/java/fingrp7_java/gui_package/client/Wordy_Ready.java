@@ -6,6 +6,7 @@ import com.java.fingrp7_java.gui_package.clientController.Wordy_ReadyController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
@@ -21,7 +22,7 @@ public class Wordy_Ready extends Application{
     public static Wordy_Ready wordyReady;
     @Override
     public void start(Stage primaryStage) throws IOException {
-        /*        Image image = new Image("SLU_LOGO.jpg");*/
+        Image image = new Image("SLU_LOGO-removebg-preview.png");
 
         FXMLLoader fxmlLoader =
                 new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/ready.fxml"));
@@ -29,8 +30,8 @@ public class Wordy_Ready extends Application{
         Wordy_ReadyController.args = args;
 
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setTitle("EMPLOYEE");
-        /*        primaryStage.getIcons().add(image);*/
+        primaryStage.setTitle("READY");
+        primaryStage.getIcons().add(image);
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();

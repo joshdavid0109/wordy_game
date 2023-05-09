@@ -64,6 +64,7 @@ public class LogInController implements Initializable {
             loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
             Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
 
+/*
             String username = usernameTF.getText();
             String password = passwordTF.getText();
 
@@ -84,6 +85,7 @@ public class LogInController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
                 alert.showAndWait();
             }
+*/
 
 
 
@@ -105,10 +107,10 @@ public class LogInController implements Initializable {
             stage.setScene(scene);
             stage.show();
 
-            stage.setOnCloseRequest(windowEvent ->
+/*            stage.setOnCloseRequest(windowEvent ->
             {
                 wordyMainPageController.onShutDown();
-            });
+            });*/
 
         }
     }
