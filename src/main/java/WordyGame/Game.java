@@ -72,7 +72,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     public void run() {
       System.out.println(roundCounter);
       roundCounter--;
-      if (roundCounter == 0) {
+      if (roundCounter <0) {
         //otherwise, walang gagawin, since tie ang round
         checkRoundWin();
         scheduler.shutdown();
@@ -90,15 +90,21 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
             System.out.println("g naaa");
             scheduler.shutdown();
             roundTimer();
-      } else if (!roundStat) {
+      } else if (readyCounter == 0){
+            System.out.println("Kung sino lang nakaready");
+
+            // TODO check if two players lang nasa game, pag oo, tas hindi nakaready isa matic win yung nakaready
+            scheduler.shutdown();
+            roundTimer();
+      }else if (!roundStat) {
         for (WordyGamePlayer wp :
                 wgPlayers) {
-          if (wp.status.equalsIgnoreCase("ready")) {
-            if (wgPlayers.get(wgPlayers.size() - 1) == wp) {
-              System.out.println("g na");
-              readyCounter = 3;
-              roundStat = true;
-            }
+          if (!wp.status.equalsIgnoreCase("ready")) {
+            break;
+          }else if (wgPlayers.get(wgPlayers.size()-1) == wp){
+            System.out.println("g na");
+            readyCounter = 3;
+            roundStat = true;
           }
         }
       }
@@ -283,6 +289,12 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       } else {
         GameDrawController.longestWords = winnerWords;
       }
+
+    System.out.println("setting all status to empty");
+    for (WordyGamePlayer wgp :
+            wgPlayers) {
+      wgp.status = "";
+    }
       roundStat =false;
       roundCounter = 10;
       readyCounter = 10;

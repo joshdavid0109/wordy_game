@@ -274,7 +274,7 @@ public class ServerServant extends WordyGameServerPOA {
 
                 }
             }
-        return "end";
+        return "";
     }
 
     @Override

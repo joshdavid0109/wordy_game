@@ -89,6 +89,7 @@ public class Wordy_InGameController2 implements Initializable{
     char[] letters = new char[17];
     ScheduledExecutorService scheduledExecutorService;
     ExecutorService executorService;
+    static String winnerID;
     static Wordy_MatchMakingController matchMakingController;
 
     ArrayList<TextField> textFields = new ArrayList<>();
@@ -98,7 +99,7 @@ public class Wordy_InGameController2 implements Initializable{
         executorService = Executors.newFixedThreadPool(10);
         scheduledExecutorService = Executors.newScheduledThreadPool(10);
         if (roundTime == 0) {
-            roundTime = 10;
+            roundTime = 11;
             roundTimer.setText(String.valueOf(roundTime));
         }
 
@@ -107,12 +108,9 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable result = new Runnable() {
             @Override
             public void run() {
-                if (roundTime == 0) {
-                    scheduledExecutorService.shutdown();
-                }
-                if (roundTime < 0) {
+                if (gameID != 0) {
                     System.out.println("checking winner");
-                    String winnerID = wordyGameServer.checkWinner(gameID);
+                    winnerID = wordyGameServer.checkWinner(gameID);
 
                     System.out.println(winnerID + " " + userID);
                     GameWinnerController.name = winnerID;
@@ -140,7 +138,8 @@ public class Wordy_InGameController2 implements Initializable{
                                 dialog.initStyle(StageStyle.UNDECORATED);
                                 dialog.setDialogPane(dialogPane);
                                 dialog.show();
-
+                                winnerID = "";
+                                scheduledExecutorService.shutdown();
                             }
                         });
                     } else if (GameDrawController.longestWords.length > 1) {
@@ -167,12 +166,11 @@ public class Wordy_InGameController2 implements Initializable{
                                 dialog.initStyle(StageStyle.UNDECORATED);
                                 dialog.setDialogPane(dialogPane);
                                 dialog.show();
-
-
+                                winnerID = "";
+                                scheduledExecutorService.shutdown();
                             }
                         });
                     }
-                    scheduledExecutorService.shutdown();
                 }
             }
         };
@@ -187,7 +185,10 @@ public class Wordy_InGameController2 implements Initializable{
                 if (letters != null) {
                     if (roundTime < 0) {
                         scheduledExecutorService.shutdown();
-                        scheduledExecutorService.scheduleAtFixedRate(result, 0, 1, TimeUnit.SECONDS );
+                        System.out.println("shutdown round timer");
+                        roundNo.setText(String.valueOf(roundNumber++));
+                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                        scheduledExecutorService.execute(result);
                     }
                 }
             }
@@ -212,9 +213,13 @@ public class Wordy_InGameController2 implements Initializable{
                 if (readyTimer == 0) {
                     for (int i = 0; i < textFields.size(); i++) {
                         TextField tf = textFields.get(i);
+                        if (tf.getText().equals(String.valueOf(letters[i])))
+                            break;
                         tf.setText(String.valueOf(letters[i]));
+
                     }
                     scheduledExecutorService.shutdown();
+
                     scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
                     scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0 ,1, TimeUnit.SECONDS);
                 }
