@@ -80,6 +80,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     }
   };
 
+  //TODO TIMER NAGIGING NEGATIVE IF ISA LANG NAGREADY
   public Runnable readyChecker = new Runnable() {
     @Override
     public void run() {
@@ -98,7 +99,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
               readyCounter = 3;
               roundStat = true;
             }
-          } else break;
+          }
         }
       }
     }
