@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `game` (
   `gameID` int NOT NULL,
   `gameWinner` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`gameID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `round` (
   `roundWin` varchar(45) DEFAULT NULL,
   `longestWord` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`gameID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(45) NOT NULL,
   `isOnline` bit(1) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `users`
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `word` (
   `roundNum` int NOT NULL,
   `userID` int NOT NULL,
   `words` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
