@@ -95,6 +95,9 @@ public class ServerServant extends WordyGameServerPOA {
                             game.players.add(userID);
                         return game.gameID;
                     }
+                }else if (game.gameID == 0) {
+                    games.remove(game);
+                    throw new NoPlayersAvailable("No other players have joined the game.");
                 }
             } else {
                 for (Game g :
@@ -221,6 +224,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 charArray) {
                             sb.append(c);
                         }
+                        charArray = g.lettersPerRound.get(g.round);
                     }else {
                         charArray = g.lettersPerRound.get(g.round);
                     }

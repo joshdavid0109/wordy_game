@@ -34,7 +34,7 @@ public class Wordy_LongestWordController implements Initializable {
     @FXML
     private TreeTableView<TopWord> treeTableView;
     
-    private DataAccessClass dataAccessClass;
+    private DataAccessClass dataAccessClass = new DataAccessClass();
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -48,11 +48,13 @@ public class Wordy_LongestWordController implements Initializable {
         // load data from database
         TopWord[] topWords = dataAccessClass.getLongestWords();
 
+/*
         // add data to table
         for (TopWord topWord : topWords) {
             TreeItem<TopWord> item = new TreeItem<>(topWord);
             rootItem.getChildren().add(item);
         }
+*/
 
     }
 
