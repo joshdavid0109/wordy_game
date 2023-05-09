@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import jdk.nashorn.internal.ir.EmptyNode;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
@@ -27,6 +28,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
@@ -60,7 +62,7 @@ public class LogInController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
 
             loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
-/*
+            Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
 
             String username = usernameTF.getText();
             String password = passwordTF.getText();
@@ -84,7 +86,7 @@ public class LogInController implements Initializable {
             }
 
 
-*/
+
 
             Wordy_MainPageController.wordyGameServer = wordyGameServer;
 
@@ -102,6 +104,11 @@ public class LogInController implements Initializable {
             Stage stage = (Stage) enterButton.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+
+            stage.setOnCloseRequest(windowEvent ->
+            {
+                wordyMainPageController.onShutDown();
+            });
 
         }
     }
