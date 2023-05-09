@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 06, 2023 at 01:16 AM
--- Server version: 8.0.31
--- PHP Version: 8.0.26
+-- Generation Time: May 09, 2023 at 12:15 AM
+-- Server version: 5.7.36
+-- PHP Version: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE IF NOT EXISTS `game` (
-  `gameID` int NOT NULL,
-  `gameWinner` varchar(45) DEFAULT NULL,
+  `gameID` int(11) NOT NULL,
+  `gameWinner` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`gameID`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS `game` (
 
 DROP TABLE IF EXISTS `round`;
 CREATE TABLE IF NOT EXISTS `round` (
-  `gameID` int NOT NULL,
-  `roundNum` int NOT NULL,
-  `roundWin` varchar(45) DEFAULT NULL,
-  `longestWord` varchar(45) DEFAULT NULL,
+  `gameID` int(11) NOT NULL,
+  `roundNum` int(11) NOT NULL,
+  `roundWin` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `longestWord` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`gameID`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS `round` (
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
-  `userID` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `userID` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `isOnline` bit(1) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -70,10 +70,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`userID`, `username`, `password`, `isOnline`) VALUES
 (1, 'admin', 'pass', b'0'),
-(2, 'zeph', 'zeph', b'1'),
+(2, 'zeph', 'zeph', b'0'),
 (3, 'darren', 'darren', b'0'),
 (4, 'david', 'joshua', b'0'),
-(5, 'ariel', '12345', b'0');
+(5, 'ariel', '12345', b'0'),
+(6, '456', '55555', b'0');
 
 -- --------------------------------------------------------
 
@@ -83,11 +84,11 @@ INSERT INTO `users` (`userID`, `username`, `password`, `isOnline`) VALUES
 
 DROP TABLE IF EXISTS `word`;
 CREATE TABLE IF NOT EXISTS `word` (
-  `gameID` int NOT NULL,
-  `roundNum` int NOT NULL,
-  `userID` int NOT NULL,
-  `words` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB;
+  `gameID` int(11) NOT NULL,
+  `roundNum` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `words` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

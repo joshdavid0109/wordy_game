@@ -232,6 +232,10 @@ public class Wordy_MainPageController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    void onShutDown() {
+        wordyGameServer.logout(playerID);
+    }
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
