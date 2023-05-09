@@ -33,6 +33,9 @@ import java.util.concurrent.*;
 public class Wordy_InGameController2 implements Initializable{
 
     public Text roundNo;
+
+    public static  int roundNumber = 1;
+
     public Text playerWinCount;
     @FXML
     private Text roundTimer;
@@ -111,16 +114,18 @@ public class Wordy_InGameController2 implements Initializable{
                 roundTimer.setText(String.valueOf(roundTime--));
                 if (letters != null) {
                     if (roundTime < 0) {
-                        executorService.shutdown();
                         scheduledExecutorService.shutdown();
-                      /*  scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+
+                        //TODO gawin ulit itong runnable since same scenario doon sa timer na hindi nagrarun dahil ata sa concurrency
+                        // pero overall guds na yung sa timer
+                        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
                             @Override
                             public void run() {
 
                                 if (roundTime == 0) {
                                     scheduledExecutorService.shutdown();
                                 }
-                                *//*if (roundTime < 0) {
+                                if (roundTime < 0) {
                                     System.out.println("checking winner");
                                     String winnerID = wordyGameServer.checkWinner(gameID);
 
@@ -183,10 +188,9 @@ public class Wordy_InGameController2 implements Initializable{
                                         });
                                     }
                                     scheduledExecutorService.shutdown();
-
-                                }*//*
+                                }
                             }
-                        }, 0, 1, TimeUnit.SECONDS);*/
+                        }, 0, 1, TimeUnit.SECONDS);
                     }
                 }
             }
@@ -198,8 +202,6 @@ public class Wordy_InGameController2 implements Initializable{
                 letters = wordyGameServer.requestLetters(gameID);
                 if (letters!= null)
                     executorService.shutdown();
-
-                ScheduledFuture<?> scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0, 1, TimeUnit.SECONDS);
 
             }
         };
@@ -216,6 +218,8 @@ public class Wordy_InGameController2 implements Initializable{
                         tf.setText(String.valueOf(letters[i]));
                     }
                     scheduledExecutorService.shutdown();
+                    scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                    scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0 ,1, TimeUnit.SECONDS);
                 }
 /*
                 if (matchMakingController != null) {
@@ -267,7 +271,7 @@ public class Wordy_InGameController2 implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        roundNo.setText(String.valueOf(1));
+        roundNo.setText(String.valueOf(roundNumber));
 
         textFields.add(letter1);
         textFields.add(letter2);
