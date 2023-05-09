@@ -73,6 +73,7 @@ public class DataAccessClass {
 
     public TopWord[] getLongestWords() {
         int TOP_LIMIT = 5;
+        // String query = "SELECT userID, words FROM word ORDER BY LENGTH(words) DESC LIMIT 5;";
         String query = "SELECT top 5 words, userID FROM word";
         TopWord[] topWords = null;
 
@@ -85,7 +86,6 @@ public class DataAccessClass {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
 
 //        topWords = new TopWord();
 
@@ -191,6 +191,7 @@ public class DataAccessClass {
     }
 
     public String getGameWinner (int id) throws SQLException{
+        // String query = "SELECT * FROM round WHERE ";
         String query = "SELECT username from users where userID=?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         preparedStatement.setInt(1, id);
