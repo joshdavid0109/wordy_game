@@ -85,6 +85,8 @@ public class Wordy_InGameController2 implements Initializable{
     public static int gameID;
     public static int roundTime =10;
     public static int readyTimer;
+    public static String winner;
+    public static int winCount = 0;
     public static WordyGameServer wordyGameServer;
     char[] letters = new char[17];
     ScheduledExecutorService scheduledExecutorService;
@@ -103,6 +105,7 @@ public class Wordy_InGameController2 implements Initializable{
             roundTimer.setText(String.valueOf(roundTime));
         }
 
+
         wordyGameServer.ready(userID, gameID);
 
         Runnable result = new Runnable() {
@@ -110,66 +113,74 @@ public class Wordy_InGameController2 implements Initializable{
             public void run() {
                 if (gameID != 0) {
                     System.out.println("checking winner");
-                    winnerID = wordyGameServer.checkWinner(gameID);
 
-                    System.out.println(winnerID + " " + userID);
-                    GameWinnerController.name = winnerID;
-                    if (Integer.parseInt(winnerID) == userID) {
-                        new JFXPanel().requestFocus();
+                    if (roundTime < 0) {
+                        winnerID = wordyGameServer.checkWinner(gameID);
 
-                        Platform.setImplicitExit(false);
+                        System.out.println(winnerID + " " + userID);
+                        GameWinnerController.name = winnerID;
+                        if (Integer.parseInt(winnerID) == userID) {
+                            new JFXPanel().requestFocus();
 
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+                            Platform.setImplicitExit(false);
 
-                                DialogPane dialogPane;
-                                try {
-                                    dialogPane = fxmlLoader.load();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+
+                                    DialogPane dialogPane;
+                                    try {
+                                        dialogPane = fxmlLoader.load();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    GameWinnerController gameWinnerController = fxmlLoader.getController();
+
+
+                                    Dialog<ButtonType> dialog = new Dialog<>();
+                                    dialog.initStyle(StageStyle.UNDECORATED);
+                                    dialog.setDialogPane(dialogPane);
+
+                                    dialog.show();
+                                    winnerID = "";
+                                    scheduledExecutorService.shutdown();
                                 }
-                                GameWinnerController gameWinnerController = fxmlLoader.getController();
+                            });
+                        } else if (GameDrawController.longestWords.length > 1) {
+                            new JFXPanel().requestFocus();
 
+                            Platform.setImplicitExit(false);
 
-                                Dialog<ButtonType> dialog = new Dialog<>();
-                                dialog.initStyle(StageStyle.UNDECORATED);
-                                dialog.setDialogPane(dialogPane);
-                                dialog.show();
-                                winnerID = "";
-                                scheduledExecutorService.shutdown();
-                            }
-                        });
-                    } else if (GameDrawController.longestWords.length > 1) {
-                        new JFXPanel().requestFocus();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameDraw.fxml"));
 
-                        Platform.setImplicitExit(false);
+                                    DialogPane dialogPane;
+                                    try {
 
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameDraw.fxml"));
+                                        dialogPane = fxmlLoader.load();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    GameDrawController gameDrawController = fxmlLoader.getController();
 
-                                DialogPane dialogPane;
-                                try {
-
-                                    dialogPane = fxmlLoader.load();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
+                                    Dialog<ButtonType> dialog = new Dialog<>();
+                                    dialog.initStyle(StageStyle.UNDECORATED);
+                                    dialog.setDialogPane(dialogPane);
+                                    dialog.show();
+                                    winnerID = "";
+                                    scheduledExecutorService.shutdown();
                                 }
-                                GameDrawController gameDrawController = fxmlLoader.getController();
-
-                                Dialog<ButtonType> dialog = new Dialog<>();
-                                dialog.initStyle(StageStyle.UNDECORATED);
-                                dialog.setDialogPane(dialogPane);
-                                dialog.show();
-                                winnerID = "";
-                                scheduledExecutorService.shutdown();
-                            }
-                        });
+                            });
+                        } else if (Integer.parseInt(winnerID) != userID) {
+                            System.out.println("talo ka");
+                            scheduledExecutorService.shutdown();
+                        }
+                        winnerID = "";
                     }
                 }
             }
@@ -186,9 +197,21 @@ public class Wordy_InGameController2 implements Initializable{
                     if (roundTime < 0) {
                         scheduledExecutorService.shutdown();
                         System.out.println("shutdown round timer");
-                        roundNo.setText(String.valueOf(roundNumber++));
+                        letters = null;
+                        roundNumber++;
+                        roundNo.setText(String.valueOf(roundNumber));
                         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
-                        scheduledExecutorService.execute(result);
+                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
+                    }
+                } else {
+                    if (roundTime < 0) {
+                        scheduledExecutorService.shutdown();
+                        System.out.println("shutdown round timer");
+                        letters = null;
+                        roundNumber++;
+                        roundNo.setText(String.valueOf(roundNumber));
+                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
                     }
                 }
             }
@@ -197,10 +220,11 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable reqLetters = new Runnable() {
             @Override
             public void run() {
+
+
                 letters = wordyGameServer.requestLetters(gameID);
                 if (letters!= null)
                     executorService.shutdown();
-
             }
         };
 
@@ -219,42 +243,14 @@ public class Wordy_InGameController2 implements Initializable{
 
                     }
                     scheduledExecutorService.shutdown();
-
                     scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
                     scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0 ,1, TimeUnit.SECONDS);
                 }
-/*
-                if (matchMakingController != null) {
-//                    if (matchMakingController.timerCheck())
-                    if (Wordy_MatchMakingController.timer == 0) {
-                        System.out.println("pasok");
-                        executorService.shutdown();
-                        new JFXPanel();
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                matchMakingController.closeWindow(actionEvent);
-                                matchMakingController.closeWindow(new ActionEvent());
-                                ready.getScene().getWindow().hide();
-
-                            }
-                        });
-                        Platform.exit();
-                    }
-                }
-*/
-
             }
         };
 
         executorService.execute(reqLetters);
         scheduledExecutorService.scheduleAtFixedRate(timer, 0,1,TimeUnit.SECONDS);
-
-/*
-        if (readyTimer == 0) {
-            scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0, 1, TimeUnit.SECONDS);
-        }
-*/
 
     }
 
@@ -274,7 +270,7 @@ public class Wordy_InGameController2 implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         roundNo.setText(String.valueOf(roundNumber));
-
+        executorService = Executors.newFixedThreadPool(10);
         textFields.add(letter1);
         textFields.add(letter2);
         textFields.add(letter3);
@@ -291,7 +287,29 @@ public class Wordy_InGameController2 implements Initializable{
         textFields.add(letter14);
         textFields.add(letter15);
         textFields.add(letter16);
-        textFields.add(letter17 );
+        textFields.add(letter17);
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (gameID ==0) {
+                    winner = wordyGameServer.checkMatchStatus(gameID);
+                    if (winner.equals("")) {
+                        executorService.shutdown();
+                    }
+
+                    winnerID = wordyGameServer.checkWinner(gameID);
+                    if (!winnerID.equals("")) {
+                        // The code is checking if the value of the variable `winnerID` is equal to the value of the
+                        // variable `userID`. If they are equal, the code inside the curly braces will be executed.
+                       if (letters == null) {
+                           roundNumber++;
+                           roundNo.setText(String.valueOf(roundNumber));
+                       }
+                    }
+                }
+            }
+        });
 
         wordsTF.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

@@ -206,6 +206,17 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
+    public String checkMatchStatus(int gameID) {
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+                return String.valueOf(g.winner.id);
+            }
+        }
+        return "";
+    }
+
+    @Override
     public char[] requestLetters(int gameID) {
         StringBuilder sb = new StringBuilder();
         List<String> words = null;
@@ -257,7 +268,7 @@ public class ServerServant extends WordyGameServerPOA {
                         for (WordyGamePlayer wgp :
                                 g.wgPlayers) {
                             System.out.println(wgp.id + " " + wgp.wins);
-                            if (wgp.wins > 0) {
+                            if (wgp.wins > 0 && wgp.wins < 3) {
                                 System.out.println(wgp.id);
 
                                 // for tests lang
@@ -269,6 +280,8 @@ public class ServerServant extends WordyGameServerPOA {
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }*/
+                            } else if (wgp.wins == 3) {
+                                g.winner = wgp;
                             }
                         }
 
