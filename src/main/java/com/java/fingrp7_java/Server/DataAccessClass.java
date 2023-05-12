@@ -1,6 +1,7 @@
 package com.java.fingrp7_java.Server;
 
 
+import WordyGame.ServerUnavailable;
 import WordyGame.TopWord;
 
 import java.sql.*;
