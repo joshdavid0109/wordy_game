@@ -27,6 +27,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -58,60 +59,59 @@ public class LogInController implements Initializable {
 
     @FXML
     void logIn(ActionEvent event) {
-        if (!usernameTF.getText().equals("")) {
-            FXMLLoader loader = new FXMLLoader();
+        try {
+            if (!usernameTF.getText().equals("")) {
+                FXMLLoader loader = new FXMLLoader();
 
-            loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
-            Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
-
-/*
-            String username = usernameTF.getText();
-            String password = passwordTF.getText();
-
-            int UID;
-
-            try {
-                wordyGameServer.login(username, password);
-            } catch (UserAlreadyLoggedIn e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                alert.showAndWait();
-            } catch (InvalidPassword e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                alert.showAndWait();
-            } catch (InvalidCredentials e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                alert.showAndWait();
-            } catch (ServerUnavailable e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                alert.showAndWait();
-            }
-*/
+                loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+                Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
 
 
+                String username = usernameTF.getText();
+                String password = passwordTF.getText();
+
+                int UID;
+
+                try {
+                    wordyGameServer.login(username, password);
+                } catch (UserAlreadyLoggedIn e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                    alert.showAndWait();
+                } catch (InvalidPassword e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                    alert.showAndWait();
+                } catch (InvalidCredentials e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
+                    alert.showAndWait();
+                }
 
 
-            Wordy_MainPageController.wordyGameServer = wordyGameServer;
+                Wordy_MainPageController.wordyGameServer = wordyGameServer;
 
-            // TODO: how do i get uid, help
-            // use username: 456 and password: 55555 for now to continue to the main page
-            Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+                // TODO: how do i get uid, help
+                // use username: 456 and password: 55555 for now to continue to the main page
+                Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
 
-            Parent root = null;
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) enterButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) enterButton.getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
 
-/*            stage.setOnCloseRequest(windowEvent ->
+            stage.setOnCloseRequest(windowEvent ->
             {
                 wordyMainPageController.onShutDown();
-            });*/
+            });
 
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Server currently unavailable!");
+            alert.showAndWait();
         }
     }
 
