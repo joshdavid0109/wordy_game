@@ -123,6 +123,8 @@ public class LogInController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+
+            System.out.println(args + "args");
             /**
              * Default codes for
              */

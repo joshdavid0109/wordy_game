@@ -206,6 +206,17 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
+    public int getRound(int gameID) {
+        for (Game g :
+                games) {
+            if (gameID == g.gameID) {
+                return g.round;
+            }
+        }
+        return 0;
+    }
+
+    @Override
     public String checkMatchStatus(int gameID) {
         for (Game g :
                 games) {
