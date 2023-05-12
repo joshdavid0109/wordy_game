@@ -132,6 +132,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     players.add(hostID);
     timerCounter = 11;
 //    readyCounter = 15;
+    winner = new WordyGamePlayer();
     this.gameID = gameID;
     this.hostID = hostID;
     status = "Waiting";

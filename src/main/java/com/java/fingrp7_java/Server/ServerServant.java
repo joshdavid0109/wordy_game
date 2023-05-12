@@ -221,7 +221,15 @@ public class ServerServant extends WordyGameServerPOA {
         for (Game g :
                 games) {
             if (g.gameID == gameID) {
-                return String.valueOf(g.winner.id);
+                if (g.winner != null) {
+                    return String.valueOf(g.winner.id);
+                }
+                for (WordyGamePlayer wgp :
+                        g.wgPlayers) {
+                    if (wgp.status.equalsIgnoreCase("ready")) {
+                        return wgp.status;
+                    }
+                }
             }
         }
         return "";

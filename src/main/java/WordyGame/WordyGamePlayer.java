@@ -17,6 +17,7 @@ public final class WordyGamePlayer implements org.omg.CORBA.portable.IDLEntity
 
   public WordyGamePlayer ()
   {
+
   } // ctor
 
   public WordyGamePlayer (int _id, int _wins, int _gameID, String _status)
@@ -33,5 +34,6 @@ public final class WordyGamePlayer implements org.omg.CORBA.portable.IDLEntity
     gameID = 0;
     status = "";
   }
+
 
 } // class WordyGamePlayer
