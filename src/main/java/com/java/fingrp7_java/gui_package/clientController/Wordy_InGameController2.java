@@ -143,6 +143,8 @@ public class Wordy_InGameController2 implements Initializable{
                                     dialog.initStyle(StageStyle.UNDECORATED);
                                     dialog.setDialogPane(dialogPane);
 
+                                    winCount++;
+                                    playerWinCount.setText(String.valueOf(winCount));
                                     dialog.show();
                                     winnerID = "";
                                     scheduledExecutorService.shutdown();
@@ -223,8 +225,10 @@ public class Wordy_InGameController2 implements Initializable{
 
 
                 letters = wordyGameServer.requestLetters(gameID);
-                if (letters!= null)
+                if (letters!= null) {
                     executorService.shutdown();
+                    System.out.println("closing game");
+                }
             }
         };
 
@@ -270,7 +274,7 @@ public class Wordy_InGameController2 implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         roundNo.setText(String.valueOf(roundNumber));
-        executorService = Executors.newFixedThreadPool(10);
+
         textFields.add(letter1);
         textFields.add(letter2);
         textFields.add(letter3);
@@ -289,13 +293,21 @@ public class Wordy_InGameController2 implements Initializable{
         textFields.add(letter16);
         textFields.add(letter17);
 
-        executorService.execute(new Runnable() {
+        scheduledExecutorService = Executors.newScheduledThreadPool(10);
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if (gameID ==0) {
+                System.out.println("match started.");
+                if (gameID!=0) {
+                    roundNumber = wordyGameServer.getRound(gameID);
+                    roundNo.setText(String.valueOf(roundNumber));
+                }
+                /*if (winner.equalsIgnoreCase("")) {
+                    System.out.println("game id " + gameID);
                     winner = wordyGameServer.checkMatchStatus(gameID);
-                    if (winner.equals("")) {
-                        executorService.shutdown();
+                    if (winner.equals("") && !winnerID.equalsIgnoreCase("")) {
+                        System.out.println("shutting down");
+                        scheduledExecutorService.shutdown();
                     }
 
                     winnerID = wordyGameServer.checkWinner(gameID);
@@ -307,9 +319,9 @@ public class Wordy_InGameController2 implements Initializable{
                            roundNo.setText(String.valueOf(roundNumber));
                        }
                     }
-                }
+                }*/
             }
-        });
+        },0,1,TimeUnit.SECONDS);
 
         wordsTF.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

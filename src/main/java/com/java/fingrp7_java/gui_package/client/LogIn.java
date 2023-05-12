@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LogIn extends Application {
-    public static String[] args;
+    public String[] args;
     @Override
     public void start(Stage primaryStage) throws IOException {
         Image image = new Image("SLU_LOGO-removebg-preview.png");
@@ -27,7 +27,6 @@ public class LogIn extends Application {
     }
 
     public static void main(String[] args) {
-        LogIn.args =args;
         launch(args);
     }
 }
