@@ -27,6 +27,7 @@ public class LogIn extends Application {
     }
 
     public static void main(String[] args) {
+        LogInController.args = args;
         launch(args);
     }
 }

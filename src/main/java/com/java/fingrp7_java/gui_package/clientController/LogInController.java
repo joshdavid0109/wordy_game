@@ -29,6 +29,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
@@ -124,7 +125,7 @@ public class LogInController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
 
-            System.out.println(args + "args");
+            System.out.println(Arrays.toString(args) + "args");
             /**
              * Default codes for
              */
