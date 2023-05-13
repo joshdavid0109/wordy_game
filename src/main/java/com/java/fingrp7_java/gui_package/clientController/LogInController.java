@@ -111,6 +111,7 @@ public class LogInController implements Initializable {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Server currently unavailable!");
             alert.showAndWait();
         }

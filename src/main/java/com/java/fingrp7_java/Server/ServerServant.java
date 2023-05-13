@@ -273,6 +273,13 @@ public class ServerServant extends WordyGameServerPOA {
         return charArray;
     }
 
+    //TODO
+
+    @Override
+    public int getPlayerID(String username) {
+        return 0;
+    }
+
     @Override
     public String checkWinner(int gameID) {
         boolean checking = false;
