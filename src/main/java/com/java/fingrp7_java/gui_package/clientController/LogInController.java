@@ -61,55 +61,47 @@ public class LogInController implements Initializable {
     @FXML
     void logIn(ActionEvent event) {
         try {
+            String username = usernameTF.getText();
+            String password = passwordTF.getText();
+            boolean loginStatus = true;
+
             if (!usernameTF.getText().equals("")) {
-                FXMLLoader loader = new FXMLLoader();
-
-                loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
-                Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
-
-
-                String username = usernameTF.getText();
-                String password = passwordTF.getText();
-
-                int UID;
 
                 try {
                     wordyGameServer.login(username, password);
-                } catch (UserAlreadyLoggedIn e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                    alert.showAndWait();
-                } catch (InvalidPassword e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                    alert.showAndWait();
-                } catch (InvalidCredentials e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, e.reason);
-                    alert.showAndWait();
+                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                    alert.show();
+
+                    usernameTF.clear();
+                    passwordTF.clear();
+                    loginStatus = false;
                 }
 
+                if (loginStatus) {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+                    Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
+                    Wordy_MainPageController.wordyGameServer = wordyGameServer;
+                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
 
-                Wordy_MainPageController.wordyGameServer = wordyGameServer;
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = (Stage) enterButton.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.show();
 
-                // TODO: how do i get uid, help
-                // use username: 456 and password: 55555 for now to continue to the main page
-                Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+                    stage.setOnCloseRequest(windowEvent ->
+                            wordyMainPageController.onShutDown());
 
-                Parent root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-                Scene scene = new Scene(root);
-                Stage stage = (Stage) enterButton.getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-
-            stage.setOnCloseRequest(windowEvent ->
-            {
-                wordyMainPageController.onShutDown();
-            });
-
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Server currently unavailable!");
