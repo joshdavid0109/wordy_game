@@ -58,7 +58,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
 //          playerReadyStatus = new boolean[players.size()];
           scheduler.shutdown();
         } else {
-          System.out.println("No other players have joined123");
+          System.out.println("No other players have joined");
           gameID = 0;
           status = null;
           scheduler.shutdown();
@@ -197,32 +197,13 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       }
     strings = new ArrayList<>();
 
-/*      for (Word w :
-              words) {
-        if (w.getGameID() == gameID) {
-          if (w.getRoundNum() == round) {
-            System.out.println(w.getWord());
-            if (!strings.contains(w.getWord())) {
-              strings.add(w.getWord()); // all valid words in current game and round
-            }else {
-              for (Word w1 :
-                      words) {
-                if (w.getWord().equals(w1.getWord())){
-                  if (w1.getUserID())
-                }
-              }
-            }
-          }
-        }
-      }*/
-
     for (int i = 0; i < words.size(); i++) {
       Word w = words.get(i);
       if (w.getGameID() == gameID) {
         if (w.getRoundNum() == round) {
           if (!strings.contains(w.getWord())) {
             strings.add(w.getWord()); // all valid words in current game and round
-          }else {
+          }else { // check if same length ng word or same word
             for (int j = 0; j < words.size(); j++) {
               Word w1 = words.get(j);
               if (strings.contains(w1.getWord())) {

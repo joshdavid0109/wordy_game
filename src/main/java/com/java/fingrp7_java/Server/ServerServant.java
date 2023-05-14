@@ -308,6 +308,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 }*/
                             } else if (wgp.wins == 3) {
                                 g.winner = wgp;
+                                return "Game Over";
                             }
                         }
 
