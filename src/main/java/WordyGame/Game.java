@@ -26,7 +26,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int hostID = (int)0;
   public int winnerID = (int)0;
   public HashMap<Integer, char[]> lettersPerRound = new HashMap<Integer, char[]>();
-
   public ArrayList<Integer> players;
   public ArrayList<WordyGamePlayer> wgPlayers = new ArrayList<>();
 
@@ -43,7 +42,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public ArrayList<Word> words ;
   public WordyGamePlayer host;
   public WordyGamePlayer winner;
-  public static Stage stage;
 
   public Runnable tenSecondGameTimer = new Runnable() {
     @Override
@@ -80,7 +78,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     }
   };
 
-  //TODO TIMER NAGIGING NEGATIVE IF ISA LANG NAGREADY
   public Runnable readyChecker = new Runnable() {
     @Override
     public void run() {
@@ -99,6 +96,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       }else if (!roundStat) {
         for (WordyGamePlayer wp :
                 wgPlayers) {
+          System.out.println(wp.status);
           if (wp.status.equals("")) {
             break;
           }else if (wgPlayers.get(wgPlayers.size()-1) == wp){

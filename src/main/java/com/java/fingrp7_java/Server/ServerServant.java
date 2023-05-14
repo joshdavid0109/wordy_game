@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class ServerServant extends WordyGameServerPOA {
     static ArrayList<WordyGame.Game> games = new ArrayList<>();
     static private final int WORD_LIMIT = 5;
+    static int roundNumber;
 
     static WordyGame.Game game;
     static char[] charArray = new char[17];
@@ -25,9 +26,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
-        try {
+//        try {
             int loginStatus = dataAccessClass.checkCredentials(username, password);
-
+/*
             switch (loginStatus) {
                 default:
                     System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
@@ -50,7 +51,7 @@ public class ServerServant extends WordyGameServerPOA {
             } else {
                 throw new InvalidCredentials("Invalid credentials! Try again.");
             }
-        }
+        }*/
     }
 
     @Override
@@ -221,6 +222,7 @@ public class ServerServant extends WordyGameServerPOA {
                 games) {
             if (g.gameID == gameID) {
                 if (g.winner != null) {
+                    System.out.println();
                     return String.valueOf(g.winner.id);
                 }
                 for (WordyGamePlayer wgp :
