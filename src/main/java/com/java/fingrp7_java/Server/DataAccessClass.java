@@ -117,13 +117,12 @@ public class DataAccessClass {
     }
 
     void setStatusOffline(int uid) {
-        String query = "UPDATE users SET isOnline = 0 WHERE username = ?";
+        String query = "UPDATE users SET isOnline = 0 WHERE userID = ?";
         PreparedStatement ps;
 
         try {
             ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            // remove String.valueOf() sooner or later
-            ps.setString(1, String.valueOf(uid));
+            ps.setInt(1, uid);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,6 +182,26 @@ public class DataAccessClass {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    int getUserID(String username) {
+        String query = "SELECT * FROM USERS WHERE username = ?";
+        PreparedStatement ps;
+
+        try {
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("userID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     public ArrayList<Word> getWords() throws SQLException {
