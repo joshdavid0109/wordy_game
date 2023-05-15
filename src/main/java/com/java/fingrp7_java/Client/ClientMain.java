@@ -43,6 +43,10 @@ public class ClientMain extends Application{
         logIn.start(primaryStage);
     }
 
+    /**
+     * start orbd -ORBInitialHost localhost -ORBInitialPort 9999
+     * @param args
+     */
     public static void main(String[] args) {
         System.out.println(Arrays.toString(args));
         LogInController.args =args;

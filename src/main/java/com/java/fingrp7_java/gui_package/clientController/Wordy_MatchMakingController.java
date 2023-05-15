@@ -66,16 +66,18 @@ public class Wordy_MatchMakingController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
-        if (timer == 0) {
-            timer = 10;
-        }
+
     }
 
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
             timer = wordyGameServer.getTimer("g");
+            if (timer == 0) {
+                timer = wordyGameServer.getTimer("G");
+            }
             timerText.setText(String.valueOf(timer));
+            System.out.println(timer);
             if (timer < 1) {
                 scheduledExecutorService.shutdown();
                 Stage stage = (Stage) decline.getScene().getWindow();

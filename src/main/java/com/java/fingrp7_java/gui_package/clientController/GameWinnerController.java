@@ -22,9 +22,15 @@ public class GameWinnerController implements Initializable {
     @FXML
     private Text winnerName;
 
+    @FXML
+    private Text winnerLabel;
+
+    public static String label;
+
     public static String name;
 
-    public String[] longestWords;
+    public static String[] longestWords;
+
 
     @FXML
     void proceedToNextRound(ActionEvent event) {

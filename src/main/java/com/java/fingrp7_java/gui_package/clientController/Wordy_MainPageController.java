@@ -75,7 +75,6 @@ public class Wordy_MainPageController implements Initializable {
 
                             Platform.setImplicitExit(false);
 
-                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer("g");
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {

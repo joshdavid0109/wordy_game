@@ -24,6 +24,7 @@ public class GameDrawController implements Initializable {
 
     public static String[] longestWords;
 
+
     @FXML
     void proceedToNextRound(ActionEvent event) {
         Stage stage = (Stage) nextButton.getScene().getWindow();

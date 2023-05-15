@@ -18,12 +18,7 @@
                   <Image url="@../../../party_popper.gif" />
                </image>
             </ImageView>
-            <Text fill="#b38c12" layoutX="137.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME WINNER ">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-            </Text>
-            <Text fill="#ffc527" layoutX="137.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME WINNER ">
+            <Text fx:id="winnerLabel" fill="#ffc527" layoutX="137.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME WINNER ">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>

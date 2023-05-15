@@ -26,6 +26,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public int hostID = (int)0;
   public int winnerID = (int)0;
   public HashMap<Integer, char[]> lettersPerRound = new HashMap<Integer, char[]>();
+  public HashMap<Integer, String> winnerPerRound = new HashMap<Integer, String>();
   public ArrayList<Integer> players;
   public ArrayList<WordyGamePlayer> wgPlayers = new ArrayList<>();
 
@@ -91,15 +92,26 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
             System.out.println("Kung sino lang nakaready");
 
             // TODO check if two players lang nasa game, pag oo, tas hindi nakaready isa matic win yung nakaready
-            scheduler.shutdown();
-            roundTimer();
+
+            if (wgPlayers.size() == 2) {
+              for (WordyGamePlayer wgp :
+                      wgPlayers) {
+                if (wgp.status.equalsIgnoreCase("ready")){
+                  wgp.wins++;
+                  scheduler.shutdown();
+                }
+              }
+            }else {
+              scheduler.shutdown();
+              roundTimer();
+            }
       }else if (!roundStat) {
         for (WordyGamePlayer wp :
                 wgPlayers) {
           System.out.println(wp.status);
           if (wp.status.equals("")) {
             break;
-          }else if (wgPlayers.get(wgPlayers.size()-1) == wp){
+          }else if (wgPlayers.get(wgPlayers.size()-1) == wp && wp.status.equalsIgnoreCase("ready")){
             System.out.println("g na");
             readyCounter = 3;
             roundStat = true;
@@ -113,6 +125,8 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   {
     gameID = 0;
     status = "";
+    timerCounter = 11;
+    status = "Waiting";
     winnerID = 0;
     hostID = 0;
   } // ctor
@@ -243,11 +257,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       }
       System.out.println("Winner words");
       System.out.println(Arrays.toString(winnerWords));
+      Wordy_InGameController2.longestWords = winnerWords;
 
       if (winnerWords.length == 1) { // if there is only one winner
-        GameWinnerController gameWinnerController;
-        gameWinnerController = new GameWinnerController();
-        gameWinnerController.longestWords = winnerWords;
         for (Word w :
                 words) {
           if (w.getGameID() == gameID) {
@@ -257,6 +269,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
                         wgPlayers) {
                   wgp.status = "";
                   if (w.getUserID() == wgp.id) {
+                      winnerPerRound.put(round, String.valueOf(wgp.id));
                       wgp.wins++; // increment win sa winner
                   }
                 }
@@ -265,7 +278,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           }
         }
       } else {
-        GameDrawController.longestWords = winnerWords;
+        GameDrawController gameDrawController = new GameDrawController();
       }
 
     System.out.println("setting all status to empty");

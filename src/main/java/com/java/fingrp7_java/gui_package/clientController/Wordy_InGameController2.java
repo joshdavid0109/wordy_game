@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
@@ -16,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -94,6 +97,7 @@ public class Wordy_InGameController2 implements Initializable{
     ScheduledExecutorService scheduledExecutorService;
     ScheduledExecutorService scheduledExecutorServiceForRunnable;
     ExecutorService executorService;
+    public static String[] longestWords;
     static String winnerID;
     static Wordy_MatchMakingController matchMakingController;
 
@@ -115,15 +119,18 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable result = new Runnable() {
             @Override
             public void run() {
-                if (gameID != 0) {
+//                if (gameID != 0) {
                     System.out.println("checking winner");
 
                     if (roundTime < 0) {
                         winnerID = wordyGameServer.checkWinner(gameID);
 
                         System.out.println(winnerID + " " + userID);
-                        GameWinnerController.name = winnerID;
+
                         if (Integer.parseInt(winnerID) == userID) {
+                            GameWinnerController.name = winnerID;
+                            GameWinnerController.label = "Round Winner";
+                            GameWinnerController.longestWords = longestWords;
                             new JFXPanel().requestFocus();
 
                             Platform.setImplicitExit(false);
@@ -142,7 +149,6 @@ public class Wordy_InGameController2 implements Initializable{
                                     }
                                     GameWinnerController gameWinnerController = fxmlLoader.getController();
 
-
                                     Dialog<ButtonType> dialog = new Dialog<>();
                                     dialog.initStyle(StageStyle.UNDECORATED);
                                     dialog.setDialogPane(dialogPane);
@@ -152,16 +158,18 @@ public class Wordy_InGameController2 implements Initializable{
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                            for (char letter : letters) {
-                                                for (TextField tf :
-                                                        textFields) {
-                                                    if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
-                                                            && tf.getOpacity() == 0.5) {
-                                                        tf.setOpacity(1);
-                                                        break;
+                                            if (letters != null) {
+                                                for (char letter : letters) {
+                                                    for (TextField tf :
+                                                            textFields) {
+                                                        if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                                                && tf.getOpacity() == 0.5) {
+                                                            tf.setOpacity(1);
+                                                            break;
+                                                        }
                                                     }
-                                                }
 
+                                                }
                                             }
                                         }
                                     });
@@ -169,12 +177,13 @@ public class Wordy_InGameController2 implements Initializable{
 
                                     winCount++;
                                     playerWinCount.setText(String.valueOf(winCount));
+                                    longestWords = new String[0];
                                     dialog.show();
                                     winnerID = "";
                                     scheduledExecutorService.shutdown();
                                 }
                             });
-                        } else if (GameDrawController.longestWords.length > 1) {
+                        } else if (longestWords.length > 1) {
                             new JFXPanel().requestFocus();
 
                             Platform.setImplicitExit(false);
@@ -194,6 +203,8 @@ public class Wordy_InGameController2 implements Initializable{
                                     }
                                     GameDrawController gameDrawController = fxmlLoader.getController();
 
+
+
                                     Dialog<ButtonType> dialog = new Dialog<>();
                                     dialog.initStyle(StageStyle.UNDECORATED);
                                     dialog.setDialogPane(dialogPane);
@@ -211,6 +222,7 @@ public class Wordy_InGameController2 implements Initializable{
                                         }
                                     }
 
+                                    longestWords = new String[0];
                                     winnerID = "";
                                     scheduledExecutorService.shutdown();
                                 }
@@ -220,9 +232,11 @@ public class Wordy_InGameController2 implements Initializable{
                             scheduledExecutorService.shutdown();
                         }
                         winnerID = "";
+
+
                     }
                 }
-            }
+//            }
         };
 
         Runnable roundCounter = new Runnable() {
@@ -235,10 +249,14 @@ public class Wordy_InGameController2 implements Initializable{
                 if (letters != null) {
                     if (roundTime < 0) {
                         scheduledExecutorService.shutdown();
+                        scheduledExecutorService.shutdown();
                         System.out.println("shutdown round timer");
                         letters = null;
                         roundNumber++;
                         roundNo.setText(String.valueOf(roundNumber));
+                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
+                    } else if (roundTime == 10) {
                         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
                         scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
                     }
@@ -249,6 +267,9 @@ public class Wordy_InGameController2 implements Initializable{
                         letters = null;
                         roundNumber++;
                         roundNo.setText(String.valueOf(roundNumber));
+                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
+                    } else if (roundTime == 10) {
                         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
                         scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
                     }
@@ -312,8 +333,6 @@ public class Wordy_InGameController2 implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         roundNo.setText(String.valueOf(roundNumber));
 
-
-
         textFields.add(letter1);
         textFields.add(letter2);
         textFields.add(letter3);
@@ -339,32 +358,9 @@ public class Wordy_InGameController2 implements Initializable{
                 System.out.println("match started.");
                 if (gameID!=0) {
 
-                   /* try {
-                        winner = wordyGameServer.checkMatchStatus(gameID);
-                        if (winner.equalsIgnoreCase("")) {
-                            System.out.println("game id " + gameID);
-                            if (winner != null || winnerID != null) {
-                                assert winner != null;
-                                if (winner.equals("") && !winnerID.equalsIgnoreCase("")) {
-                                    System.out.println("shutting down");
-                                    scheduledExecutorServiceForRunnable.shutdown();
-                                }
-
-                                winnerID = wordyGameServer.checkWinner(gameID);
-                                if (!winnerID.equals("")) { //
-                                    if (letters == null) {
-                                        roundNumber++;
-                                        roundNo.setText(String.valueOf(roundNumber));
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-*/
                     roundNumber = wordyGameServer.getRound(gameID);
+                    if (roundNumber != Integer.parseInt(roundNo.getText()))
+                        readyChecker[0] = false;
                     roundNo.setText(String.valueOf(roundNumber));
 
                     readyStatus = wordyGameServer.checkMatchStatus(gameID);
@@ -372,9 +368,6 @@ public class Wordy_InGameController2 implements Initializable{
                     if (readyStatus.equalsIgnoreCase("ready")) {
                         System.out.println("1");
 
-                        if (letters == null && readyTimer >0) {
-                            readyChecker[0] = true;
-                        }
                         if (!readyChecker[0]){
                             new JFXPanel();
                             Platform.runLater(new Runnable() {
@@ -402,40 +395,70 @@ public class Wordy_InGameController2 implements Initializable{
                         System.out.println("2");
                     }else {
                         System.out.println("3");
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+                        GameWinnerController.name = String.valueOf(readyStatus);
+                        new JFXPanel();
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
 
-                        DialogPane dialogPane;
-                        try {
-                            dialogPane = fxmlLoader.load();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        GameWinnerController gameWinnerController = fxmlLoader.getController();
-                        GameWinnerController.name = String.valueOf(userID);
-
-
-                        Dialog<ButtonType> dialog = new Dialog<>();
-                        dialog.initStyle(StageStyle.UNDECORATED);
-                        dialog.setDialogPane(dialogPane);
-                        wordsTF.clear();
-                        for (char letter : letters) {
-                            for (TextField tf :
-                                    textFields) {
-                                if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
-                                        && tf.getOpacity() == 0.5) {
-                                    tf.setOpacity(1);
-                                    break;
+                                DialogPane dialogPane;
+                                try {
+                                    dialogPane = fxmlLoader.load();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
                                 }
+                                GameWinnerController gameWinnerController = fxmlLoader.getController();
+
+                                GameWinnerController.label = "Game Winner";
+
+                                Dialog<ButtonType> dialog = new Dialog<>();
+                                dialog.initStyle(StageStyle.UNDECORATED);
+                                dialog.setDialogPane(dialogPane);
+                                wordsTF.clear();
+                                if (letters != null) {
+                                    for (char letter : letters) {
+                                        for (TextField tf :
+                                                textFields) {
+                                            if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                                    && tf.getOpacity() == 0.5) {
+                                                tf.setOpacity(1);
+                                                break;
+                                            }
+                                        }
+
+                                    }
+                                }
+                                scheduledExecutorServiceForRunnable.shutdown();
+                                scheduledExecutorService.shutdown();
+                                dialog.showAndWait();
+                                winnerID = "";
+                                winCount = 0;
+                                gameID = 0;
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+                                Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
+                                Wordy_MainPageController.wordyGameServer = wordyGameServer;
+//                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
+                                Wordy_MainPageController.playerID = userID;
+                                Parent root = null;
+                                try {
+                                    root = loader.load();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                Scene scene = new Scene(root);
+                                Stage stage = (Stage) ready.getScene().getWindow();
+                                stage.setScene(scene);
+                                stage.show();
+
+                                stage.setOnCloseRequest(windowEvent ->
+                                        wordyMainPageController.onShutDown());
+
                             }
+                        });
 
-                        }
-
-                        winCount++;
-                        playerWinCount.setText(String.valueOf(winCount));
-                        dialog.show();
-                        winnerID = "";
-                        scheduledExecutorServiceForRunnable.shutdown();
                     }
 
                 }
@@ -560,11 +583,13 @@ public class Wordy_InGameController2 implements Initializable{
                     }
                 }else {
                 // change opacity to 1 if nagback space
-                    changeOpacityOfTF(stack.pop(), 1, 0.5);
-                    backToOneOpacity(event);
+                    if (letters!= null) {
+                        changeOpacityOfTF(stack.pop(), 1, 0.5);
+                        backToOneOpacity(event);
+                    }
                 }
 
-                if (event.getCode().equals(KeyCode.ENTER)) {
+                if (event.getCode().equals(KeyCode.ENTER) && letters != null) {
                     try {
                         wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
                     } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {
