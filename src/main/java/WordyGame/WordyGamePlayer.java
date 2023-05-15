@@ -20,6 +20,7 @@ public final class WordyGamePlayer implements org.omg.CORBA.portable.IDLEntity
 
   } // ctor
 
+
   public WordyGamePlayer (int _id, int _wins, int _gameID, String _status)
   {
     id = _id;

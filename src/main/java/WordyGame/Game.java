@@ -90,13 +90,11 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
             roundTimer();
       } else if (readyCounter == 0){
             System.out.println("Kung sino lang nakaready");
-
-            // TODO check if two players lang nasa game, pag oo, tas hindi nakaready isa matic win yung nakaready
-
             if (wgPlayers.size() == 2) {
               for (WordyGamePlayer wgp :
                       wgPlayers) {
                 if (wgp.status.equalsIgnoreCase("ready")){
+                  winnerPerRound.put(round,String.valueOf(wgp.id));
                   wgp.wins++;
                   scheduler.shutdown();
                 }
@@ -254,11 +252,11 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           winnerWords[j] = strings.get(i);
           j++;
         }
-
       }
       System.out.println("Winner words");
       System.out.println(Arrays.toString(winnerWords));
-      Wordy_InGameController2.longestWords = winnerWords;
+      Wordy_InGameController2 wordyInGameController2 = new Wordy_InGameController2();
+      wordyInGameController2.longestWords = winnerWords;
 
       if (winnerWords.length == 1) { // if there is only one winner
         for (Word w :
@@ -290,9 +288,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     }
       roundStat =false;
       roundCounter = 10;
-      readyCounter = 10;
-      round++;
-
   }
 
 } // class Game

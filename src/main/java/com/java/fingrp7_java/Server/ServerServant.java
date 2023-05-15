@@ -81,6 +81,7 @@ public class ServerServant extends WordyGameServerPOA {
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
                 game.wgPlayers.add(wordyGamePlayer);
+                roundNumber =1;
                 Wordy_MatchMakingController.timer = game.timerCounter;
 
                 if (game.tenSecondGameTimer()) {
@@ -108,6 +109,7 @@ public class ServerServant extends WordyGameServerPOA {
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(games.size()-1);
                 game.wgPlayers.add(wordyGamePlayer);
+                roundNumber =1;
                 Wordy_MatchMakingController.timer = getTimer("g");
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
@@ -163,6 +165,7 @@ public class ServerServant extends WordyGameServerPOA {
                         break;
                     }
                 }
+                roundNumber =1;
             }
         } while (game.timerCounter != 0);
         System.out.println(game.gameID);
@@ -320,6 +323,9 @@ public class ServerServant extends WordyGameServerPOA {
                         checking = true;
                     }*/
                     roundNumber =g.round-1;
+                    if (roundNumber == 0) {
+                        roundNumber = 1;
+                    }
                     System.out.println(roundNumber + " asdas" +g.round);
                     String userID = g.winnerPerRound.get(roundNumber);
                     System.out.println(userID + "ito winner");
@@ -332,9 +338,11 @@ public class ServerServant extends WordyGameServerPOA {
                                 game = new Game();
                                 break;
                             }
-                            if (userID!= null){
+                            if (userID != null) {
                                 if (wgp.id == Integer.parseInt(userID)) {
                                     System.out.println(wgp.id);
+                                    Game.readyCounter = 10;
+                                    g.round++;
                                     // for tests lang
                                     return String.valueOf(wgp.id);
 
@@ -345,7 +353,8 @@ public class ServerServant extends WordyGameServerPOA {
                                         throw new RuntimeException(e);
                                     }*/
                                 }
-                            }
+                            } else
+                                return "";
                         }
                     } else {
                             return "Game Over";
@@ -361,7 +370,7 @@ public class ServerServant extends WordyGameServerPOA {
         if (game != null) {
             if (of.equalsIgnoreCase("g")) {
                 return game.timerCounter;
-            } else if (of.equalsIgnoreCase("r"))
+            } else if (of.equalsIgnoreCase("r")) // READY
                 return Game.readyCounter;
             else if (of.equalsIgnoreCase("round"))
                 return Game.roundCounter;
