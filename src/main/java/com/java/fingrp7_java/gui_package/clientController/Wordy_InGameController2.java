@@ -113,7 +113,6 @@ public class Wordy_InGameController2 implements Initializable{
             roundTimer.setText(String.valueOf(roundTime));
         }
 
-
         wordyGameServer.ready(userID, gameID);
 
         Runnable result = new Runnable() {
@@ -251,6 +250,11 @@ public class Wordy_InGameController2 implements Initializable{
                         scheduledExecutorService.shutdown();
                         scheduledExecutorService.shutdown();
                         System.out.println("shutdown round timer");
+                        for (int i = 0; i < textFields.size(); i++) {
+                            TextField tf = textFields.get(i);
+                            tf.setText(String.valueOf(i+1));
+                            tf.setOpacity(1);
+                        }
                         letters = null;
                         roundNumber++;
                         roundNo.setText(String.valueOf(roundNumber));
@@ -264,6 +268,10 @@ public class Wordy_InGameController2 implements Initializable{
                     if (roundTime < 0) {
                         scheduledExecutorService.shutdown();
                         System.out.println("shutdown round timer");
+                        for (int i = 0; i < textFields.size(); i++) {
+                            TextField tf = textFields.get(i);
+                            tf.setText(String.valueOf(i+1));
+                        }
                         letters = null;
                         roundNumber++;
                         roundNo.setText(String.valueOf(roundNumber));
@@ -359,7 +367,7 @@ public class Wordy_InGameController2 implements Initializable{
                 if (gameID!=0) {
 
                     roundNumber = wordyGameServer.getRound(gameID);
-                    if (roundNumber != Integer.parseInt(roundNo.getText()))
+                    if (roundNumber != Integer.parseInt(roundNo.getText()) && letters == null)
                         readyChecker[0] = false;
                     roundNo.setText(String.valueOf(roundNumber));
 
@@ -589,7 +597,7 @@ public class Wordy_InGameController2 implements Initializable{
                     }
                 }
 
-                if (event.getCode().equals(KeyCode.ENTER) && letters != null) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
                     try {
                         wordyGameServer.checkWord(wordsTF.getText(), gameID, userID);
                     } catch (InvalidWord | WordLessThanFiveLetters | ExceededTimeLimit e) {

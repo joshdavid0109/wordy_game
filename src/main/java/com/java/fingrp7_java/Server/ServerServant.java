@@ -131,6 +131,7 @@ public class ServerServant extends WordyGameServerPOA {
                         System.out.println("join lang");
                         g.players.add(userID);
                         g.wgPlayers.add(wordyGamePlayer);
+                        game = g;
 
                         if (game.timerCounter == 0) {
                             scheduler.shutdown();
@@ -331,19 +332,19 @@ public class ServerServant extends WordyGameServerPOA {
                                 game = new Game();
                                 break;
                             }
-                            if (wgp.id == Integer.parseInt(userID)) {
-                                System.out.println(wgp.id);
+                            if (userID!= null){
+                                if (wgp.id == Integer.parseInt(userID)) {
+                                    System.out.println(wgp.id);
+                                    // for tests lang
+                                    return String.valueOf(wgp.id);
 
-
-                                // for tests lang
-                                return String.valueOf(wgp.id);
-
-                                // for registered users na ito
-/*                                try {
-                                    return dataAccessClass.getGameWinner(wgp.id);
-                                } catch (SQLException e) {
-                                    throw new RuntimeException(e);
-                                }*/
+                                    // for registered users na ito
+    /*                                try {
+                                        return dataAccessClass.getGameWinner(wgp.id);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }*/
+                                }
                             }
                         }
                     } else {

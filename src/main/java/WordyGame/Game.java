@@ -110,6 +110,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
                 wgPlayers) {
           System.out.println(wp.status);
           if (wp.status.equals("")) {
+            System.out.println("break");
             break;
           }else if (wgPlayers.get(wgPlayers.size()-1) == wp && wp.status.equalsIgnoreCase("ready")){
             System.out.println("g na");
@@ -285,6 +286,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     for (WordyGamePlayer wgp :
             wgPlayers) {
       wgp.status = "";
+      System.out.println(wgp.status);
     }
       roundStat =false;
       roundCounter = 10;
