@@ -3,6 +3,7 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.ServerUnavailable;
 import WordyGame.TopWord;
+import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -229,6 +230,30 @@ public class DataAccessClass {
         }
 
         return "";
+    }
+
+    public int getGameID() throws SQLException{
+        String q  = "Select * from game";
+        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE  );
+        ResultSet resultSet = statement.executeQuery(q);
+        int count = 0;
+
+        while (resultSet.next()) {
+            count++;
+        }
+
+        if (count ==0) {
+            count = 1;
+        }
+        return count;
+    }
+
+    public void insertGameObject(int gameID) throws SQLException{
+        String q = "insert into game(gameID, gameWinner) values (?, NULL)";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(q, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        preparedStatement.setInt(1, gameID);
+        preparedStatement.execute();
     }
 }
 
