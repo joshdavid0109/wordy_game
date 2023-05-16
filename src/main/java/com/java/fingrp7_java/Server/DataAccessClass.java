@@ -74,30 +74,59 @@ public class DataAccessClass {
     }
 
     public TopWord[] getLongestWords() {
-        int TOP_LIMIT = 5;
+//        int TOP_LIMIT = 5;
+//
+///*        String query = "SELECT top 5 words, userID FROM word";*/
+//
+//        // SELECT userID, words FROM word
+//        // WHERE LENGTH(words) =
+//        // (SELECT MIN(LENGTH(words)) FROM word)
+//        // ORDER BY words;
+//        String query = "SELECT userId, words FROM word WHERE LENGTH(words) = " +
+//                "(SELECT MIN(LENGTH(words) FROM word) ORDER BY words;";
+//        TopWord[] topWords = null;
+//
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//
+//            ResultSet rs  = preparedStatement.executeQuery();
+//            //rs to TopWord object
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+//
+//
+////        topWords = new TopWord();
 
-/*        String query = "SELECT top 5 words, userID FROM word";*/
+        String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5;";
 
-        // SELECT userID, words FROM word
-        // WHERE LENGTH(words) =
-        // (SELECT MIN(LENGTH(words)) FROM word)
-        // ORDER BY words;
-        String query = "SELECT userId, words FROM word WHERE LENGTH(words) = " +
-                "(SELECT MIN(LENGTH(words) FROM word) ORDER BY words;";
-        TopWord[] topWords = null;
+        // SHOULD BE 5
+        TopWord[] topWords = new TopWord[4];
 
-        PreparedStatement preparedStatement = null;
+        PreparedStatement ps;
+
         try {
-            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = ps.executeQuery();
+//            int i = 0;
 
-            ResultSet rs  = preparedStatement.executeQuery();
-            //rs to TopWord object
-        }catch (SQLException e){
+//            while (rs.next()) {
+//                topWords[i] = new TopWord(rs.getString(1), rs.getString(2));
+//                i++;
+////                System.out.println(rs.getString("username") + " " + rs.getString("words"));
+//            }
+
+            for (int i = 0; i < topWords.length; i++) {
+                if (rs.next()) {
+                    topWords[i] = new TopWord(rs.getString(1), rs.getString(2));
+                    System.out.println(rs.getString(1) + " " + rs.getString(2));
+                }
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-//        topWords = new TopWord();
 
         return topWords;
     }

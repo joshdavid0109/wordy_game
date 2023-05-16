@@ -23,4 +23,7 @@ public final class TopWord implements org.omg.CORBA.portable.IDLEntity
     word = _word;
   } // ctor
 
+  public String toString() {
+    return username + " " + word;
+  }
 } // class TopWord

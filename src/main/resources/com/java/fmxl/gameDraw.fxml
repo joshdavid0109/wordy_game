@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.GameDrawController">
+<DialogPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.GameDrawController">
    <content>
       <Pane prefHeight="198.0" prefWidth="420.0">
          <children>
@@ -28,14 +28,14 @@
                   <Font name="System Bold" size="52.0" />
                </font>
             </Text>
-            <Text fill="#ffc527" layoutX="138.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME ">
+            <Text fill="#ffc527" layoutX="138.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME " textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="52.0" />
                </font>
             </Text>
             <Pane layoutX="54.0" layoutY="132.0" prefHeight="4.0" prefWidth="313.0" style="-fx-background-color: GRAY;" />
             <Pane layoutX="54.0" layoutY="129.0" prefHeight="4.0" prefWidth="313.0" style="-fx-background-color: BLACK;" />
-            <Text fx:id="roundLongestWord" layoutX="168.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Longest Word">
+            <Text fx:id="roundLongestWord" layoutX="83.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Longest Word" textAlignment="CENTER" wrappingWidth="255.98046875">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -48,12 +48,12 @@
                   <DropShadow height="0.0" radius="0.0" width="0.0" />
                </effect>
             </Button>
-            <Text fx:id="t" fill="#b38c12" layoutX="140.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DRAW">
+            <Text fx:id="t" fill="#b38c12" layoutX="130.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DRAW">
                <font>
                   <Font name="System Bold" size="52.0" />
                </font>
             </Text>
-            <Text fill="#ffc527" layoutX="140.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DRAW">
+            <Text fill="#ffc527" layoutX="130.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DRAW" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="52.0" />
                </font>

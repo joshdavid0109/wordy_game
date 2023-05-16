@@ -10,6 +10,7 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.SendingContext.RunTime;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
@@ -72,6 +73,12 @@ public class Client {
 //            } catch (InvalidPassword e) {
 //                throw new RuntimeException(e);
 //            }
+
+            try {
+                System.out.println(Arrays.toString(wordyGameServer.getLongestWords()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  RuntimeException e) {

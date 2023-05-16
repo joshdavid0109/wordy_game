@@ -1,18 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_LongestWordController">
+<AnchorPane prefHeight="400.0" prefWidth="539.0" style="-fx-background-color: #2c0c02;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_LongestWordController">
    <children>
-      <Button fx:id="toMainPage" layoutX="484.0" layoutY="344.0" mnemonicParsing="false" onAction="#toMainPage" text="Button" />
-      <TreeTableView fx:id="treeTableView" layoutX="50.0" layoutY="48.0" prefHeight="250.0" prefWidth="500.0">
-        <columns>
-          <TreeTableColumn fx:id="userName" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="username" />
-          <TreeTableColumn fx:id="longestWord" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="words" />
-        </columns>
-      </TreeTableView>
+      <ImageView fitHeight="400.0" fitWidth="405.0" opacity="0.34" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../bookCover.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="400.0" fitWidth="405.0" layoutX="269.0" opacity="0.41" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../bookCover.jpg" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="400.0" prefWidth="539.0">
+         <children>
+            <AnchorPane layoutX="1.0" layoutY="73.0" prefHeight="274.0" prefWidth="93.0">
+               <children>
+                  <Pane layoutX="30.0" layoutY="15.0" prefHeight="34.0" prefWidth="30.0" style="-fx-background-color: #FFD700; -fx-background-radius: 100; -fx-border-color: #A38A00; -fx-border-radius: 100; -fx-border-width: 2;">
+                     <children>
+                        <Text layoutX="12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="30.0" layoutY="65.0" prefHeight="34.0" prefWidth="30.0" style="-fx-background-color: SILVER; -fx-background-radius: 150;">
+                     <children>
+                        <Text layoutX="12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="30.0" layoutY="115.0" prefHeight="34.0" prefWidth="30.0" style="-fx-background-color: #ad6c03; -fx-background-radius: 100;">
+                     <children>
+                        <Text layoutX="12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="30.0" layoutY="165.0" prefHeight="34.0" prefWidth="30.0" style="-fx-background-color: #ad6c03; -fx-background-radius: 150;">
+                     <children>
+                        <Text layoutX="12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="30.0" layoutY="215.0" prefHeight="34.0" prefWidth="30.0" style="-fx-background-color: #ad6c03; -fx-background-radius: 150;">
+                     <children>
+                        <Text layoutX="12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="94.0" layoutY="73.0" prefHeight="274.0" prefWidth="176.0">
+               <children>
+                  <Text fx:id="top1UserName" fill="GOLD" layoutX="15.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 1">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top2UserName" fill="SILVER" layoutX="15.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 2">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top3UserName" fill="#ad6c03" layoutX="15.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top4UserName" fill="#ad6c03" layoutX="15.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 4">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top5UserName" fill="#ad6c03" layoutX="15.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 5">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="270.0" layoutY="73.0" prefHeight="274.0" prefWidth="269.0">
+               <children>
+                  <Text fx:id="top1Word" fill="GOLD" layoutX="25.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 1 WORD">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top2Word" fill="SILVER" layoutX="25.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 2 WORD">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top3Word" fill="#ad6c03" layoutX="25.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3 WORD">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top4Word" fill="#ad6c03" layoutX="25.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 4 WORD">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="top5Word" fill="#ad6c03" layoutX="25.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 5 WORD">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="78.0" layoutY="14.0" prefHeight="47.0" prefWidth="384.0" style="-fx-background-color: #910000; -fx-border-color: #a12727; -fx-border-width: 2;">
+               <children>
+                  <Text fill="GOLD" layoutX="35.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP LONGEST WORD">
+                     <font>
+                        <Font name="System Bold" size="31.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <Button fx:id="toMainPage" layoutX="438.0" layoutY="359.0" mnemonicParsing="false" onAction="#toMainPage" onDragDetected="#toMainPage" style="-fx-background-color: GREEN; -fx-border-color: #003615; -fx-background-radius: 5; -fx-border-radius: 5;" text="RETURN" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
