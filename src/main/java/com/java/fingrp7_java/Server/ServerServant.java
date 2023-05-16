@@ -7,6 +7,7 @@ import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingContr
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,9 +27,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
-//        try {
+        try {
             int loginStatus = dataAccessClass.checkCredentials(username, password);
-/*
+
             switch (loginStatus) {
                 default:
                     System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
@@ -51,7 +52,7 @@ public class ServerServant extends WordyGameServerPOA {
             } else {
                 throw new InvalidCredentials("Invalid credentials! Try again.");
             }
-        }*/
+        }
     }
 
     @Override
@@ -380,13 +381,12 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public TopWord[] getLongestWords() {
-        TopWord[] topWords = null;
-
-        dataAccessClass.getLongestWords();
-        List<TopWord> topWordList = new ArrayList<>();
-
-        topWords = topWordList.toArray(new TopWord[0]);
-        return topWords;
+        //
+//        dataAccessClass.getLongestWords();
+//        List<TopWord> topWordList = Arrays.asList(topWords);
+//        System.out.println(topWordList);
+//        System.out.println(Arrays.toString(topWords));
+        return dataAccessClass.getLongestWords();
     }
 
     @Override
