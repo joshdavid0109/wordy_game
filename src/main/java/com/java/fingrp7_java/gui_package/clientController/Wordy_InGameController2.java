@@ -94,6 +94,7 @@ public class Wordy_InGameController2 implements Initializable{
     public static WordyGameServer wordyGameServer;
     char[] letters = new char[17];
     final boolean[] readyChecker = {false};
+    final boolean[] winChecker = {false};
     ScheduledExecutorService scheduledExecutorService;
     ScheduledExecutorService scheduledExecutorServiceForRunnable;
     ExecutorService executorService;
@@ -108,6 +109,7 @@ public class Wordy_InGameController2 implements Initializable{
         executorService = Executors.newFixedThreadPool(10);
         scheduledExecutorService = Executors.newScheduledThreadPool(10);
         readyChecker[0] = true;
+
         if (roundTime == 0) {
             roundTime = 11;
             roundTimer.setText(String.valueOf(roundTime));
@@ -122,9 +124,16 @@ public class Wordy_InGameController2 implements Initializable{
                 System.out.println("checking winner");
 
                 if (roundTime < 0) {
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     winnerID = wordyGameServer.checkWinner(gameID);
 
                     System.out.println(winnerID + " " + userID);
+                    winChecker[0] = false;
 
                     if (Integer.parseInt(winnerID) == userID) {
                         System.out.println("panalo to");
@@ -247,7 +256,7 @@ public class Wordy_InGameController2 implements Initializable{
             @Override
             public void run() {
                 System.out.println("timer starting");
-                roundTime = wordyGameServer.getTimer("round");
+                roundTime = wordyGameServer.getTimer(gameID, "round");
                 System.out.println(roundTime);
                 roundTimer.setText(String.valueOf(roundTime--));
                 if (letters != null) {
@@ -301,32 +310,88 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable timer = new Runnable() {
             @Override
             public void run() {
-                readyTimer = wordyGameServer.getTimer("r");
+                readyTimer = wordyGameServer.getTimer(gameID, "r");
                 readyTimerCounter.setText(String.valueOf(readyTimer));
                 if (readyTimer == 0) {
-                    winnerID = wordyGameServer.checkWinner(gameID);
-//                    if (!winnerID.equalsIgnoreCase("")) {
-//                        letters = null;
-//                        roundNumber++;
-//                        roundNo.setText(String.valueOf(roundNumber));
-//                        scheduledExecutorService.shutdown();
-//                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
-//                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
-//
-//                    }else {
-                    System.out.println("else");
+                    winChecker[0] = true;
+                    if ((winnerID=wordyGameServer.checkWinner(gameID)).equalsIgnoreCase(String.valueOf(userID))) {
+                        System.out.println(winnerID + userID);
+                        if (winnerID.equalsIgnoreCase(String.valueOf(userID))) {
+                            letters = null;
+                            winChecker[0] = true;
+                            roundNumber++;
+                            roundNo.setText(String.valueOf(roundNumber));
+                            scheduledExecutorService.shutdown();
+                            GameWinnerController.name = String.valueOf(userID);
+                            new JFXPanel().requestFocus();
 
-                    for (int i = 0; i < textFields.size(); i++) {
-                        TextField tf = textFields.get(i);
-                        if (tf.getText().equals(String.valueOf(letters[i])))
-                            break;
-                        tf.setText(String.valueOf(letters[i]));
+                            Platform.setImplicitExit(false);
 
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+
+                                    DialogPane dialogPane;
+                                    try {
+                                        dialogPane = fxmlLoader.load();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    GameWinnerController gameWinnerController = fxmlLoader.getController();
+
+                                    Dialog<ButtonType> dialog = new Dialog<>();
+                                    dialog.initStyle(StageStyle.UNDECORATED);
+                                    dialog.setDialogPane(dialogPane);
+                                    wordsTF.clear();
+
+                                    new JFXPanel();
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (letters != null) {
+                                                for (char letter : letters) {
+                                                    for (TextField tf :
+                                                            textFields) {
+                                                        if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                                                && tf.getOpacity() == 0.5) {
+                                                            tf.setOpacity(1);
+                                                            break;
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    winCount++;
+                                    playerWinCount.setText(String.valueOf(winCount));
+                                    longestWords = new String[0];
+                                    dialog.show();
+                                    winnerID = "";
+                                    scheduledExecutorService.shutdown();
+                                }
+                            });
+                        }
+                    } else  {
+                        winChecker[0] = false;
                     }
 
-                    scheduledExecutorService.shutdown();
-                    scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
-                    scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0, 1, TimeUnit.SECONDS);
+                    if (!winChecker[0]){
+                        for (int i = 0; i < textFields.size(); i++) {
+                            TextField tf = textFields.get(i);
+                            if (tf.getText().equals(String.valueOf(letters[i])))
+                                break;
+                            tf.setText(String.valueOf(letters[i]));
+
+                        }
+
+                        scheduledExecutorService.shutdown();
+                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+                        scheduledExecutorService.scheduleAtFixedRate(roundCounter, 0, 1, TimeUnit.SECONDS);
+                    }
 //                    }
                 }
             }
@@ -352,6 +417,7 @@ public class Wordy_InGameController2 implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         roundNo.setText(String.valueOf(roundNumber));
 
         textFields.add(letter1);
@@ -385,6 +451,7 @@ public class Wordy_InGameController2 implements Initializable{
 
                     readyStatus = wordyGameServer.checkMatchStatus(gameID);
                     if (readyStatus.equalsIgnoreCase("ready")) {
+                        winChecker[0] = false;
                         if (!readyChecker[0]){
                             new JFXPanel();
                             Platform.runLater(new Runnable() {

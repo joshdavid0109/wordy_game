@@ -83,8 +83,9 @@ public class LogInController implements Initializable {
                     loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
                     Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                     Wordy_MainPageController.wordyGameServer = wordyGameServer;
-                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
-//                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+                    Wordy_MatchMakingController.wordyGameServer = wordyGameServer;
+//                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
+                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
                     Parent root = null;
                     try {
                         root = loader.load();

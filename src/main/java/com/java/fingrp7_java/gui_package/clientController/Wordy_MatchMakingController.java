@@ -44,7 +44,7 @@ public class Wordy_MatchMakingController implements Initializable {
     public static String[] args;
     public static WordyGameServer wordyGameServer;
     public static WordyGamePlayer wordyGamePlayer;
-    public int gameID;
+    public static int gameID;
     public ScheduledExecutorService scheduledExecutorService;
 
     @FXML
@@ -72,9 +72,9 @@ public class Wordy_MatchMakingController implements Initializable {
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
-            timer = wordyGameServer.getTimer("g");
+            timer = wordyGameServer.getTimer(gameID+1, "g");
             if (timer == 0) {
-                timer = wordyGameServer.getTimer("G");
+                timer = wordyGameServer.getTimer(gameID+1, "G");
             }
             timerText.setText(String.valueOf(timer));
             System.out.println(timer);
