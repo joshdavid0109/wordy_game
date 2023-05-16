@@ -3,6 +3,7 @@ package com.java.fingrp7_java.gui_package.clientController;
 import WordyGame.Game;
 import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGameServer;
+import com.java.fingrp7_java.Server.Word;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -90,7 +91,8 @@ public class Wordy_MainPageController implements Initializable {
                                     }
                                     matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
                                     Wordy_MatchMakingController.wordyGameServer = wordyGameServer;
-
+                                    Wordy_MatchMakingController.gameID =gameID;
+                                    Wordy_MatchMakingController.timer = wordyGameServer.getTimer(gameID, "g");
 
                                     Dialog<ButtonType> dialog = new Dialog<>();
                                     dialog.initStyle(StageStyle.UNDECORATED);

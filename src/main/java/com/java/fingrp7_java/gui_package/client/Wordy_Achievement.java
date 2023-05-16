@@ -1,6 +1,6 @@
 package com.java.fingrp7_java.gui_package.client;
 
-import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_InGameController2;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,7 +16,7 @@ public class Wordy_Achievement extends Application {
 
         FXMLLoader fxmlLoader =
                 new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/achievement.fxml"));
-        Wordy_InGameController wordy_inGameController = fxmlLoader.getController();
+        Wordy_InGameController2 wordy_inGameController = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle("RANK");
         primaryStage.getIcons().add(image);

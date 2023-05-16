@@ -247,7 +247,7 @@ public class Wordy_InGameController2 implements Initializable{
             @Override
             public void run() {
                 System.out.println("timer starting");
-                roundTime = wordyGameServer.getTimer("round");
+                roundTime = wordyGameServer.getTimer(gameID, "round");
                 System.out.println(roundTime);
                 roundTimer.setText(String.valueOf(roundTime--));
                 if (letters != null) {
@@ -301,10 +301,10 @@ public class Wordy_InGameController2 implements Initializable{
         Runnable timer = new Runnable() {
             @Override
             public void run() {
-                readyTimer = wordyGameServer.getTimer("r");
+                readyTimer = wordyGameServer.getTimer(gameID, "r");
                 readyTimerCounter.setText(String.valueOf(readyTimer));
                 if (readyTimer == 0) {
-                    winnerID = wordyGameServer.checkWinner(gameID);
+//                    winnerID = wordyGameServer.checkWinner(gameID);
 //                    if (!winnerID.equalsIgnoreCase("")) {
 //                        letters = null;
 //                        roundNumber++;
@@ -313,7 +313,8 @@ public class Wordy_InGameController2 implements Initializable{
 //                        scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
 //                        scheduledExecutorService.schedule(result, 1, TimeUnit.SECONDS);
 //
-//                    }else {
+//                    }
+
                     System.out.println("else");
 
                     for (int i = 0; i < textFields.size(); i++) {
@@ -352,6 +353,7 @@ public class Wordy_InGameController2 implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         roundNo.setText(String.valueOf(roundNumber));
 
         textFields.add(letter1);

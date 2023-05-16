@@ -3,6 +3,7 @@ package com.java.fingrp7_java.Server;
 
 import WordyGame.*;
 import WordyGame.Game;
+import com.java.fingrp7_java.gui_package.clientController.Wordy_MainPageController;
 import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController;
 
 import java.sql.SQLException;
@@ -81,9 +82,10 @@ public class ServerServant extends WordyGameServerPOA {
                 games.add(new Game(games.size() + 1, userID));
                 game = games.get(0);
                 game.wgPlayers.add(wordyGamePlayer);
-                roundNumber =1;
-                Wordy_MatchMakingController.timer = game.timerCounter;
-
+                System.out.println("Gid " + game.gameID);
+                Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
+                wordyMainPageController.gameID = game.gameID;
+                roundNumber = 1;
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
 
@@ -106,11 +108,14 @@ public class ServerServant extends WordyGameServerPOA {
                 }
             } else if (game.timerCounter == 0) {
                 System.out.println("new game");
-                games.add(new Game(games.size() + 1, userID));
+                games.add(new Game(games.size() +1, userID));
                 game = games.get(games.size()-1);
                 game.wgPlayers.add(wordyGamePlayer);
+                System.out.println("Gid " + game.gameID);
+                Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
+                wordyMainPageController.gameID = game.gameID;
                 roundNumber =1;
-                Wordy_MatchMakingController.timer = getTimer("g");
+
                 if (game.tenSecondGameTimer()) {
                     System.out.println("tens");
                     if (game.timerCounter == 0) {
@@ -134,6 +139,8 @@ public class ServerServant extends WordyGameServerPOA {
                         g.players.add(userID);
                         g.wgPlayers.add(wordyGamePlayer);
                         game = g;
+                        System.out.println("Gid " + game.gameID);
+
 
                         if (game.timerCounter == 0) {
                             scheduler.shutdown();
@@ -147,6 +154,8 @@ public class ServerServant extends WordyGameServerPOA {
                         games.add(new Game(games.size() + 1, userID));
                         game = games.get(games.size()-1);
                         game.wgPlayers.add(wordyGamePlayer);
+                        Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
+                        wordyMainPageController.gameID = game.gameID;
                         if (game.tenSecondGameTimer()) {
                             System.out.println("tens");
                             if (game.timerCounter == 0) {
@@ -364,14 +373,20 @@ public class ServerServant extends WordyGameServerPOA {
     }
 
     @Override
-    public int getTimer(String of) {
+    public int getTimer(int gameID, String of) {
         if (game != null) {
-            if (of.equalsIgnoreCase("g")) {
-                return game.timerCounter;
-            } else if (of.equalsIgnoreCase("r")) // READY
-                return Game.readyCounter;
-            else if (of.equalsIgnoreCase("round"))
-                return Game.roundCounter;
+            for (Game g:
+                 games) {
+                if (gameID == g.gameID) {
+                    if (of.equalsIgnoreCase("g")) {
+                        return g.timerCounter;
+                    } else if (of.equalsIgnoreCase("r")) {// READY
+                        return g.readyCounter;
+                    } else if (of.equalsIgnoreCase("round")) {
+                        return g.roundCounter;
+                    }
+                }
+            }
         }
         return 0;
     }
