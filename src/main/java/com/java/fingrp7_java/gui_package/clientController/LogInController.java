@@ -67,24 +67,24 @@ public class LogInController implements Initializable {
 
             if (!usernameTF.getText().equals("")) {
 
-//                try {
+                try {
                     wordyGameServer.login(username, password);
-//                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword e) {
-//                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-//                    alert.show();
-//
-//                    usernameTF.clear();
-//                    passwordTF.clear();
-//                    loginStatus = false;
-//                }
+                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                    alert.show();
+
+                    usernameTF.clear();
+                    passwordTF.clear();
+                    loginStatus = false;
+                }
 
                 if (loginStatus) {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
                     Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                     Wordy_MainPageController.wordyGameServer = wordyGameServer;
-//                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
-                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
+//                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
                     Parent root = null;
                     try {
                         root = loader.load();
