@@ -135,12 +135,18 @@ public class Wordy_InGameController2 implements Initializable{
                     System.out.println(winnerID + " " + userID);
                     winChecker[0] = false;
 
-                    if (Integer.parseInt(winnerID) == userID) {
+                    if (winnerID.equalsIgnoreCase(String.valueOf(userID))) {
+                        winCount++;
+                        playerWinCount.setText(String.valueOf(winCount));
+                    }
+
+                    GameWinnerController.name = winnerID;
+                    GameWinnerController.label = "Round Winner";
+                    GameWinnerController.longestWords = longestWords;
+                    if (!winnerID.equalsIgnoreCase("")) {
                         System.out.println("panalo to");
                         try {
-                            GameWinnerController.name = winnerID;
-                            GameWinnerController.label = "Round Winner";
-                            GameWinnerController.longestWords = longestWords;
+
                             new JFXPanel().requestFocus();
 
                             Platform.setImplicitExit(false);
@@ -184,9 +190,6 @@ public class Wordy_InGameController2 implements Initializable{
                                         }
                                     });
 
-
-                                    winCount++;
-                                    playerWinCount.setText(String.valueOf(winCount));
                                     longestWords = new String[0];
                                     dialog.show();
                                     winnerID = "";
@@ -196,7 +199,7 @@ public class Wordy_InGameController2 implements Initializable{
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (longestWords.length > 1) {
+                    } else  {
                         new JFXPanel().requestFocus();
 
                         Platform.setImplicitExit(false);
@@ -240,9 +243,6 @@ public class Wordy_InGameController2 implements Initializable{
                                 scheduledExecutorService.shutdown();
                             }
                         });
-                    } else if (Integer.parseInt(winnerID) != userID) {
-                        System.out.println("talo ka");
-                        scheduledExecutorService.shutdown();
                     }
                     winnerID = "";
 

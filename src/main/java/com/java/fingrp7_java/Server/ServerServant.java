@@ -106,7 +106,7 @@ public class ServerServant extends WordyGameServerPOA {
                     throw new NoPlayersAvailable("No other players have joined the game.");
                 }
             } else if (game.timerCounter == 0) {
-                System.out.println("new game");
+                System.out.println("new gamee");
                 games.add(new Game(games.size() +1, userID));
                 game = games.get(games.size()-1);
                 game.wgPlayers.add(wordyGamePlayer);
@@ -340,7 +340,6 @@ public class ServerServant extends WordyGameServerPOA {
                         System.out.println(g.wgPlayers.size() + "sizee");
                         if (wgp.wins == 3) {
                             g.winner = wgp;
-                            game = new Game();
                             break;
                         }
                         if (userID != null) {
