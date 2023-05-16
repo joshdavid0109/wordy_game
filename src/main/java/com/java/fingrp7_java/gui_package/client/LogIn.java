@@ -19,7 +19,7 @@ public class LogIn extends Application {
                 new FXMLLoader(LogIn.class.getResource("/com/java/fmxl/logInPage.fxml"));
         LogInController logInController = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setTitle("LOG IN");
+        primaryStage.setTitle("WORDY");
         primaryStage.getIcons().add(image);
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

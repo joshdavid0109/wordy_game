@@ -146,7 +146,7 @@
                </font>
             </Text>
             <Pane layoutX="19.0" layoutY="241.0" prefHeight="3.0" prefWidth="80.0" style="-fx-background-color: #f6b604;" />
-            <Button fx:id="ready" layoutX="25.0" layoutY="316.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="66.0" text="READY" />
+            <Button fx:id="ready" layoutX="25.0" layoutY="306.0" mnemonicParsing="false" onAction="#ready" prefHeight="25.0" prefWidth="66.0" text="READY" />
             <Button fx:id="exitGame" layoutX="40.0" layoutY="358.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="25.0" prefWidth="37.0" style="-fx-background-color: #eeaf1d; -fx-border-color: #b98805; -fx-border-radius: 50; -fx-border-width: 2; -fx-background-radius: 50;">
                <graphic>
                   <ImageView fitHeight="11.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
@@ -161,7 +161,7 @@
                   <Image url="@../../../SLU_LOGO-removebg-preview.png" />
                </image>
             </ImageView>
-            <Text fx:id="readyTimerCounter" fill="#f6b604" layoutX="47.0" layoutY="300.0" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="10">
+            <Text fx:id="readyTimerCounter" fill="#f6b604" layoutX="37.0" layoutY="291.0" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="41.00000895559788">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

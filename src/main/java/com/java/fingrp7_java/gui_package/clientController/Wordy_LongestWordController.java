@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -26,35 +27,36 @@ public class Wordy_LongestWordController implements Initializable {
     private Button toMainPage;
 
     @FXML
-    private TreeTableColumn<TopFiveLongestWord, String> userName;
+    private Text top1UserName;
 
     @FXML
-    private TreeTableColumn<TopFiveLongestWord,String> longestWord;
+    private Text top2UserName;
 
     @FXML
-    private TreeTableView<TopWord> treeTableView;
-    
-    private DataAccessClass dataAccessClass = new DataAccessClass();
-    
+    private Text top3UserName;
+
+    @FXML
+    private Text top4UserName;
+
+    @FXML
+    private Text top5UserName;
+
+    @FXML
+    private Text top1Word;
+
+    @FXML
+    private Text top2Word;
+
+    @FXML
+    private Text top3Word;
+
+    @FXML
+    private Text top4Word;
+
+    @FXML
+    private Text top5Word;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userName.setCellValueFactory(new TreeItemPropertyValueFactory<>("username"));
-        longestWord.setCellValueFactory(new TreeItemPropertyValueFactory<>("words"));
-
-        // create root item
-        TreeItem<TopWord> rootItem = new TreeItem<>(null);
-        treeTableView.setRoot(rootItem);
-
-        // load data from database
-        TopWord[] topWords = dataAccessClass.getLongestWords();
-
-/*
-        // add data to table
-        for (TopWord topWord : topWords) {
-            TreeItem<TopWord> item = new TreeItem<>(topWord);
-            rootItem.getChildren().add(item);
-        }
-*/
 
     }
 
