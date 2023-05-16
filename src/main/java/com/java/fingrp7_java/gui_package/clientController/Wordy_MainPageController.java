@@ -179,6 +179,7 @@ public class Wordy_MainPageController implements Initializable {
         FXMLLoader showLongestWord = new FXMLLoader();
 
         showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/longestWord.fxml"));
+        Wordy_LongestWordController.wordyGameServer = wordyGameServer;
 
         Parent root = null;
         try {
@@ -197,7 +198,7 @@ public class Wordy_MainPageController implements Initializable {
     void showTopPlayers(ActionEvent event) {
         FXMLLoader showTopPlayers = new FXMLLoader();
 
-        showTopPlayers.setLocation(getClass().getResource("/com/java/fmxl/achievement.fxml"));
+        showTopPlayers.setLocation(getClass().getResource("/com/java/fmxl/ranking.fxml"));
 
         Parent root = null;
         try {

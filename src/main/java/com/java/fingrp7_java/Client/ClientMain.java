@@ -9,7 +9,7 @@ import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingContr
 import com.java.fingrp7_java.gui_package.clientController.Wordy_ReadyController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import netscape.security.UserTarget;
+/*import netscape.security.UserTarget;*/
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;

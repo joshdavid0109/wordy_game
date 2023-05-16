@@ -101,8 +101,7 @@ public class DataAccessClass {
 
         String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5;";
 
-        // SHOULD BE 5
-        TopWord[] topWords = new TopWord[4];
+        TopWord[] topWords = new TopWord[5];
 
         PreparedStatement ps;
 
@@ -119,7 +118,7 @@ public class DataAccessClass {
 
             for (int i = 0; i < topWords.length; i++) {
                 if (rs.next()) {
-                    topWords[i] = new TopWord(rs.getString(1), rs.getString(2));
+                    topWords[i] = new TopWord(rs.getString("username"), rs.getString("words"));
                     System.out.println(rs.getString(1) + " " + rs.getString(2));
                 }
             }
