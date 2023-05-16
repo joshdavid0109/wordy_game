@@ -32,7 +32,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="usernameTF" layoutX="53.0" layoutY="157.0" prefHeight="37.0" prefWidth="209.0" style="-fx-background-radius: 15;">
+      <TextField fx:id="usernameTF" layoutX="53.0" layoutY="157.0" prefHeight="37.0" prefWidth="209.0" style="-fx-background-radius: 15; -fx-background-color: white;">
          <font>
             <Font size="16.0" />
          </font>
@@ -42,20 +42,20 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Text>
-      <TextField layoutX="49.0" layoutY="256.0" prefHeight="37.0" prefWidth="210.0" style="-fx-background-radius: 15;">
+      <TextField fx:id="passwordTF" layoutX="49.0" layoutY="256.0" prefHeight="37.0" prefWidth="210.0" style="-fx-background-radius: 15; -fx-background-color: white;">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordTF" layoutX="49.0" layoutY="256.0" prefHeight="37.0" prefWidth="210.0" style="-fx-background-color: 15;">
+      <PasswordField fx:id="passwordHide" layoutX="49.0" layoutY="256.0" prefHeight="37.0" prefWidth="210.0" style="-fx-background-radius: 15; -fx-background-color: white;">
          <font>
             <Font size="16.0" />
          </font>
       </PasswordField>
       <CheckBox fx:id="showPasswordCB" layoutX="53.0" layoutY="313.0" mnemonicParsing="false" onAction="#showPassword" text="Show password" textFill="WHITE" />
-      <Button fx:id="enterButton" layoutX="53.0" layoutY="367.0" mnemonicParsing="false" onAction="#logIn" prefHeight="37.0" prefWidth="210.0" style="-fx-background-radius: 5; -fx-background-color: #003E03;" text="SIGN IN" textFill="WHITE">
+      <Button fx:id="enterButton" layoutX="53.0" layoutY="367.0" mnemonicParsing="false" onAction="#logIn" prefHeight="37.0" prefWidth="210.0" style="-fx-background-radius: 5; -fx-background-color: #003E03; -fx-border-color: green; -fx-border-radius: 5; -fx-border-width: 3;" text="SIGN IN" textFill="WHITE">
          <font>
-            <Font size="16.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Button>
       <Text fill="#c59203" layoutX="48.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIGN IN" wrappingWidth="220.32293701171875">

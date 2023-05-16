@@ -35,7 +35,8 @@ import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
     public TextField usernameTF;
-    public PasswordField passwordTF;
+    public TextField passwordTF;
+    public PasswordField passwordHide;
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -51,6 +52,7 @@ public class LogInController implements Initializable {
     private Button enterButton;
 
 
+
     @FXML
     private CheckBox showPasswordCB;
 
@@ -62,7 +64,7 @@ public class LogInController implements Initializable {
     void logIn(ActionEvent event) {
         try {
             String username = usernameTF.getText();
-            String password = passwordTF.getText();
+            String password = (passwordTF.getText() == null ? passwordTF.getText() : passwordHide.getText());
             boolean loginStatus = true;
 
             if (!usernameTF.getText().equals("")) {
@@ -74,7 +76,7 @@ public class LogInController implements Initializable {
                     alert.show();
 
                     usernameTF.clear();
-                    passwordTF.clear();
+                    passwordHide.clear();
                     loginStatus = false;
                 }
 
@@ -112,7 +114,15 @@ public class LogInController implements Initializable {
 
     @FXML
     void showPassword(ActionEvent event) {
-
+        if(showPasswordCB.isSelected()) {
+            passwordTF.setText(passwordHide.getText());
+            passwordTF.setVisible(true);
+            passwordHide.setVisible(false);
+        } else {
+            passwordHide.setText(passwordTF.getText());
+            passwordHide.setVisible(true);
+            passwordTF.setVisible(false);
+        }
     }
 
     @Override
