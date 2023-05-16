@@ -75,7 +75,12 @@ public class Client {
 //            }
 
             try {
-                System.out.println(Arrays.toString(wordyGameServer.getLongestWords()));
+                TopWord[] topWords = wordyGameServer.getLongestWords();
+
+                for (TopWord tw : topWords) {
+                    System.out.println(tw);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -179,6 +179,7 @@ public class Wordy_MainPageController implements Initializable {
         FXMLLoader showLongestWord = new FXMLLoader();
 
         showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/longestWord.fxml"));
+        Wordy_LongestWordController.wordyGameServer = wordyGameServer;
 
         Parent root = null;
         try {
