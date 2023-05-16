@@ -195,7 +195,7 @@ public class Wordy_MainPageController implements Initializable {
     void showTopPlayers(ActionEvent event) {
         FXMLLoader showTopPlayers = new FXMLLoader();
 
-        showTopPlayers.setLocation(getClass().getResource("/com/java/fmxl/achievement.fxml"));
+        showTopPlayers.setLocation(getClass().getResource("/com/java/fmxl/ranking.fxml"));
 
         Parent root = null;
         try {

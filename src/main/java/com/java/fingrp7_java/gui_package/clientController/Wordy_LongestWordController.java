@@ -27,34 +27,34 @@ public class Wordy_LongestWordController implements Initializable {
     private Button toMainPage;
 
     @FXML
-    private Text top1UserName;
+    private javafx.scene.text.Text topOneUserName;
 
     @FXML
-    private Text top2UserName;
+    private javafx.scene.text.Text topTwoUserName;
 
     @FXML
-    private Text top3UserName;
+    private javafx.scene.text.Text topThreeUserName;
 
     @FXML
-    private Text top4UserName;
+    private javafx.scene.text.Text topFourUserName;
 
     @FXML
-    private Text top5UserName;
+    private javafx.scene.text.Text topFiveUserName;
 
     @FXML
-    private Text top1Word;
+    private javafx.scene.text.Text topOneWord;
 
     @FXML
-    private Text top2Word;
+    private javafx.scene.text.Text topTwoWord;
 
     @FXML
-    private Text top3Word;
+    private javafx.scene.text.Text topThreeWord;
 
     @FXML
-    private Text top4Word;
+    private javafx.scene.text.Text topFourWord;
 
     @FXML
-    private Text top5Word;
+    private javafx.scene.text.Text topFiveWord;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
