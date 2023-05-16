@@ -73,6 +73,11 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       roundCounter--;
       if (roundCounter <0) {
         //otherwise, walang gagawin, since tie ang round
+        try {
+          Thread.sleep(2000);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
         checkRoundWin();
         scheduler.shutdown();
       }
@@ -96,6 +101,14 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
             if (wgp.status.equalsIgnoreCase("ready")){
               winnerPerRound.put(round,String.valueOf(wgp.id));
               wgp.wins++;
+              try {
+                Thread.sleep(2000);
+              } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+              }
+              round++;
+              readyCounter = 10;
+              roundCounter= 10;
               scheduler.shutdown();
             }
           }
@@ -289,6 +302,11 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     roundStat =false;
     roundCounter = 10;
     readyCounter = 10;
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
     round++;
   }
 
