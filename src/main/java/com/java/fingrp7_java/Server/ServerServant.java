@@ -7,7 +7,6 @@ import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingContr
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,9 +26,9 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
-        try {
-            int loginStatus = dataAccessClass.checkCredentials(username, password);
-
+//        try {
+        int loginStatus = dataAccessClass.checkCredentials(username, password);
+/*
             switch (loginStatus) {
                 default:
                     System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
@@ -52,7 +51,7 @@ public class ServerServant extends WordyGameServerPOA {
             } else {
                 throw new InvalidCredentials("Invalid credentials! Try again.");
             }
-        }
+        }*/
     }
 
     @Override
@@ -272,34 +271,34 @@ public class ServerServant extends WordyGameServerPOA {
         StringBuilder sb = new StringBuilder();
         List<String> words = null;
 
-            for (int i = 0; i < games.size(); i++) {
-                Game g = games.get(i);
-                if (g.gameID == gameID) {
-                    game = g;
-                    if (g.roundStat)
-                        break;
-                    if (g.lettersPerRound.get(g.round) == null) {
-                        System.out.println("populating round " + g.round);
-                        LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
-                        g.lettersPerRound.put(g.round, charArray);
-                        for (char c :
-                                charArray) {
-                            sb.append(c);
-                        }
-                        charArray = g.lettersPerRound.get(g.round);
-                    }else {
-                        charArray = g.lettersPerRound.get(g.round);
+        for (int i = 0; i < games.size(); i++) {
+            Game g = games.get(i);
+            if (g.gameID == gameID) {
+                game = g;
+                if (g.roundStat)
+                    break;
+                if (g.lettersPerRound.get(g.round) == null) {
+                    System.out.println("populating round " + g.round);
+                    LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                    g.lettersPerRound.put(g.round, charArray);
+                    for (char c :
+                            charArray) {
+                        sb.append(c);
                     }
+                    charArray = g.lettersPerRound.get(g.round);
+                }else {
+                    charArray = g.lettersPerRound.get(g.round);
+                }
 
-                    words = LetterGenerator.getWords(sb.toString());
+                words = LetterGenerator.getWords(sb.toString());
 
-                    if (g.scheduler.isShutdown() && g.timerCounter == 0) {
-                        if (g.playerChecker()) {
-                            g.scheduler.shutdown();
-                        }
+                if (g.scheduler.isShutdown() && g.timerCounter == 0) {
+                    if (g.playerChecker()) {
+                        g.scheduler.shutdown();
                     }
                 }
             }
+        }
 
         System.out.println(words);
         return charArray;
@@ -315,54 +314,52 @@ public class ServerServant extends WordyGameServerPOA {
     public String checkWinner(int gameID) {
         boolean checking = false;
 
-            for (Game g :
-                    games) {
-                if (g.gameID == gameID) {
-                    game = g;
+        for (Game g :
+                games) {
+            if (g.gameID == gameID) {
+                game = g;
 /*                    if (!checking) {
                         g.checkRoundWin();
                         checking = true;
                     }*/
-                    roundNumber =g.round-1;
-                    if (roundNumber == 0) {
-                        roundNumber = 1;
-                    }
-                    System.out.println(roundNumber + " asdas" +g.round);
-                    String userID = g.winnerPerRound.get(roundNumber);
-                    System.out.println(userID + "ito winner");
-                    if (g.winner== null){
-                        for (WordyGamePlayer wgp :
-                                g.wgPlayers) {
-                            System.out.println(wgp.id + " " + wgp.wins);
-                            if (wgp.wins == 3) {
-                                g.winner = wgp;
-                                game = new Game();
-                                break;
-                            }
-                            if (userID != null) {
-                                if (wgp.id == Integer.parseInt(userID)) {
-                                    System.out.println(wgp.id);
-                                    Game.readyCounter = 10;
-                                    g.round++;
-                                    // for tests lang
-                                    return String.valueOf(wgp.id);
+                roundNumber =g.round-1;
+                if (roundNumber == 0) {
+                    roundNumber = 1;
+                }
+                System.out.println(roundNumber + " asdas" +g.round);
+                String userID = g.winnerPerRound.get(roundNumber);
+                System.out.println(userID + "ito winner");
+                if (g.winner== null){
+                    for (WordyGamePlayer wgp :
+                            g.wgPlayers) {
+                        System.out.println(wgp.id + " " + wgp.wins);
+                        if (wgp.wins == 3) {
+                            g.winner = wgp;
+                            game = new Game();
+                            break;
+                        }
+                        if (userID != null) {
+                            if (wgp.id == Integer.parseInt(userID)) {
+                                System.out.println(wgp.id);
+                                // for tests lang
+                                return String.valueOf(wgp.id);
 
-                                    // for registered users na ito
+                                // for registered users na ito
     /*                                try {
                                         return dataAccessClass.getGameWinner(wgp.id);
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);
                                     }*/
-                                }
-                            } else
-                                return "";
-                        }
-                    } else {
-                            return "Game Over";
+                            }
+                        } else
+                            return "";
                     }
-
+                } else {
+                    return "Game Over";
                 }
+
             }
+        }
         return "";
     }
 
@@ -381,12 +378,13 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public TopWord[] getLongestWords() {
-        //
-//        dataAccessClass.getLongestWords();
-//        List<TopWord> topWordList = Arrays.asList(topWords);
-//        System.out.println(topWordList);
-//        System.out.println(Arrays.toString(topWords));
-        return dataAccessClass.getLongestWords();
+        TopWord[] topWords = null;
+
+        dataAccessClass.getLongestWords();
+        List<TopWord> topWordList = new ArrayList<>();
+
+        topWords = topWordList.toArray(new TopWord[0]);
+        return topWords;
     }
 
     @Override
