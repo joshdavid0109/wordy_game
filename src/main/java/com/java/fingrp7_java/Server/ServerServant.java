@@ -381,6 +381,8 @@ public class ServerServant extends WordyGameServerPOA {
                     } else if (of.equalsIgnoreCase("round")) {
                         return g.roundCounter;
                     }
+                } else if (games.get(games.size() - 1) == g && gameID == 0) {
+                    return game.gameID;
                 }
             }
         }
