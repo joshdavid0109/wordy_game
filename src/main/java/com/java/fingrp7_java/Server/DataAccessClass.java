@@ -116,7 +116,8 @@ public class DataAccessClass {
 //
 ////        topWords = new TopWord();
 
-        String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5;";
+        String query = "SELECT username, words FROM users NATURAL JOIN word where username is not null AND words is not null " +
+                "ORDER BY LENGTH(words) DESC LIMIT 5 ";
 
         TopWord[] topWords = new TopWord[5];
 
@@ -301,7 +302,8 @@ public class DataAccessClass {
 
     public TopPlayer[] getTopPlayers() {
         String query = "select ROW_NUMBER() over (ORDER BY gwc.wins desc) as 'Rank', gameWinner, wins from " +
-                "(select gameWinner, count(gameWinner) as 'wins' from game group by gameWinner) as gWc order by gwc.wins desc limit 5";
+                "(select gameWinner, count(gameWinner) as 'wins' from game group by gameWinner) as gWc " +
+                "where gameWinner != '' order by gwc.wins desc limit 5";
         String q = "select ROW_NUMBER() over (ORDER BY gwc.wins desc) as 'Rank', gameWinner, wins from " +
                 "(select gameWinner, count(gameWinner) as 'wins' from game group by gameWinner) as gWc order by gwc.wins desc limit 5";
 
@@ -317,6 +319,8 @@ public class DataAccessClass {
             while (res.next()) {
                 c++;
             }
+
+
 
             topPlayers = new TopPlayer[c];
 

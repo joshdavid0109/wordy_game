@@ -37,21 +37,10 @@ public class LogInController implements Initializable {
     public TextField usernameTF;
     public TextField passwordTF;
     public PasswordField passwordHide;
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     * <tt>null</tt> if the location is not known.
-     * @param resources The resources used to localize the root object, or <tt>null</tt> if
-     * the root object was not localized.
-     */
 
 
     @FXML
     private Button enterButton;
-
-
 
     @FXML
     private CheckBox showPasswordCB;
@@ -147,6 +136,22 @@ public class LogInController implements Initializable {
             LogInController.wordyGameServer = WordyGameServerHelper.narrow(namingContextExt.resolve_str(stub));
 
             usernameTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode().equals(KeyCode.ENTER))
+                        logIn(new ActionEvent());
+                }
+            });
+
+            passwordTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode().equals(KeyCode.ENTER))
+                        logIn(new ActionEvent());
+                }
+            });
+
+            passwordHide.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode().equals(KeyCode.ENTER))

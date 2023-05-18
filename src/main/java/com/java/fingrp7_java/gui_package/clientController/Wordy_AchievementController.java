@@ -2,14 +2,13 @@ package com.java.fingrp7_java.gui_package.clientController;
 
 import WordyGame.TopPlayer;
 import WordyGame.WordyGameServer;
-import com.java.fingrp7_java.Server.Word;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -38,22 +37,18 @@ public class Wordy_AchievementController implements Initializable {
     static WordyGameServer wordyGameServer;
 
     @FXML
-    void toMainPage(MouseEvent event) {
-        FXMLLoader showLongestWord = new FXMLLoader();
-
-        showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
-
-        Parent root = null;
-        try {
-            root = showLongestWord.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    void toMainPage(ActionEvent event) throws IOException {
+        toMainPage.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+        Parent root = loader.load();
+        Wordy_MainPageController loginController = loader.getController();
 
         Scene scene = new Scene(root);
         Stage stage = (Stage) toMainPage.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+
     }
 
     /**
