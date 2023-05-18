@@ -66,12 +66,16 @@ public class Wordy_MainPageController implements Initializable {
     void playGame(ActionEvent event) throws IOException {
         if (wordyGameServer != null) {
             if (playerID != 0) {
-//                    matchMakingController.decline.fire();
                 FXMLLoader loader = new FXMLLoader();
 
                     Runnable timer = new Runnable() {
                         @Override
                         public void run() {
+
+                            Wordy_MatchMakingController.timer = wordyGameServer.getTimer(0, "g");
+                            System.out.println(Wordy_MatchMakingController.timer);
+                            System.out.println("timer");
+
                             new JFXPanel().requestFocus();
 
                             Platform.setImplicitExit(false);
@@ -112,7 +116,9 @@ public class Wordy_MainPageController implements Initializable {
                         @Override
                         public void run() {
                             try {
+                                System.out.println("play");
                                 gameID = wordyGameServer.playGame(playerID);
+
                             } catch (NoPlayersAvailable e) {
                                 new JFXPanel();
                                 Platform.runLater(new Runnable() {

@@ -65,21 +65,28 @@ public class Wordy_MatchMakingController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         scheduledExecutorService.scheduleAtFixedRate(Timer, 0, 1, TimeUnit.SECONDS);
+
 
     }
 
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
+
             timer = wordyGameServer.getTimer(0, "g");
 
             timerText.setText(String.valueOf(timer));
             System.out.println(timer);
             if (timer < 1) {
                 scheduledExecutorService.shutdown();
-                Stage stage = (Stage) decline.getScene().getWindow();
-                stage.close();
+//                Stage stage = (Stage) decline.getScene().getWindow();
+//                stage.close();
 //                closeWindow(new ActionEvent());
 //                decline.fire();
             }

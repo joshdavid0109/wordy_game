@@ -127,6 +127,7 @@ public class ServerServant extends WordyGameServerPOA {
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
                             games.remove(game);
+                            System.out.println("removing 12");
                             throw new NoPlayersAvailable("No other players have joined the game.");
                         }
                         games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
@@ -166,6 +167,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
+                                    System.out.println("removing 1");
                                     games.remove(game);
                                     throw new NoPlayersAvailable("No other players have joined the game.");
                                 }
@@ -179,6 +181,9 @@ public class ServerServant extends WordyGameServerPOA {
                 roundNumber =1;
             }
         } while (game.timerCounter != 0);
+        if (game.gameID == 0) {
+            games.remove(game);
+        }
         System.out.println(game.gameID);
         return game.gameID;
     }
@@ -392,6 +397,7 @@ public class ServerServant extends WordyGameServerPOA {
                         return g.roundCounter;
                     }
                 } else if (games.get(games.size() - 1) == g && gameID == 0) {
+
                     return game.timerCounter;
                 }
             }

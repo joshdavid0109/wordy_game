@@ -24,7 +24,7 @@ public class DataAccessClass {
     }
 
     public void writeToWord(int gameID, int roundID,int userID, String word) {
-        String query = "INSERT INTO word (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO word (gameID, roundNo, userID, words) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {

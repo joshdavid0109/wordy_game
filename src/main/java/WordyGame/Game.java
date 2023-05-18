@@ -61,6 +61,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           System.out.println("No other players have joined");
           gameID = 0;
           status = null;
+          timerCounter =10;
           scheduler.shutdown();
         }
       }
