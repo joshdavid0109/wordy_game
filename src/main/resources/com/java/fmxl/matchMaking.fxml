@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane fx:id="matchmakingDialog" prefHeight="153.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
+<DialogPane fx:id="matchmakingDialog" prefHeight="153.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingController">
    <content>
       <Pane prefHeight="182.0" prefWidth="400.0">
          <children>

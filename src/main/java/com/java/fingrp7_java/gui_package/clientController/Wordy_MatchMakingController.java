@@ -72,10 +72,8 @@ public class Wordy_MatchMakingController implements Initializable {
     Runnable Timer = new Runnable() {
         @Override
         public void run() {
-            timer = wordyGameServer.getTimer(gameID+1, "g");
-            if (timer == 0) {
-                timer = wordyGameServer.getTimer(gameID+1, "G");
-            }
+            timer = wordyGameServer.getTimer(0, "g");
+
             timerText.setText(String.valueOf(timer));
             System.out.println(timer);
             if (timer < 1) {
