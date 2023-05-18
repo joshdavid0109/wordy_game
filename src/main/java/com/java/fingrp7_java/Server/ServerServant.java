@@ -365,7 +365,7 @@ public class ServerServant extends WordyGameServerPOA {
                                 return String.valueOf(wgp.id);
 
                                 // for registered users na ito
-    /*                                try {
+/*                                    try {
                                         return dataAccessClass.getGameWinner(wgp.id);
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);

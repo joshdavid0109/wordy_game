@@ -280,16 +280,15 @@ public class DataAccessClass {
     }
 
     public int getGameID() throws SQLException{
-        String q  = "Select * from game";
+        String q  = "Select MAX(DISTINCT(gameID)) from game";
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE  );
         ResultSet resultSet = statement.executeQuery(q);
-        int count = 0;
 
         while (resultSet.next()) {
-            count++;
+            return resultSet.getInt(1);
         }
 
-        return count+1;
+        return 0;
     }
 
     public void insertGameObject(int gameID) throws SQLException{
