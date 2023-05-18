@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="539.0" style="-fx-background-color: #2c0c02;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_AchievementController">
+<AnchorPane prefHeight="400.0" prefWidth="539.0" style="-fx-background-color: #2c0c02;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="com.java.fingrp7_java.gui_package.clientController.Wordy_AchievementController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="405.0" opacity="0.34" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -73,27 +70,27 @@
             </AnchorPane>
             <AnchorPane layoutX="94.0" layoutY="98.0" prefHeight="274.0" prefWidth="176.0">
                <children>
-                  <Text fx:id="top1UserName" fill="GOLD" layoutX="15.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 1">
+                  <Text fx:id="top1UserName" fill="GOLD" layoutX="15.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="top2UserName" fill="SILVER" layoutX="15.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 2">
+                  <Text fx:id="top2UserName" fill="SILVER" layoutX="15.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="top3UserName" fill="#ad6c03" layoutX="15.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 3">
+                  <Text fx:id="top3UserName" fill="#ad6c03" layoutX="15.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="top4UserName" fill="#ad6c03" layoutX="15.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 4">
+                  <Text fx:id="top4UserName" fill="#ad6c03" layoutX="15.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="top5UserName" fill="#ad6c03" layoutX="15.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOP 5">
+                  <Text fx:id="top5UserName" fill="#ad6c03" layoutX="15.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
@@ -102,27 +99,27 @@
             </AnchorPane>
             <AnchorPane layoutX="270.0" layoutY="98.0" prefHeight="274.0" prefWidth="269.0">
                <children>
-                  <Text fx:id="noOfWins1" fill="GOLD" layoutX="25.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="172.54638671875">
+                  <Text fx:id="noOfWins1" fill="GOLD" layoutX="25.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="172.54638671875">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="noOfWins2" fill="SILVER" layoutX="25.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="172.54638671875">
+                  <Text fx:id="noOfWins2" fill="SILVER" layoutX="25.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="172.54638671875">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="noOfWins3" fill="#ad6c03" layoutX="25.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="172.54638671875">
+                  <Text fx:id="noOfWins3" fill="#ad6c03" layoutX="25.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="172.54638671875">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="noOfWins4" fill="#ad6c03" layoutX="25.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="172.54638671875">
+                  <Text fx:id="noOfWins4" fill="#ad6c03" layoutX="25.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="172.54638671875">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Text fx:id="noOfWins5" fill="#ad6c03" layoutX="25.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="172.54638671875">
+                  <Text fx:id="noOfWins5" fill="#ad6c03" layoutX="25.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="172.54638671875">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>

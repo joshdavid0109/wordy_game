@@ -8,6 +8,7 @@ import com.java.fingrp7_java.gui_package.clientController.Wordy_MatchMakingContr
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -405,7 +406,8 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public TopPlayer[] getTopPlayers() {
-        return new TopPlayer[0];
+        System.out.println(Arrays.toString(dataAccessClass.getTopPlayers()));
+        return dataAccessClass.getTopPlayers();
     }
 
 }

@@ -1,52 +1,44 @@
 package com.java.fingrp7_java.gui_package.clientController;
 
-import javafx.event.ActionEvent;
+import WordyGame.TopPlayer;
+import WordyGame.WordyGameServer;
+import com.java.fingrp7_java.Server.Word;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class Wordy_AchievementController {
+public class Wordy_AchievementController implements Initializable {
 
-    @FXML
-    private Button toMainPage;
 
-    @FXML
-    private javafx.scene.text.Text top1UserName;
+    public Text top1UserName;
+    public Text top2UserName;
+    public Text top3UserName;
+    public Text top4UserName;
+    public Text top5UserName;
+    public Text noOfWins1;
+    public Text noOfWins2;
+    public Text noOfWins3;
+    public Text noOfWins4;
+    public Text noOfWins5;
+    public Button toMainPage;
 
-    @FXML
-    private javafx.scene.text.Text top2UserName;
-
-    @FXML
-    private javafx.scene.text.Text top3UserName;
-
-    @FXML
-    private javafx.scene.text.Text top4UserName;
-
-    @FXML
-    private javafx.scene.text.Text top5UserName;
-
-    @FXML
-    private javafx.scene.text.Text noOfWins1;
-
-    @FXML
-    private javafx.scene.text.Text noOfWins2;
+    static WordyGameServer wordyGameServer;
 
     @FXML
-    private javafx.scene.text.Text noOfWins3;
-
-    @FXML
-    private javafx.scene.text.Text noOfWins4;
-
-    @FXML
-    private javafx.scene.text.Text noOfWins5;
-    @FXML
-    void toMainPage(ActionEvent event) {
+    void toMainPage(MouseEvent event) {
         FXMLLoader showLongestWord = new FXMLLoader();
 
         showLongestWord.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
@@ -62,5 +54,49 @@ public class Wordy_AchievementController {
         Stage stage = (Stage) toMainPage.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  <tt>null</tt> if the location is not known.
+     * @param resources The resources used to localize the root object, or <tt>null</tt> if
+     *                  the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        TopPlayer[] topPlayers = wordyGameServer.getTopPlayers();
+
+        List<Text> topUsernames = new ArrayList<>();
+        List<javafx.scene.text.Text> wins = new ArrayList<>();
+        System.out.println(Arrays.toString(topPlayers));
+
+        topUsernames.add(top1UserName);
+        topUsernames.add(top2UserName);
+        topUsernames.add(top3UserName);
+        topUsernames.add(top4UserName);
+        topUsernames.add(top5UserName);
+
+        wins.add(noOfWins1);
+        wins.add(noOfWins2);
+        wins.add(noOfWins3);
+        wins.add(noOfWins4);
+        wins.add(noOfWins5);
+
+        for (int i = 0; i < topPlayers.length; i++) {
+            topUsernames.get(i).setText(topPlayers[i].username);
+            wins.get(i).setText(String.valueOf(topPlayers[i].wins));
+        }
+
+//        for (int i = 0; i < topFiveWords.size(); i++) {
+//            javafx.scene.text.Text t = topFiveWords.get(i);
+//            t.setText(topWords[i].getWord());
+//
+//            javafx.scene.text.Text t1 = topFivePlayers.get(i);
+//            t1.setText(topWords[i].getUsername());
+//        }
     }
 }

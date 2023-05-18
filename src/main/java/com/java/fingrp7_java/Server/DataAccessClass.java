@@ -2,11 +2,13 @@ package com.java.fingrp7_java.Server;
 
 
 import WordyGame.ServerUnavailable;
+import WordyGame.TopPlayer;
 import WordyGame.TopWord;
 import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class DataAccessClass {
@@ -22,7 +24,7 @@ public class DataAccessClass {
     }
 
     public void writeToWord(int gameID, int roundID,int userID, String word) {
-        String query = "INSERT INTO word (gameID, roundNo, userID, words) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO word (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -152,8 +154,9 @@ public class DataAccessClass {
 
     public void run(){
 
-        writeToRound(123, 1, 2234423, "longestto");
+//        writeToRound(123, 1, 2234423, "longestto");
 
+        System.out.println(Arrays.toString(getTopPlayers()));
     }
 
     public void getConnection() throws SQLException {
@@ -294,6 +297,40 @@ public class DataAccessClass {
         PreparedStatement preparedStatement = connection.prepareStatement(q, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         preparedStatement.setInt(1, gameID);
         preparedStatement.execute();
+    }
+
+    public TopPlayer[] getTopPlayers() {
+        String query = "select ROW_NUMBER() over (ORDER BY gwc.wins desc) as 'Rank', gameWinner, wins from " +
+                "(select gameWinner, count(gameWinner) as 'wins' from game group by gameWinner) as gWc order by gwc.wins desc limit 5";
+        String q = "select ROW_NUMBER() over (ORDER BY gwc.wins desc) as 'Rank', gameWinner, wins from " +
+                "(select gameWinner, count(gameWinner) as 'wins' from game group by gameWinner) as gWc order by gwc.wins desc limit 5";
+
+        PreparedStatement ps;
+        TopPlayer[] topPlayers = new TopPlayer[0];
+
+        try {
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = ps.executeQuery();
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet res = ps.executeQuery();
+            int c = 0;
+            while (res.next()) {
+                c++;
+            }
+
+            topPlayers = new TopPlayer[c];
+
+            for (int i = 0; i < topPlayers.length; i++) {
+                if (rs.next()) {
+                    topPlayers[i] = new TopPlayer(rs.getInt(1), rs.getString(2), rs.getInt(3));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topPlayers;
     }
 }
 

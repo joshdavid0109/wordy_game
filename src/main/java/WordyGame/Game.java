@@ -110,6 +110,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
               roundCounter= 10;
               scheduler.shutdown();
             }
+            wgp.status = "";
           }
         }else {
           scheduler.shutdown();
