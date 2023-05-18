@@ -84,13 +84,13 @@ public class Wordy_LongestWordController implements Initializable {
             topFivePlayers.get(i).setText(topWords[i].getUsername());
         }
 
-//        for (int i = 0; i < topFiveWords.size(); i++) {
-//            javafx.scene.text.Text t = topFiveWords.get(i);
-//            t.setText(topWords[i].getWord());
-//
-//            javafx.scene.text.Text t1 = topFivePlayers.get(i);
-//            t1.setText(topWords[i].getUsername());
-//        }
+/*        for (int i = 0; i < topFiveWords.size(); i++) {
+            javafx.scene.text.Text t = topFiveWords.get(i);
+            t.setText(topWords[i].getWord());
+
+            javafx.scene.text.Text t1 = topFivePlayers.get(i);
+            t1.setText(topWords[i].getUsername());
+        }*/
     }
 
     @FXML
