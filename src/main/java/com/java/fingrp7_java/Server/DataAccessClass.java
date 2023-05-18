@@ -21,16 +21,16 @@ public class DataAccessClass {
         }
     }
 
-    public void writeToWord(String word, int gameID, int userID, int round) {
-        String query = "INSERT INTO word (gameID, roundNum, userID, words) VALUES (?, ?, ?, ?)";
+    public void writeToWord(int gameID, int roundID,int userID, String word) {
+        String query = "INSERT INTO word (gameID, roundNo, userID, words) VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-            preparedStatement.setString(1, String.valueOf(gameID));
-            preparedStatement.setString(2, String.valueOf(round));
-            preparedStatement.setString(3, String.valueOf(userID));
+            preparedStatement.setInt(1, gameID);
+            preparedStatement.setInt(2, roundID);
+            preparedStatement.setInt(3, userID);
             preparedStatement.setString(4, word);
 
             preparedStatement.execute();
@@ -57,15 +57,30 @@ public class DataAccessClass {
         }
     }
 
-    public void writeGameWinner(int gameID, int userID) {
-        String query = "INSERT INTO game (gameID, userID) VALUES (?, ?)";
+    public void writeGameWinner(int gameID, String gameWinner) {
+        String query = "UPDATE game set gameWinner = ? WHERE gameID =?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            preparedStatement.setString(1, gameWinner);
+            preparedStatement.setInt(2, gameID);
+
+            preparedStatement.execute();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeGame(int gameID) {
+        String query = "INSERT INTO game (gameID) VALUES (?)";
 
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
             preparedStatement.setInt(1, gameID);
-            preparedStatement.setString(2, String.valueOf(userID));
 
             preparedStatement.execute();
         }catch (SQLException e){
@@ -270,10 +285,7 @@ public class DataAccessClass {
             count++;
         }
 
-        if (count ==0) {
-            count = 1;
-        }
-        return count;
+        return count+1;
     }
 
     public void insertGameObject(int gameID) throws SQLException{

@@ -90,9 +90,6 @@ public class Wordy_MainPageController implements Initializable {
                                         throw new RuntimeException(e);
                                     }
                                     matchMakingController = fxmlLoader.<Wordy_MatchMakingController>getController();
-                                    Wordy_MatchMakingController.wordyGameServer = wordyGameServer;
-                                    Wordy_MatchMakingController.gameID =gameID;
-                                    Wordy_MatchMakingController.timer = wordyGameServer.getTimer(gameID, "g");
 
                                     Dialog<ButtonType> dialog = new Dialog<>();
                                     dialog.initStyle(StageStyle.UNDECORATED);

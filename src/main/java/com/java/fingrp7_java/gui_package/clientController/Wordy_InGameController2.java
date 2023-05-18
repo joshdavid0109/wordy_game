@@ -199,7 +199,7 @@ public class Wordy_InGameController2 implements Initializable{
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else  {
+                    } else if (winnerID.equals("draw")) {
                         new JFXPanel().requestFocus();
 
                         Platform.setImplicitExit(false);
@@ -227,13 +227,15 @@ public class Wordy_InGameController2 implements Initializable{
                                 dialog.show();
 
                                 wordsTF.clear();
-                                for (char letter : letters) {
-                                    for (TextField tf :
-                                            textFields) {
-                                        if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
-                                                && tf.getOpacity() == 0.5) {
-                                            tf.setOpacity(1);
-                                            break;
+                                if (letters != null){
+                                    for (char letter : letters) {
+                                        for (TextField tf :
+                                                textFields) {
+                                            if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                                    && tf.getOpacity() == 0.5) {
+                                                tf.setOpacity(1);
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -323,6 +325,7 @@ public class Wordy_InGameController2 implements Initializable{
                             roundNo.setText(String.valueOf(roundNumber));
                             scheduledExecutorService.shutdown();
                             GameWinnerController.name = String.valueOf(userID);
+
                             new JFXPanel().requestFocus();
 
                             Platform.setImplicitExit(false);
@@ -403,7 +406,18 @@ public class Wordy_InGameController2 implements Initializable{
     }
 
 
-    public void exitGame(ActionEvent actionEvent) {
+    public void exitGame(ActionEvent actionEvent) throws IOException {
+        ready.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/java/fmxl/mainPage.fxml"));
+        Parent root = loader.load();
+        Wordy_MainPageController mainPageController = loader.getController();
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ready.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     /**

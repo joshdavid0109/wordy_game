@@ -79,17 +79,19 @@ public class ServerServant extends WordyGameServerPOA {
 
             if (games.size() == 0) {
                 System.out.println("First game of the day");
-                games.add(new Game(games.size() + 1, userID));
+                try {
+                    games.add(new Game(dataAccessClass.getGameID(), userID));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 game = games.get(0);
+                System.out.println(game.gameID);
                 game.wgPlayers.add(wordyGamePlayer);
                 Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                 wordyMainPageController.gameID = game.gameID;
                 roundNumber = 1;
                 if (game.tenSecondGameTimer()) {
-                    System.out.println("tens");
-
                     if (game.gameID == 0) {
-                        System.out.println("game will be removed from the list");
                         games.remove(game);
                         System.out.println(games.size());
                         throw new NoPlayersAvailable("No other players have joined the game.");
@@ -106,23 +108,24 @@ public class ServerServant extends WordyGameServerPOA {
                     throw new NoPlayersAvailable("No other players have joined the game.");
                 }
             } else if (game.timerCounter == 0) {
-                System.out.println("new gamee");
-                games.add(new Game(games.size() +1, userID));
+                try {
+                    games.add(new Game(dataAccessClass.getGameID(), userID));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 game = games.get(games.size()-1);
+                System.out.println("G id" + game.gameID);
                 game.wgPlayers.add(wordyGamePlayer);
                 Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                 wordyMainPageController.gameID = game.gameID;
                 roundNumber =1;
 
                 if (game.tenSecondGameTimer()) {
-                    System.out.println("tens");
                     if (game.timerCounter == 0) {
                         scheduler.shutdown();
                         game.scheduler.shutdown();
                         if (game.gameID == 0) {
-                            System.out.println("game will be removed from the list");
                             games.remove(game);
-                            System.out.println("size " +games.size());
                             throw new NoPlayersAvailable("No other players have joined the game.");
                         }
                         games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
@@ -133,10 +136,10 @@ public class ServerServant extends WordyGameServerPOA {
                 for (Game g :
                         games) {
                     if (g.status.equals("Waiting") && !g.players.contains(userID)) {
-                        System.out.println("join lang");
                         g.players.add(userID);
                         g.wgPlayers.add(wordyGamePlayer);
                         game = g;
+
                         System.out.println(game.wgPlayers.size());
 
                         if (game.timerCounter == 0) {
@@ -147,21 +150,22 @@ public class ServerServant extends WordyGameServerPOA {
                         }
                         break;
                     } else if (games.get(games.size() - 1) == g && !g.players.contains(userID)) {
-                        System.out.println("new game");
-                        games.add(new Game(games.size() + 1, userID));
+                        try {
+                            games.add(new Game(dataAccessClass.getGameID(), userID));
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                         game = games.get(games.size()-1);
+                        System.out.println("Gz id" + game.gameID);
                         game.wgPlayers.add(wordyGamePlayer);
                         Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                         wordyMainPageController.gameID = game.gameID;
                         if (game.tenSecondGameTimer()) {
-                            System.out.println("tens");
                             if (game.timerCounter == 0) {
                                 scheduler.shutdown();
                                 game.scheduler.shutdown();
                                 if (game.gameID == 0) {
-                                    System.out.println("game will be removed from the list");
                                     games.remove(game);
-                                    System.out.println("size " +games.size());
                                     throw new NoPlayersAvailable("No other players have joined the game.");
                                 }
                                 games.get(games.size()-1).wgPlayers.add(wordyGamePlayer);
@@ -234,7 +238,7 @@ public class ServerServant extends WordyGameServerPOA {
                 }
 
                 System.out.println("valid word");
-                dataAccessClass.writeToWord(word, gameID, userID, g.round);
+                dataAccessClass.writeToWord(g.gameID, g.round, userID, word);
 
             }
         }
@@ -258,7 +262,7 @@ public class ServerServant extends WordyGameServerPOA {
                 games) {
             if (g.gameID == gameID) {
                 if (g.winner != null) {
-                    System.out.println();
+
                     return String.valueOf(g.winner.id);
                 }
                 for (WordyGamePlayer wgp :
@@ -332,14 +336,19 @@ public class ServerServant extends WordyGameServerPOA {
 
                 System.out.println(roundNumber + " asdas" +g.round);
                 String userID = g.winnerPerRound.get(roundNumber);
-                System.out.println(userID + "ito winner");
+                System.out.println(userID + " ito winner");
                 if (g.winner== null){
                     for (WordyGamePlayer wgp :
                             g.wgPlayers) {
 //                        System.out.println(wgp.id + " " + wgp.wins);
                         System.out.println(g.wgPlayers.size() + "sizee");
-                        if (wgp.wins == 3) {
+                        if (wgp.wins >= 3) {
                             g.winner = wgp;
+                            try {
+                                dataAccessClass.writeGameWinner(g.gameID, dataAccessClass.getGameWinner(wgp.id));
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
                             break;
                         }
                         if (userID != null) {
@@ -358,7 +367,7 @@ public class ServerServant extends WordyGameServerPOA {
                             } else if (wgp == g.wgPlayers.get(g.wgPlayers.size() -1))
                                 return "";
                         } else
-                            return "";
+                            return "draw";
                     }
                 } else {
                     return "Game Over";
@@ -382,7 +391,7 @@ public class ServerServant extends WordyGameServerPOA {
                         return g.roundCounter;
                     }
                 } else if (games.get(games.size() - 1) == g && gameID == 0) {
-                    return game.gameID;
+                    return game.timerCounter;
                 }
             }
         }

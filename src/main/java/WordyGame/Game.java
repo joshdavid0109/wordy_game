@@ -54,6 +54,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           System.out.println("Match Starting");
           round = 1;
           status = "Match Started";
+          dataAccessClass.writeGame(gameID);
 //          playerReadyStatus = new boolean[players.size()];
           scheduler.shutdown();
         } else {
@@ -90,11 +91,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       System.out.println(readyCounter);
       readyCounter--;
       if (readyCounter == 0 && roundStat) {
-        System.out.println("g naaa");
         scheduler.shutdown();
         roundTimer();
       } else if (readyCounter == 0){
-        System.out.println("Kung sino lang nakaready");
         if (wgPlayers.size() == 2) {
           for (WordyGamePlayer wgp :
                   wgPlayers) {
@@ -121,10 +120,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
                 wgPlayers) {
           System.out.println(wp.status);
           if (wp.status.equals("")) {
-            System.out.println("break");
             break;
           }else if (wgPlayers.get(wgPlayers.size()-1) == wp && wp.status.equalsIgnoreCase("ready")){
-            System.out.println("g na");
+            System.out.println("last player");
             readyCounter = 3;
             roundStat = true;
           }
@@ -226,17 +224,23 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       if (w.getGameID() == gameID) {
         if (w.getRoundNum() == round) {
           if (!strings.contains(w.getWord())) {
-            strings.add(w.getWord()); // all valid words in current game and round
+            for (Word w1:
+                    words) {
+                if (!Objects.equals(w.getWord(), w1.getWord()) && w1.getUserID() != w.getUserID()) {
+                  strings.add(w.getWord());            // all valid words in current game and round
+                } else if (w1.getUserID() == w.getUserID()) {
+                    break;
+                }
+              break;
+            }
           }else { // check if same length ng word or same word
             for (int j = 0; j < words.size(); j++) {
               Word w1 = words.get(j);
               if (strings.contains(w1.getWord())) {
-                if (w.getUserID() == w1.getUserID()) {
-                  break;
-                }else {
+                if (w.getUserID() != w1.getUserID()) {
                   strings.add(w1.getWord()); // all valid words in current game and round
-
                 }
+                break;
               }
             }
           }
@@ -268,8 +272,6 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     }
     System.out.println("Winner words");
     System.out.println(Arrays.toString(winnerWords));
-    Wordy_InGameController2 wordyInGameController2 = new Wordy_InGameController2();
-    wordyInGameController2.longestWords = winnerWords;
 
     if (winnerWords.length == 1) { // if there is only one winner
       for (Word w :
@@ -282,6 +284,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
                 wgp.status = "";
                 if (w.getUserID() == wgp.id) {
                   winnerPerRound.put(round, String.valueOf(wgp.id));
+                  dataAccessClass.writeToRound(gameID, round, wgp.id, winnerWords[0]);
                   wgp.wins++; // increment win sa winner
                 }
               }
@@ -290,7 +293,20 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
         }
       }
     } else {
-      GameDrawController gameDrawController = new GameDrawController();
+      for (Word w :
+              words) {
+        if (w.getGameID() == gameID) {
+          if (w.getRoundNum() == round) {
+
+            for (String winnerWord : winnerWords) {
+              if (w.getWord().equals(winnerWord)) {
+                    dataAccessClass.writeToRound(gameID, round, 0, winnerWord);
+                    break;
+              }
+            }
+          }
+        }
+      }
     }
 
     System.out.println("setting all status to empty");

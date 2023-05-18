@@ -86,8 +86,8 @@ public class LogInController implements Initializable {
                     Wordy_MainPageController wordyMainPageController = new Wordy_MainPageController();
                     Wordy_MainPageController.wordyGameServer = wordyGameServer;
                     Wordy_MatchMakingController.wordyGameServer = wordyGameServer;
-                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
-//                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
+//                    Wordy_MainPageController.playerID = wordyGameServer.getPlayerID(username);
+                    Wordy_MainPageController.playerID = Integer.parseInt(usernameTF.getText());
                     Parent root = null;
                     try {
                         root = loader.load();
@@ -129,7 +129,6 @@ public class LogInController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
 
-            System.out.println(Arrays.toString(args) + "args");
             /**
              * Default codes for
              */
