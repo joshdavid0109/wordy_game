@@ -116,16 +116,34 @@ public class DataAccessClass {
 //
 ////        topWords = new TopWord();
 
-        String query = "SELECT username, words FROM users NATURAL JOIN word where username is not null AND words is not null " +
-                "ORDER BY LENGTH(words) DESC LIMIT 5 ";
+        String countwords = "SELECT COUNT(words) AS 'length' FROM users NATURAL JOIN word";
 
-        TopWord[] topWords = new TopWord[5];
+
+
+        String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5 ";
+
+        TopWord[] topWords = new TopWord[0];
 
         PreparedStatement ps;
 
         try {
-            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ps = connection.prepareStatement(countwords, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            int length = rs.getInt("length");
+
+            System.out.println("WORDS IN THE TABLE ARE: " + length);
+
+            if (length > 5) {
+                topWords = new TopWord[5];
+            } else {
+                topWords = new TopWord[length];
+            }
+
+
+            ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs1 = ps.executeQuery();
 //            int i = 0;
 
 //            while (rs.next()) {
@@ -135,9 +153,9 @@ public class DataAccessClass {
 //            }
 
             for (int i = 0; i < topWords.length; i++) {
-                if (rs.next()) {
-                    topWords[i] = new TopWord(rs.getString("username"), rs.getString("words"));
-                    System.out.println(rs.getString(1) + " " + rs.getString(2));
+                if (rs1.next()) {
+                    topWords[i] = new TopWord(rs1.getString("username"), rs1.getString("words"));
+                    System.out.println(rs1.getString(1) + " " + rs1.getString(2));
                 }
             }
 
