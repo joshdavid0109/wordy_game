@@ -167,6 +167,7 @@ public class DataAccessClass {
             e.printStackTrace();
         }
 
+        //return
         return topWords;
     }
 
