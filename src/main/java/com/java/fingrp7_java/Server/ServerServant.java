@@ -138,6 +138,7 @@ public class ServerServant extends WordyGameServerPOA {
                 for (Game g :
                         games) {
                     if (g.status.equals("Waiting") && !g.players.contains(userID)) {
+                        System.out.println("join lang");
                         g.players.add(userID);
                         g.wgPlayers.add(wordyGamePlayer);
                         game = g;
@@ -230,8 +231,13 @@ public class ServerServant extends WordyGameServerPOA {
 
                     if (word.length() < WORD_LIMIT) {
                         throw new WordLessThanFiveLetters("Word should be 5 letters or more");
-                    } else if (!listOfValidWords.contains(word)) {
-                        throw new InvalidWord("Invalid word.");
+                    } else if (listOfValidWords.stream().noneMatch(word::equalsIgnoreCase)){
+                        throw new InvalidWord("Invalid Word.");
+                        /* for (String string :
+                                listOfValidWords) {
+                            if (listOfValidWords.get(listOfValidWords.size()-1).equals(string) && !string.equalsIgnoreCase(word))
+                                throw new InvalidWord("Invalid Word.");
+                            }*/
                     }
 
                 }catch (ExceededTimeLimit | InvalidWord | WordLessThanFiveLetters e) {
@@ -268,9 +274,9 @@ public class ServerServant extends WordyGameServerPOA {
                 games) {
             if (g.gameID == gameID) {
                 if (g.winner != null) {
-
                     return String.valueOf(g.winner.id);
                 }
+
                 for (WordyGamePlayer wgp :
                         g.wgPlayers) {
                     if (wgp.status.equalsIgnoreCase("ready")) {
@@ -341,15 +347,19 @@ public class ServerServant extends WordyGameServerPOA {
                 roundNumber =g.round;
 
                 System.out.println(roundNumber + " asdas" +g.round);
+                if (g.isDraw)
+                    return "Draw";
+
                 String userID = g.winnerPerRound.get(roundNumber);
                 System.out.println(userID + " ito winner");
                 if (g.winner== null){
                     for (WordyGamePlayer wgp :
                             g.wgPlayers) {
-//                        System.out.println(wgp.id + " " + wgp.wins);
+                        System.out.println(wgp.id + " " + wgp.wins);
                         System.out.println(g.wgPlayers.size() + "sizee");
                         if (wgp.wins >= 3) {
                             g.winner = wgp;
+                            System.out.println("togameWinner");
                             try {
                                 dataAccessClass.writeGameWinner(g.gameID, dataAccessClass.getGameWinner(wgp.id));
                             } catch (SQLException e) {
@@ -358,6 +368,7 @@ public class ServerServant extends WordyGameServerPOA {
                             break;
                         }
                         if (userID != null) {
+                            System.out.println(wgp.id + " winner" + userID);
                             if (wgp.id == Integer.parseInt(userID)) {
                                 System.out.println(wgp.id + " " +wgp.wins);
                                 userID = "";
@@ -373,7 +384,7 @@ public class ServerServant extends WordyGameServerPOA {
                             } else if (wgp == g.wgPlayers.get(g.wgPlayers.size() -1))
                                 return "";
                         } else
-                            return "draw";
+                            return "Game Over";
                     }
                 } else {
                     return "Game Over";
