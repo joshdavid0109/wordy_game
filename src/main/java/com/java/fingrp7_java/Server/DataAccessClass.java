@@ -9,6 +9,8 @@ import com.mysql.cj.protocol.Resultset;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DataAccessClass {
@@ -28,6 +30,8 @@ public class DataAccessClass {
 
         PreparedStatement preparedStatement = null;
         try {
+
+            System.out.println("inserting data");
             preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
             preparedStatement.setInt(1, gameID);
@@ -116,7 +120,7 @@ public class DataAccessClass {
 //
 ////        topWords = new TopWord();
 
-        String query = "SELECT username, words FROM users NATURAL JOIN word where username is not null AND words is not null " +
+        String query = "SELECT username, words FROM users NATURAL JOIN word where username AND words is not null " +
                 "ORDER BY LENGTH(words) DESC LIMIT 5 ";
 
         TopWord[] topWords = new TopWord[5];
@@ -150,7 +154,57 @@ public class DataAccessClass {
 
     public static void main(String[] args) {
         DataAccessClass dataAccessClass = new DataAccessClass();
-        dataAccessClass.run();
+        System.out.println("round check");
+        ArrayList<Word> words;
+        boolean isDraw =false;
+        try {
+            words = dataAccessClass.getWords(116, 2);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        System.out.println("Winner words");
+
+        ArrayList<Word> winnerWords = new ArrayList<>();
+
+        for (Word w :
+                words) {
+            for (Word w1 :
+                    words) {
+                if (w.getWord().length() == w1.getWord().length() && w.getUserID() != w1.getUserID()) {
+                    isDraw =true;
+                    break;
+                }
+            }
+        }
+
+        if (isDraw) {
+            System.out.println("hello draw");
+        } else  {
+            System.out.println("may winner");
+        }
+//    HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
+//    for (Word w : words) {
+//      if (!wordCounts.containsKey(w.getWord())) {
+//        wordCounts.put(w.getWord(), 1);
+//      } else {
+//        int count = wordCounts.get(w.getWord());
+//        wordCounts.put(w.getWord(), count + 1);
+//      }
+//    }
+//
+     /*   for (Word w :
+                words) {
+            System.out.println(w.getWord());
+            for (String word :
+                    strings) {
+                if (w.getWord().equalsIgnoreCase(word)) {
+
+                }
+            }
+        }
+*/
     }
 
     public void run(){
@@ -252,15 +306,20 @@ public class DataAccessClass {
         return 0;
     }
 
-    public ArrayList<Word> getWords() throws SQLException {
+    public ArrayList<Word> getWords(int gameID, int roundNumber) throws SQLException {
         ArrayList<Word> words = new ArrayList<>();
-        String query = "SELECT * FROM word";
-        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE  );
-        ResultSet resultSet = statement.executeQuery(query);
+        String query = "SELECT DISTINCT userID, words from word " +
+                "where gameID = ? and roundNo = ? order by length(words)";
+
+        System.out.println(gameID + " " + roundNumber + " asdvvvvv");
+        PreparedStatement statement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE  );
+        statement.setInt(1, gameID);
+        statement.setInt(2, roundNumber);
+        ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            words.add(new Word(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3),
-                    resultSet.getString(4)));
+            words.add(new Word(resultSet.getInt(1),
+                    resultSet.getString(2)));
         }
         resultSet.close();
         return words;
@@ -285,7 +344,7 @@ public class DataAccessClass {
         ResultSet resultSet = statement.executeQuery(q);
 
         while (resultSet.next()) {
-            return resultSet.getInt(1);
+            return resultSet.getInt(1)+1;
         }
 
         return 0;

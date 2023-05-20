@@ -34,8 +34,9 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public String roundStatus;
   public int round;
   public int roundCounter = 11;
-  public int timerCounter = 10;
+  public int timerCounter = 3;
   public int readyCounter = 10;
+  public boolean isDraw = false;
   public ArrayList<String> strings;
   public boolean roundStat = false;
 
@@ -61,7 +62,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           System.out.println("No other players have joined");
           gameID = 0;
           status = null;
-          timerCounter =10;
+          timerCounter =3;
           scheduler.shutdown();
         }
       }
@@ -95,6 +96,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
         scheduler.shutdown();
         roundTimer();
       } else if (readyCounter == 0){
+        System.out.println("kung sino ready..");
         if (wgPlayers.size() == 2) {
           for (WordyGamePlayer wgp :
                   wgPlayers) {
@@ -106,6 +108,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
               } catch (InterruptedException e) {
                 throw new RuntimeException(e);
               }
+
               round++;
               readyCounter = 10;
               roundCounter= 10;
@@ -137,7 +140,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   {
     gameID = 0;
     status = "";
-    timerCounter = 11;
+    timerCounter = 3;
     status = "Waiting";
     winnerID = 0;
     hostID = 0;
@@ -154,7 +157,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-    timerCounter = 11;
+    timerCounter = 3;
 //    readyCounter = 15;
     this.gameID = gameID;
     this.hostID = hostID;
@@ -214,102 +217,63 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
 
   public void checkRoundWin() {
     System.out.println("round check");
+    ArrayList<Word> words;
+    boolean isDraw =false;
     try {
-      words = dataAccessClass.getWords();
+      words = dataAccessClass.getWords(gameID, round);
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-    strings = new ArrayList<>();
 
-    for (int i = 0; i < words.size(); i++) {
-      Word w = words.get(i);
-      if (w.getGameID() == gameID) {
-        if (w.getRoundNum() == round) {
-          if (!strings.contains(w.getWord())) {
-            for (Word w1:
-                    words) {
-                if (!Objects.equals(w.getWord(), w1.getWord()) && w1.getUserID() != w.getUserID()) {
-                  strings.add(w.getWord());            // all valid words in current game and round
-                } else if (w1.getUserID() == w.getUserID()) {
-                    break;
-                }
+    System.out.println("Winner words");
+
+    ArrayList<Word> winnerWords = new ArrayList<>();
+
+    for (Word w :
+            words) {
+      for (Word w1 :
+              words) {
+        if (w.getWord().length() == w1.getWord().length() && w.getUserID() != w1.getUserID())
+          isDraw = true;
+        winnerWords.add(w);
+      }
+    }
+
+    if (isDraw) {
+      System.out.println("hello draw");
+    } else  {
+      System.out.println("may winner");
+    }
+
+
+    if (!isDraw) { // if there is only one winner
+      System.out.println("1 winner word");
+      boolean winC = false;
+      for (Word ww :
+              winnerWords) {
+        System.out.println(ww.getUserID());
+          for (WordyGamePlayer wgp :
+                  wgPlayers) {
+            wgp.status = "";
+            System.out.println(ww.getUserID() + "win" + wgp.id);
+            if (ww.getUserID() == wgp.id) {
+              System.out.println("adding win to player " + wgp.id);
+              winnerPerRound.put(round, String.valueOf(wgp.id));
+              dataAccessClass.writeToRound(gameID, round, wgp.id, ww.getWord());
+              wgp.wins++; // increment win sa winner
+              winC = true;
               break;
             }
-          }else { // check if same length ng word or same word
-            for (int j = 0; j < words.size(); j++) {
-              Word w1 = words.get(j);
-              if (strings.contains(w1.getWord())) {
-                if (w.getUserID() != w1.getUserID()) {
-                  strings.add(w1.getWord()); // all valid words in current game and round
-                }
-                break;
-              }
-            }
           }
-        }
-      }
-    }
-
-
-    int max = 0; // max length of the word
-    int counter = 0; // number of repeating words with same length
-    for (int i = 0; i < strings.size(); i++) {
-      int wordLength = strings.get(i).length();
-      if (max == wordLength) {
-        counter++;
-      } else if (max < wordLength) { // change max length of the word
-        max = wordLength;
-        counter = 1;
-      }
-    }
-
-    int j = 0;
-    String[] winnerWords = new String[counter]; // all winning words
-    for (int i = 0; i < strings.size(); i++) {
-      int wordLength = strings.get(i).length();
-      if (max == wordLength) {
-        winnerWords[j] = strings.get(i);
-        j++;
-      }
-    }
-    System.out.println("Winner words");
-    System.out.println(Arrays.toString(winnerWords));
-
-    if (winnerWords.length == 1) { // if there is only one winner
-      for (Word w :
-              words) {
-        if (w.getGameID() == gameID) {
-          if (w.getRoundNum() == round) {
-            if (w.getWord().equals(winnerWords[0])) {
-              for (WordyGamePlayer wgp :
-                      wgPlayers) {
-                wgp.status = "";
-                if (w.getUserID() == wgp.id) {
-                  winnerPerRound.put(round, String.valueOf(wgp.id));
-                  dataAccessClass.writeToRound(gameID, round, wgp.id, winnerWords[0]);
-                  wgp.wins++; // increment win sa winner
-                }
-              }
-            }
-          }
-        }
+          break;
       }
     } else {
-      for (Word w :
-              words) {
-        if (w.getGameID() == gameID) {
-          if (w.getRoundNum() == round) {
-
-            for (String winnerWord : winnerWords) {
-              if (w.getWord().equals(winnerWord)) {
-                    dataAccessClass.writeToRound(gameID, round, 0, winnerWord);
+      for (Word w1 :
+              winnerWords) {
+                    dataAccessClass.writeToRound(gameID, round, 0, w1.getWord());
                     break;
-              }
             }
-          }
-        }
       }
-    }
 
     System.out.println("setting all status to empty");
     for (WordyGamePlayer wgp :
@@ -320,6 +284,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     roundStat =false;
     roundCounter = 10;
     readyCounter = 10;
+    winnerWords.clear();
     try {
       Thread.sleep(2000);
     } catch (InterruptedException e) {
