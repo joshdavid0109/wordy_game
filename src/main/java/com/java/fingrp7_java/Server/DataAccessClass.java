@@ -120,14 +120,17 @@ public class DataAccessClass {
 //
 ////        topWords = new TopWord();
 
-        String query = "SELECT username, words FROM users NATURAL JOIN word where username AND words is not null " +
-                "ORDER BY LENGTH(words) DESC LIMIT 5 ";
+        String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5";
+        String q = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5";
 
         TopWord[] topWords = new TopWord[5];
 
         PreparedStatement ps;
 
         try {
+
+
+
             ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = ps.executeQuery();
 //            int i = 0;
@@ -154,57 +157,7 @@ public class DataAccessClass {
 
     public static void main(String[] args) {
         DataAccessClass dataAccessClass = new DataAccessClass();
-        System.out.println("round check");
-        ArrayList<Word> words;
-        boolean isDraw =false;
-        try {
-            words = dataAccessClass.getWords(116, 2);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        System.out.println("Winner words");
-
-        ArrayList<Word> winnerWords = new ArrayList<>();
-
-        for (Word w :
-                words) {
-            for (Word w1 :
-                    words) {
-                if (w.getWord().length() == w1.getWord().length() && w.getUserID() != w1.getUserID()) {
-                    isDraw =true;
-                    break;
-                }
-            }
-        }
-
-        if (isDraw) {
-            System.out.println("hello draw");
-        } else  {
-            System.out.println("may winner");
-        }
-//    HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
-//    for (Word w : words) {
-//      if (!wordCounts.containsKey(w.getWord())) {
-//        wordCounts.put(w.getWord(), 1);
-//      } else {
-//        int count = wordCounts.get(w.getWord());
-//        wordCounts.put(w.getWord(), count + 1);
-//      }
-//    }
-//
-     /*   for (Word w :
-                words) {
-            System.out.println(w.getWord());
-            for (String word :
-                    strings) {
-                if (w.getWord().equalsIgnoreCase(word)) {
-
-                }
-            }
-        }
-*/
+        System.out.println(Arrays.toString(dataAccessClass.getLongestWords()));
     }
 
     public void run(){

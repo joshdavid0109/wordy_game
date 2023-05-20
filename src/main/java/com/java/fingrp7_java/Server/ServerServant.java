@@ -28,9 +28,8 @@ public class ServerServant extends WordyGameServerPOA {
 
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
-//        try {
+        try {
         int loginStatus = dataAccessClass.checkCredentials(username, password);
-/*
             switch (loginStatus) {
                 default:
                     System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
@@ -53,7 +52,7 @@ public class ServerServant extends WordyGameServerPOA {
             } else {
                 throw new InvalidCredentials("Invalid credentials! Try again.");
             }
-        }*/
+        }
     }
 
     @Override
@@ -345,21 +344,15 @@ public class ServerServant extends WordyGameServerPOA {
                         checking = true;
                     }*/
                 roundNumber =g.round;
-
-                System.out.println(roundNumber + " asdas" +g.round);
                 if (g.isDraw)
                     return "Draw";
 
                 String userID = g.winnerPerRound.get(roundNumber);
-                System.out.println(userID + " ito winner");
                 if (g.winner== null){
                     for (WordyGamePlayer wgp :
                             g.wgPlayers) {
-                        System.out.println(wgp.id + " " + wgp.wins);
-                        System.out.println(g.wgPlayers.size() + "sizee");
                         if (wgp.wins >= 3) {
                             g.winner = wgp;
-                            System.out.println("togameWinner");
                             try {
                                 dataAccessClass.writeGameWinner(g.gameID, dataAccessClass.getGameWinner(wgp.id));
                             } catch (SQLException e) {
@@ -368,9 +361,7 @@ public class ServerServant extends WordyGameServerPOA {
                             break;
                         }
                         if (userID != null) {
-                            System.out.println(wgp.id + " winner" + userID);
                             if (wgp.id == Integer.parseInt(userID)) {
-                                System.out.println(wgp.id + " " +wgp.wins);
                                 userID = "";
                                 // for tests lang
                                 return String.valueOf(wgp.id);

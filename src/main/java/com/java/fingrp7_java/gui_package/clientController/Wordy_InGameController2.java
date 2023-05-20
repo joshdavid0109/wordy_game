@@ -619,12 +619,61 @@ public class Wordy_InGameController2 implements Initializable{
 
                     }
 
-//                    String backgroundCheckWinner = wordyGameServer.checkWinner(gameID);
-//                    if (backgroundCheckWinner.equalsIgnoreCase("draw")
-//                    && backgroundCheckWinner.equalsIgnoreCase("Game over") && backgroundCheckWinner.equalsIgnoreCase("")) {
-//                        System.out.println("asdc");
-//                    }
+                 /*   String backgroundCheckWinner = wordyGameServer.checkWinner(gameID);
+                    if (!(backgroundCheckWinner.equalsIgnoreCase("draw")
+                    || backgroundCheckWinner.equalsIgnoreCase("Game over") || backgroundCheckWinner.equalsIgnoreCase(""))) {
+                        new JFXPanel().requestFocus();
 
+                        Platform.setImplicitExit(false);
+
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/com/java/fmxl/gameWinner.fxml"));
+
+                                DialogPane dialogPane;
+                                try {
+                                    dialogPane = fxmlLoader.load();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                GameWinnerController gameWinnerController = fxmlLoader.getController();
+
+                                Dialog<ButtonType> dialog = new Dialog<>();
+                                dialog.initStyle(StageStyle.UNDECORATED);
+                                dialog.setDialogPane(dialogPane);
+                                wordsTF.clear();
+
+                                new JFXPanel();
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (letters != null) {
+                                            for (char letter : letters) {
+                                                for (TextField tf :
+                                                        textFields) {
+                                                    if ((tf.getText().equals(String.valueOf(letter).toLowerCase()) || tf.getText().equals(String.valueOf(letter).toUpperCase()))
+                                                            && tf.getOpacity() == 0.5) {
+                                                        tf.setOpacity(1);
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                });
+
+                                longestWords = new String[0];
+                                dialog.show();
+                                winnerID = "";
+                                ready.setDisable(false);
+                                scheduledExecutorService.shutdown();
+                            }
+                        });
+                    }
+*/
 
                 }
             }
