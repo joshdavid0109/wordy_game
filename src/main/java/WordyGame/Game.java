@@ -34,7 +34,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public String roundStatus;
   public int round;
   public int roundCounter = 11;
-  public int timerCounter = 3;
+  public int timerCounter = 10;
   public int readyCounter = 10;
   public boolean isDraw = false;
   public ArrayList<String> strings;
@@ -62,7 +62,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
           System.out.println("No other players have joined");
           gameID = 0;
           status = null;
-          timerCounter =3;
+          timerCounter =11;
           scheduler.shutdown();
         }
       }
@@ -140,7 +140,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   {
     gameID = 0;
     status = "";
-    timerCounter = 3;
+    timerCounter = 11;
     status = "Waiting";
     winnerID = 0;
     hostID = 0;
@@ -157,7 +157,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public Game (int gameID, int hostID) {
     players = new ArrayList<>();
     players.add(hostID);
-    timerCounter = 3;
+    timerCounter = 11;
 //    readyCounter = 15;
     this.gameID = gameID;
     this.hostID = hostID;

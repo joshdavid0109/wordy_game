@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jdk.nashorn.internal.ir.EmptyNode;
+import org.omg.CORBA.COMM_FAILURE;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -60,7 +61,9 @@ public class LogInController implements Initializable {
 
                 try {
                     wordyGameServer.login(username, password);
-                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword e) {
+                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword | COMM_FAILURE | ServerUnavailable e) {
+                    System.out.println(e.getCause());
+                    System.out.println(e.toString());
                     Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
                     alert.show();
 
@@ -95,7 +98,6 @@ public class LogInController implements Initializable {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Server currently unavailable!");
             alert.showAndWait();
         }

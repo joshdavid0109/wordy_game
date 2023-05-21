@@ -44,13 +44,15 @@ public class ServerServant extends WordyGameServerPOA {
                     System.out.println("LOG IN ATTEMPT BY " + username + " WITH THE PASSWORD " + password);
                     throw new InvalidCredentials("Invalid credentials! Try again.");
             }
-        } catch (UserAlreadyLoggedIn | InvalidPassword | InvalidCredentials e ) {
+        } catch (UserAlreadyLoggedIn | InvalidPassword | InvalidCredentials | org.omg.CORBA.COMM_FAILURE e) {
             if (e instanceof UserAlreadyLoggedIn) {
                 throw new UserAlreadyLoggedIn("Already logged in!");
             } else if (e instanceof InvalidPassword) {
                 throw new InvalidPassword("Invalid password! Try again.");
-            } else {
+            } else if (e instanceof InvalidCredentials){
                 throw new InvalidCredentials("Invalid credentials! Try again.");
+            } else {
+                System.out.println("CORBA EXCEPTION");
             }
         }
     }

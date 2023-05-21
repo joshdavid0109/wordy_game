@@ -21,7 +21,7 @@ public class DataAccessClass {
         try {
             getConnection();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
         }
     }
 
@@ -164,7 +164,6 @@ public class DataAccessClass {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         //return
