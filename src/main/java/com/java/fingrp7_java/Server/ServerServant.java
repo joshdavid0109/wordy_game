@@ -19,7 +19,7 @@ public class ServerServant extends WordyGameServerPOA {
     static int roundNumber;
 
     static WordyGame.Game game;
-    static char[] charArray = new char[17];
+//    static char[] charArray = new char[17];
     ScheduledExecutorService scheduler;
     DataAccessClass dataAccessClass = new DataAccessClass();
     public ArrayList<Word> words;
@@ -292,6 +292,7 @@ public class ServerServant extends WordyGameServerPOA {
     public char[] requestLetters(int gameID) {
         StringBuilder sb = new StringBuilder();
         List<String> words = null;
+        char[] charArray = new char[17];
 
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
@@ -322,7 +323,6 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                 }
             }
-            charArray = new char[17];
         }
 
         System.out.println(words);
