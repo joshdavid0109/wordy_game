@@ -302,6 +302,8 @@ public class ServerServant extends WordyGameServerPOA {
                 if (g.lettersPerRound.get(g.round) == null) {
                     System.out.println("populating round " + g.round);
                     LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                    System.out.println("Letters for Game: " + g.gameID);
+                    System.out.println(charArray);
                     g.lettersPerRound.put(g.round, charArray);
                     for (char c :
                             charArray) {
@@ -320,6 +322,7 @@ public class ServerServant extends WordyGameServerPOA {
                     }
                 }
             }
+            charArray = new char[17];
         }
 
         System.out.println(words);

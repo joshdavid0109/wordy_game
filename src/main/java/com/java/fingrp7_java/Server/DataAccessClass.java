@@ -95,39 +95,9 @@ public class DataAccessClass {
     }
 
     public TopWord[] getLongestWords() {
-//        int TOP_LIMIT = 5;
-//
-///*        String query = "SELECT top 5 words, userID FROM word";*/
-//
-//        // SELECT userID, words FROM word
-//        // WHERE LENGTH(words) =
-//        // (SELECT MIN(LENGTH(words)) FROM word)
-//        // ORDER BY words;
-//        String query = "SELECT userId, words FROM word WHERE LENGTH(words) = " +
-//                "(SELECT MIN(LENGTH(words) FROM word) ORDER BY words;";
-//        TopWord[] topWords = null;
-//
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//
-//            ResultSet rs  = preparedStatement.executeQuery();
-//            //rs to TopWord object
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//        }
-//
-//
-////        topWords = new TopWord();
-
         String countwords = "SELECT COUNT(words) AS 'length' FROM users NATURAL JOIN word";
-
-
-
         String query = "SELECT username, words FROM users NATURAL JOIN word ORDER BY LENGTH(words) DESC LIMIT 5 ";
-
         TopWord[] topWords = new TopWord[0];
-
         PreparedStatement ps;
 
         try {
@@ -145,16 +115,8 @@ public class DataAccessClass {
                 topWords = new TopWord[length];
             }
 
-
             ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs1 = ps.executeQuery();
-//            int i = 0;
-
-//            while (rs.next()) {
-//                topWords[i] = new TopWord(rs.getString(1), rs.getString(2));
-//                i++;
-////                System.out.println(rs.getString("username") + " " + rs.getString("words"));
-//            }
 
             for (int i = 0; i < topWords.length; i++) {
                 if (rs1.next()) {
