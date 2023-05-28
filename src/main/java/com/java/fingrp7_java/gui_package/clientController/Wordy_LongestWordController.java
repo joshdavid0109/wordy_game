@@ -2,8 +2,6 @@ package com.java.fingrp7_java.gui_package.clientController;
 
 import WordyGame.TopWord;
 import WordyGame.WordyGameServer;
-import com.java.fingrp7_java.Server.DataAccessClass;
-import com.java.fingrp7_java.Server.TopFiveLongestWord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -3,7 +3,6 @@ package com.java.fingrp7_java.gui_package.clientController;
 import WordyGame.Game;
 import WordyGame.NoPlayersAvailable;
 import WordyGame.WordyGameServer;
-import com.java.fingrp7_java.Server.Word;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;

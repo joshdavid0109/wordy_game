@@ -61,7 +61,7 @@ public class LogInController implements Initializable {
 
                 try {
                     wordyGameServer.login(username, password);
-                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword | COMM_FAILURE | ServerUnavailable e) {
+                } catch (UserAlreadyLoggedIn | InvalidCredentials | InvalidPassword | ServerUnavailable e) {
                     System.out.println(e.getCause());
                     System.out.println(e.toString());
                     Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);

@@ -26,6 +26,7 @@ import org.controlsfx.control.Notifications;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.concurrent.*;
@@ -362,6 +363,7 @@ public class Wordy_InGameController2 implements Initializable{
             @Override
             public void run() {
                 letters = wordyGameServer.requestLetters(gameID);
+                System.out.println(Arrays.toString(letters));
             }
         };
 
@@ -437,6 +439,7 @@ public class Wordy_InGameController2 implements Initializable{
                                 }
                             });
                         }
+                        ready.setDisable(false);
                     } else  {
                         winChecker[0] = false;
                     }
