@@ -19,7 +19,7 @@ public class ServerServant extends WordyGameServerPOA {
     static int roundNumber;
 
     static WordyGame.Game game;
-    static char[] charArray = new char[17];
+    //    static char[] charArray = new char[17];
     ScheduledExecutorService scheduler;
     DataAccessClass dataAccessClass = new DataAccessClass();
     public ArrayList<Word> words;
@@ -29,7 +29,7 @@ public class ServerServant extends WordyGameServerPOA {
     @Override
     public void login(String username, String password) throws InvalidCredentials, UserAlreadyLoggedIn, InvalidPassword, ServerUnavailable {
         try {
-        int loginStatus = dataAccessClass.checkCredentials(username, password);
+            int loginStatus = dataAccessClass.checkCredentials(username, password);
             switch (loginStatus) {
                 default:
                     System.out.println("USER: " + username + " HAS SUCCESSFULLY LOGGED IN!");
@@ -293,25 +293,28 @@ public class ServerServant extends WordyGameServerPOA {
     public char[] requestLetters(int gameID) {
         StringBuilder sb = new StringBuilder();
         List<String> words = null;
+        char[] charArray = new char[17];
 
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
             if (g.gameID == gameID) {
                 game = g;
+
+                System.out.println(game.gameID + " game id" );
                 if (g.roundStat)
                     break;
                 if (g.lettersPerRound.get(g.round) == null) {
                     System.out.println("populating round " + g.round);
                     LetterGenerator.getRandomLetters().getChars(0,17, charArray, 0);
+                    System.out.println("Letters for Game: " + g.gameID);
+                    System.out.println(charArray);
                     g.lettersPerRound.put(g.round, charArray);
                     for (char c :
                             charArray) {
                         sb.append(c);
                     }
-                    charArray = g.lettersPerRound.get(g.round);
-                }else {
-                    charArray = g.lettersPerRound.get(g.round);
                 }
+                charArray = g.lettersPerRound.get(g.round);
 
                 words = LetterGenerator.getWords(sb.toString());
 
@@ -323,6 +326,7 @@ public class ServerServant extends WordyGameServerPOA {
             }
         }
 
+        System.out.println(charArray);
         System.out.println(words);
         return charArray;
     }
@@ -368,16 +372,16 @@ public class ServerServant extends WordyGameServerPOA {
                                 // for tests lang
                                 return String.valueOf(wgp.id);
 
-                                // for registered users na ito
-/*                                    try {
-                                        return dataAccessClass.getGameWinner(wgp.id);
-                                    } catch (SQLException e) {
-                                        throw new RuntimeException(e);
-                                    }*/
+//                                // for registered users na ito
+//                                try {
+//                                    return dataAccessClass.getGameWinner(wgp.id);
+//                                } catch (SQLException e) {
+//                                    throw new RuntimeException(e);
+//                                }
                             } else if (wgp == g.wgPlayers.get(g.wgPlayers.size() -1))
                                 return "";
                         } else
-                            return "Game Over";
+                            return "Draw";
                     }
                 } else {
                     return "Game Over";
@@ -391,7 +395,7 @@ public class ServerServant extends WordyGameServerPOA {
     public int getTimer(int gameID, String of) {
         if (game != null) {
             for (Game g:
-                 games) {
+                    games) {
                 if (gameID == g.gameID) {
                     if (of.equalsIgnoreCase("g")) {
                         return g.timerCounter;

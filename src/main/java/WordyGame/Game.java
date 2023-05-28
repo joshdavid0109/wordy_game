@@ -34,9 +34,11 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
   public String roundStatus;
   public int round;
   public int roundCounter = 11;
-  public int timerCounter = 10;
+  public int timerCounter = 11;
   public int readyCounter = 10;
   public boolean isDraw = false;
+
+  public boolean rd = false;
   public ArrayList<String> strings;
   public boolean roundStat = false;
 
@@ -94,6 +96,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
       readyCounter--;
       if (readyCounter == 0 && roundStat) {
         scheduler.shutdown();
+        rd = false;
         roundTimer();
       } else if (readyCounter == 0){
         System.out.println("kung sino ready..");
@@ -112,6 +115,7 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
               round++;
               readyCounter = 10;
               roundCounter= 10;
+              rd = false;
               scheduler.shutdown();
             }
             wgp.status = "";
@@ -191,13 +195,16 @@ public final class Game implements org.omg.CORBA.portable.IDLEntity
     if (readyCounter == 0)
       scheduler.shutdown();
     else {
+      System.out.println("Else statement");
+      rd = true;
       readyCounter = 10;
-      scheduler = Executors.newScheduledThreadPool(10);
-      Wordy_MatchMakingController.timer = readyCounter;
-      scheduler.scheduleAtFixedRate(readyChecker, 0, 1, TimeUnit.SECONDS);
+      if (scheduler.isShutdown()) {
+        scheduler = Executors.newScheduledThreadPool(10);
+        scheduler.scheduleAtFixedRate(readyChecker, 0, 1, TimeUnit.SECONDS);
+      }
     }
 //    }
-    while (!scheduler.isShutdown()) {
+    while (readyCounter != 0) {
       if (scheduler.isShutdown()) {
         return true;
       }

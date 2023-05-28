@@ -518,6 +518,8 @@ public class Wordy_InGameController2 implements Initializable{
                 if (gameID!=0) {
 
                     roundNumber = wordyGameServer.getRound(gameID);
+                    if (Integer.parseInt(roundNo.getText()) != roundNumber)
+                        ready.setDisable(false);
                     if (roundNumber != Integer.parseInt(roundNo.getText()) && roundNumber != 0)
                         readyChecker[0] = false;
                     roundNo.setText(String.valueOf(roundNumber));
