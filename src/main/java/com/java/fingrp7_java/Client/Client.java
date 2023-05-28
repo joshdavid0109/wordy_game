@@ -74,16 +74,21 @@ public class Client {
 //                throw new RuntimeException(e);
 //            }
 
-            try {
-                TopWord[] topWords = wordyGameServer.getLongestWords();
+//            try {
+//                TopWord[] topWords = wordyGameServer.getLongestWords();
+//
+//                for (TopWord tw : topWords) {
+//                    System.out.println(tw);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
-                for (TopWord tw : topWords) {
-                    System.out.println(tw);
-                }
+//            wordyGameServer.requestLetters(1);
+//            wordyGameServer.requestLetters(2);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
 
         } catch (InvalidName | org.omg.CosNaming.NamingContextPackage.InvalidName | CannotProceed | NotFound |
                  RuntimeException e) {
